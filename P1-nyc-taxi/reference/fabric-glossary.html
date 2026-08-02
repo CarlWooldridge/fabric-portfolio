@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Fabric Glossary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #14181C;
+    --panel: #1B2027;
+    --panel-2: #20262E;
+    --border: #2C333C;
+    --text: #E8EAED;
+    --text-dim: #8B93A1;
+    --text-faint: #5B6470;
+    --accent: #2DD4BF;
+    --bridge: #F5A623;
+    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    padding: 20px 14px 60px;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  h1 { font-size: 22px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+
+  .subhead { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px; }
+
+  .search-wrap { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 8px 0 12px; }
+
+  #search {
+    width: 100%;
+    padding: 11px 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    outline: none;
+  }
+  #search:focus { border-color: var(--accent); }
+  #search::placeholder { color: var(--text-faint); }
+
+  .count { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-top: 8px; }
+
+  .cat { margin-top: 22px; }
+
+  .cat-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .term {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(44,51,60,0.5);
+  }
+  .term:last-child { border-bottom: none; }
+
+  .term-name { font-size: 14.5px; font-weight: 600; margin-bottom: 3px; }
+
+  .term-def { font-size: 13.5px; color: var(--text-dim); line-height: 1.5; }
+
+  .maps {
+    display: block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--bridge);
+    line-height: 1.45;
+  }
+  .maps::before {
+    content: "≈ ";
+    font-family: var(--font-mono);
+  }
+
+  .empty { text-align: center; color: var(--text-faint); font-family: var(--font-mono); font-size: 12px; padding: 40px 0; }
+
+  .legend {
+    font-size: 12px;
+    color: var(--text-faint);
+    line-height: 1.5;
+    padding: 10px 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .legend b { color: var(--bridge); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Microsoft Fabric</div>
+  <h1>Terminology Glossary</h1>
+  <div class="subhead">Short definitions for DP-600 study. Amber lines map a Fabric term to something you already know.</div>
+
+  <div class="legend">Terms marked <b>≈</b> have a rough equivalent in the SQL Server / Power BI / AWS world you've already worked in. The mapping is a memory aid, not an exact equivalence — say "roughly like" if it comes up in an interview.</div>
+
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="Search terms…" autocomplete="off">
+    <div class="count" id="count"></div>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+const GLOSSARY = [
+  {
+    cat: "Platform Foundation",
+    terms: [
+      ["Microsoft Fabric", "A single SaaS analytics platform bundling data engineering, warehousing, BI, real-time analytics, and data science on one shared storage layer.", null],
+      ["OneLake", "The one tenant-wide storage layer under all of Fabric. Automatically provisioned, one per organization. Every Fabric data store writes here.", "OneDrive, but for data. Or a single company-wide ADLS Gen2 account you never have to provision."],
+      ["Tenant", "Your whole organization's Fabric instance. Contains exactly one OneLake.", null],
+      ["Workspace", "A container for Fabric items and the main unit of collaboration and permissions.", "A Power BI workspace — same concept, expanded scope."],
+      ["Item", "Any individual object in Fabric: a Lakehouse, notebook, report, pipeline, semantic model.", null],
+      ["Capacity", "The pooled compute that powers everything in a workspace. Assigned per workspace.", "A Power BI Premium capacity — you championed one of these at Asurion."],
+      ["Capacity Unit (CU)", "The billing/throughput unit of Fabric compute. F2, F64, etc. denote CU size.", "Premium P-SKU sizing."],
+      ["Experience / Workload", "Persona-based sections of the Fabric UI: Data Engineering, Data Warehouse, Data Science, Real-Time Intelligence, Data Factory, Power BI.", null],
+      ["Domain", "A logical grouping of workspaces for federated governance — e.g. a Finance domain, a Supply Chain domain.", null],
+      ["OneLake catalog", "The tenant-wide discovery surface for finding existing data before you rebuild it.", null],
+      ["Delta Lake / Delta Parquet", "The open table format Fabric stores everything in: Parquet data files plus a transaction log that provides ACID guarantees and time travel.", "The storage format Databricks uses — you've already worked on top of this at Asurion."],
+      ["Medallion architecture", "A layering convention: bronze (raw), silver (cleaned/conformed), gold (business-ready).", "Staging → ODS → dimensional mart."],
+      ["Shortcut", "A pointer to data living elsewhere (another workspace, ADLS Gen2, S3, GCS) that appears local without copying it.", "A linked server or external table, but without the query overhead."],
+      ["Mirroring", "Near-real-time replication of an external database (Azure SQL, Snowflake, Cosmos DB) into OneLake as Delta tables, with no pipeline to build.", "Transactional replication, managed for you."]
+    ]
+  },
+  {
+    cat: "Data Stores",
+    terms: [
+      ["Lakehouse", "Data store combining raw file storage with managed Delta tables. Spark-first for writes; structured and unstructured data both welcome.", null],
+      ["Warehouse", "Relational data store with full T-SQL read/write, stored procedures, and multi-table ACID transactions. Structured data only.", "A SQL Server data warehouse — the closest thing to your Asurion / Marquis day-to-day."],
+      ["SQL analytics endpoint", "The auto-created, READ-ONLY T-SQL interface over a Lakehouse. Lets SQL people query Lakehouse tables without touching Spark.", null],
+      ["Files vs. Tables", "The two sections of a Lakehouse. Files = unmanaged raw drops (CSV, JSON, images). Tables = managed Delta tables.", null],
+      ["Eventhouse", "Store optimized for streaming and time-series data. Queried with KQL rather than T-SQL.", "Closest to a time-series/log store — no clean SQL Server analogue."],
+      ["KQL Database", "The database that lives inside an Eventhouse.", null],
+      ["SQL database (in Fabric)", "An OLTP-style operational database hosted inside Fabric, with data also landing in OneLake. Newer; lighter exam weight.", "Azure SQL — which you used at Marquis."],
+      ["Materialized Lake View", "A declarative, auto-refreshing derived table in a Lakehouse. Automates gold-layer builds without hand-written pipelines.", "An indexed view that actually maintains itself."]
+    ]
+  },
+  {
+    cat: "Movement & Transformation",
+    terms: [
+      ["Data Factory (in Fabric)", "The data integration experience — home of pipelines and dataflows.", "Azure Data Factory, embedded."],
+      ["Data pipeline", "Orchestration: copy activities, notebook runs, control flow, scheduling, dependencies.", "ADF pipelines, or SSIS control flow."],
+      ["Dataflow Gen2", "Low-code transformation and load built on Power Query / M.", "Power Query in Power BI Desktop, promoted to a first-class ETL tool."],
+      ["Copy activity / Copy job", "Moves data from a source to a destination. The workhorse of a pipeline.", "SSIS Data Flow Task."],
+      ["Notebook", "Code-first interface for transformation and data science. Supports PySpark, Spark SQL, Python, R, Scala.", null],
+      ["Spark Job Definition", "A submitted, non-interactive Spark job — for scheduled production work rather than exploration.", null],
+      ["Eventstream", "No-code ingestion and routing of streaming data into Fabric destinations.", null],
+      ["V-Order", "Fabric's write-time Parquet optimization that makes subsequent reads (especially Direct Lake) much faster.", null],
+      ["OPTIMIZE / VACUUM", "Delta maintenance. OPTIMIZE compacts many small files into fewer large ones; VACUUM removes old file versions.", "Index rebuild and log cleanup, conceptually."],
+      ["Incremental load", "Loading only new/changed rows rather than a full refresh. Expected knowledge on the exam.", "You've built these — same pattern, new tooling."]
+    ]
+  },
+  {
+    cat: "Semantic Modeling & BI",
+    terms: [
+      ["Semantic model", "The modeled layer — tables, relationships, measures, hierarchies — that reports sit on. Renamed from 'dataset.'", "An SSAS Tabular model. Exactly the thing you built ~10 of at Asurion."],
+      ["Import mode", "Data is copied into the model's in-memory engine. Fast queries, scheduled refresh, storage cost.", "Same as Power BI Import today."],
+      ["DirectQuery mode", "Queries pass through to the source at report runtime. Always current, slower.", "Same as Power BI DirectQuery today."],
+      ["Direct Lake", "Fabric-only mode. Reads Delta files in OneLake directly into memory — no import refresh, no query translation. Import speed with DirectQuery freshness.", "The genuinely new one. No prior equivalent."],
+      ["Direct Lake fallback", "When Direct Lake can't serve a query, it silently reverts to DirectQuery — and gets slower. Knowing why it falls back is exam material.", null],
+      ["Composite / Dual model", "Mixing storage modes within one semantic model.", null],
+      ["DAX", "The expression language for measures and calculated columns.", "You already have this."],
+      ["Calculation group", "A reusable set of calculation items applied across many measures — e.g. one YTD item instead of a YTD variant of every measure.", "Solves the measure-explosion problem you'd recognize from any large Tabular model."],
+      ["Field parameter", "Lets report consumers swap which dimension or measure a visual displays, at runtime.", null],
+      ["Dynamic format string", "Conditionally formats a measure's output — e.g. currency vs. percentage depending on selection.", null],
+      ["XMLA endpoint", "Programmatic read/write access to a semantic model from external tools (Tabular Editor, SSMS, TMSL scripts). Used for enterprise deployment and partitioning.", "The same XMLA endpoint you'd have used against SSAS."],
+      ["Large semantic model storage format", "A setting, off by default, required for very large models. Enabling it is often the right exam answer at enterprise scale.", null],
+      [".pbip", "Power BI project format — saves a report and model as readable text files instead of one binary .pbix. This is what makes git source control work.", "Why .pbix never played nicely with the GitHub adoption you drove."],
+      [".pbit", "Power BI template file — structure and queries without the data.", null],
+      [".pbids", "Power BI data source file — a small connection-definition file to standardize how a team connects.", null],
+      ["Shared semantic model", "One governed model consumed by many reports, instead of each report having its own.", "The Center of Excellence pattern you already built."],
+      ["Paginated report", "Pixel-perfect, print-oriented, multi-page report.", "SSRS — directly."]
+    ]
+  },
+  {
+    cat: "Real-Time Intelligence",
+    terms: [
+      ["Real-Time Intelligence (RTI)", "The Fabric workload covering streaming ingestion, storage, querying, and alerting.", null],
+      ["Real-Time Hub", "Central catalog of all streams available in the tenant.", null],
+      ["KQL (Kusto Query Language)", "The query language for Eventhouse/KQL databases. Read-level fluency is enough for the exam.", "Pipe-based and log-analytics flavored — closer to Splunk than to T-SQL."],
+      ["Activator", "Trigger-based alerting and action when data meets a condition. Formerly Data Activator.", "A data-driven alert with a workflow attached."],
+      ["Real-Time Dashboard", "A KQL-native dashboard, separate from Power BI reports.", null]
+    ]
+  },
+  {
+    cat: "Governance & Lifecycle",
+    terms: [
+      ["Workspace roles", "Admin, Member, Contributor, Viewer — the four levels of workspace access.", null],
+      ["Item permissions", "Sharing an individual item independent of workspace role.", null],
+      ["Row-level security (RLS)", "Restricts which rows a user can see, by identity.", "You'd have done this in SSAS/Power BI already."],
+      ["Object-level security (OLS)", "Hides entire tables or columns from a user — they don't even appear in the field list.", null],
+      ["Column-level security (CLS)", "Restricts access to specific columns, warehouse-side.", null],
+      ["File-level security", "POSIX-style access control on files in OneLake. Newer outline addition; commonly skipped in study.", null],
+      ["Sensitivity label", "A Microsoft Purview information-protection classification applied to an item, which flows downstream to exports.", null],
+      ["Endorsement", "Marking an item Promoted, Certified, or Master data so consumers know what to trust.", "The governance signal your CoE standards were trying to convey manually."],
+      ["Deployment pipeline", "Promotes workspace content through Dev → Test → Prod stages.", "Formal release management for BI content."],
+      ["Git integration", "Connects a workspace to Azure DevOps or GitHub for real source control of Fabric items.", "The thing you spearheaded at Asurion, now native."],
+      ["Impact analysis", "Shows downstream dependencies before you rename or delete an item — which reports and models break.", "Answers the 'what will this break?' question you've had to answer manually."],
+      ["Lineage view", "Visualizes upstream sources and downstream consumers across a workspace.", null],
+      ["Microsoft Purview", "Microsoft's broader governance and compliance platform; supplies Fabric's sensitivity labels and cataloging.", null]
+    ]
+  },
+  {
+    cat: "Capacity & Admin",
+    terms: [
+      ["F SKU", "The Fabric capacity purchase tier (F2 through F2048). Bigger F = more CUs.", "P1/P2/P3 Premium SKUs."],
+      ["Trial capacity", "A time-limited free Fabric capacity — what you're currently running on, in East US.", null],
+      ["Smoothing", "Fabric spreads a burst of compute demand across a longer window rather than failing the request.", null],
+      ["Bursting", "Temporarily exceeding your capacity's steady-state CU rate to finish a spike faster.", null],
+      ["Throttling", "What happens when sustained demand exceeds capacity: operations get delayed or rejected.", "The report-availability pain that justified your Premium capacity purchase."],
+      ["Pause / resume", "Stopping capacity billing when it's not in use. Relevant for personal projects on paid capacity.", null],
+      ["Tenant settings", "Admin-portal switches controlling what features users can use org-wide.", null]
+    ]
+  }
+];
+
+const searchEl = document.getElementById("search");
+const resultsEl = document.getElementById("results");
+const countEl = document.getElementById("count");
+
+function esc(s) {
+  return s.replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+}
+
+function render(filter) {
+  const q = (filter || "").trim().toLowerCase();
+  resultsEl.innerHTML = "";
+  let shown = 0, total = 0;
+
+  GLOSSARY.forEach(cat => {
+    const matches = cat.terms.filter(t => {
+      total++;
+      if (!q) return true;
+      return (t[0] + " " + t[1] + " " + (t[2] || "")).toLowerCase().includes(q);
+    });
+    if (!matches.length) return;
+    shown += matches.length;
+
+    const catEl = document.createElement("div");
+    catEl.className = "cat";
+    catEl.innerHTML = `<div class="cat-name">${esc(cat.cat)}</div>`;
+
+    matches.forEach(t => {
+      const d = document.createElement("div");
+      d.className = "term";
+      d.innerHTML = `
+        <div class="term-name">${esc(t[0])}</div>
+        <div class="term-def">${esc(t[1])}${t[2] ? `<span class="maps">${esc(t[2])}</span>` : ""}</div>
+      `;
+      catEl.appendChild(d);
+    });
+    resultsEl.appendChild(catEl);
+  });
+
+  if (!shown) {
+    resultsEl.innerHTML = `<div class="empty">No terms match "${esc(q)}"</div>`;
+  }
+
+  countEl.textContent = q ? `${shown} of ${total} terms` : `${total} terms`;
+}
+
+searchEl.addEventListener("input", e => render(e.target.value));
+render("");
+</script>
+</body>
+</html>

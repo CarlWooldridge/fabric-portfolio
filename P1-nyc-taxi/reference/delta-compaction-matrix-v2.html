@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delta Compaction & Optimization Matrix</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #FAFAF9;
+    --panel: #FFFFFF;
+    --panel-2: #F1F0EC;
+    --border: #DAD8D0;
+    --text: #1C1C1A;
+    --text-dim: #55534C;
+    --text-faint: #8A887E;
+    --ink: #1C1C1A;
+    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    padding: 20px 14px 60px;
+  }
+
+  .wrap { max-width: 1400px; margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  h1 { font-size: 22px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; color: var(--ink); }
+
+  .subhead { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px; max-width: 720px; }
+
+  .legend {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: var(--panel);
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+
+  .scroll-hint {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    -webkit-overflow-scrolling: touch;
+    background: var(--panel);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 1150px;
+    font-size: 12.5px;
+  }
+
+  thead th {
+    background: var(--panel-2);
+    text-align: left;
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+
+  tbody tr {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #FCFCFB; }
+
+  td {
+    padding: 12px 14px;
+    vertical-align: top;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .technique-cell { min-width: 160px; }
+  .technique-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; color: var(--ink); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 8px 3px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    background: var(--panel);
+  }
+  .badge.deferred { border-style: solid; }
+  .badge.proactive { border-style: dashed; }
+  .badge.oneoff { border-style: dotted; }
+  .badge.tuning { border-color: var(--text-faint); color: var(--text-faint); }
+
+  .badge-icon { font-size: 11px; line-height: 1; }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    background: var(--panel-2);
+    color: #1C1C1A;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    white-space: nowrap;
+    border: 1px solid var(--border);
+  }
+
+  .impact-good::before { content: "▲ "; font-weight: 700; }
+  .impact-cost::before { content: "▼ "; font-weight: 700; }
+  .impact-neutral::before { content: "— "; color: var(--text-faint); }
+  .impact-good, .impact-cost, .impact-neutral { font-weight: 600; }
+
+  .notes-cell { color: var(--text-dim); font-size: 12px; min-width: 220px; }
+  .notes-cell b { color: var(--ink); font-weight: 700; }
+
+  .footer-note {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    padding: 14px 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .footer-note b { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .scroll-hint { display: block; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Delta Lake &middot; Microsoft Fabric</div>
+  <h1>Compaction &amp; Optimization Matrix</h1>
+  <div class="subhead">Reference for OPTIMIZE, Z-Order, V-Order, liquid clustering, and related maintenance techniques covered in this session.</div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="badge deferred"><span class="badge-icon">○</span>DEFERRED</span> costs nothing until manually invoked</div>
+    <div class="legend-item"><span class="badge proactive"><span class="badge-icon">◆</span>PER-WRITE</span> costs something on every write</div>
+    <div class="legend-item"><span class="badge oneoff"><span class="badge-icon">■</span>ONE-OFF</span> deliberate, infrequent operation</div>
+    <div class="legend-item"><span class="badge tuning"><span class="badge-icon">▽</span>TUNING</span> modifies another technique's behavior</div>
+  </div>
+
+  <div class="legend" style="margin-top:-10px;">
+    <div class="legend-item"><span class="impact-good">▲ Improves</span></div>
+    <div class="legend-item"><span class="impact-cost">▼ Costs</span></div>
+    <div class="legend-item"><span class="impact-neutral">— No direct impact</span></div>
+  </div>
+
+  <div class="scroll-hint">&larr; scroll to see all columns &rarr;</div>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Technique</th>
+          <th>Command / Syntax</th>
+          <th>What It Optimizes</th>
+          <th>Initiated By</th>
+          <th>Read Impact</th>
+          <th>Write Impact</th>
+          <th>Rewrites Files?</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">Plain OPTIMIZE</div>
+            <span class="badge deferred"><span class="badge-icon">○</span>DEFERRED</span>
+          </td>
+          <td><code>OPTIMIZE dbo.table</code></td>
+          <td>File count/size — bins small files together</td>
+          <td>Manual, or auto compaction</td>
+          <td class="impact-good">Faster — fewer files to open</td>
+          <td class="impact-neutral">None on regular writes</td>
+          <td>Yes — always</td>
+          <td class="notes-cell">Default target ~1GB, tuned for large tables. <b>Adaptive target file size</b> scales this down for smaller tables like yours. Idempotent.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">Z-Order</div>
+            <span class="badge deferred"><span class="badge-icon">○</span>DEFERRED</span>
+          </td>
+          <td><code>OPTIMIZE dbo.table<br>ZORDER BY (col1, col2)</code></td>
+          <td>Row placement — co-locates similar values across filter columns</td>
+          <td>Manual, part of OPTIMIZE</td>
+          <td class="impact-good">Faster multi-column filtered queries (file skipping)</td>
+          <td class="impact-neutral">None on regular writes</td>
+          <td>Yes</td>
+          <td class="notes-cell">Named for the <b>Z-order space-filling curve</b> — genuine geometry reference. Best when queries filter 2+ columns together.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">V-Order</div>
+            <span class="badge proactive"><span class="badge-icon">◆</span>PER-WRITE</span>
+          </td>
+          <td><code>OPTIMIZE dbo.table VORDER</code><br><span style="color:var(--text-faint)">or table property / session default</span></td>
+          <td>Internal file encoding — sorting, row-group layout, dictionary encoding</td>
+          <td>Automatic on every write once enabled; or forced via OPTIMIZE</td>
+          <td class="impact-good">Faster reads, esp. Direct Lake/Power BI (~10&ndash;50% for Spark)</td>
+          <td class="impact-cost">~15% slower on <b>every</b> write while enabled</td>
+          <td>Yes, at write time</td>
+          <td class="notes-cell"><b>Required for Direct Lake</b> to perform well. Disabled by default in new workspaces (write-heavy default). "V" likely nods to VertiPaq/Verti-Scan — unconfirmed.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">Liquid Clustering</div>
+            <span class="badge deferred"><span class="badge-icon">○</span>DEFERRED</span>
+          </td>
+          <td>Table property <code>clusterBy</code> + <code>OPTIMIZE</code></td>
+          <td>Row placement, like Z-Order but reconfigurable later</td>
+          <td>Manual OPTIMIZE required to actually cluster</td>
+          <td class="impact-good">Faster filtered reads via file skipping</td>
+          <td class="impact-neutral">None on regular writes</td>
+          <td>Yes, on OPTIMIZE only</td>
+          <td class="notes-cell"><b>Regular writes do NOT cluster data</b> — easy to forget and end up stale. More flexible than Z-Order — can change keys without redefining partitions.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">OPTIMIZE FULL</div>
+            <span class="badge oneoff"><span class="badge-icon">■</span>ONE-OFF</span>
+          </td>
+          <td><code>OPTIMIZE dbo.table FULL</code></td>
+          <td>Full reclustering of every file, including previously-clustered ones</td>
+          <td>Manual, deliberate</td>
+          <td class="impact-good">Restores full clustering benefit after a strategy change</td>
+          <td class="impact-cost">High — can rewrite most/all of a large table</td>
+          <td>Yes, all files</td>
+          <td class="notes-cell">Requires <b>runtime 2.0 (Delta 4.2)</b>. Use only after changing clustering keys/provider — not routine maintenance.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">Fast Optimize</div>
+            <span class="badge tuning"><span class="badge-icon">▽</span>TUNING</span>
+          </td>
+          <td><code>SET spark.microsoft.delta.<br>optimize.fast.enabled = TRUE</code></td>
+          <td>Smarter bin selection — skips compaction unlikely to help</td>
+          <td>Session-level, applies during any OPTIMIZE</td>
+          <td class="impact-good">Same benefit as plain OPTIMIZE</td>
+          <td class="impact-good">Lower — fewer unnecessary rewrites</td>
+          <td>Only bins likely to benefit</td>
+          <td class="notes-cell">Not compatible with Z-Order or liquid clustering. Tunable via <code>minNumFiles</code>, <code>parquetCoefficient</code>.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">Auto Compaction</div>
+            <span class="badge proactive"><span class="badge-icon">◆</span>PER-WRITE</span>
+          </td>
+          <td><code>SET spark.databricks.delta.<br>autoCompact.enabled = TRUE</code><br><span style="color:var(--text-faint)">or table property</span></td>
+          <td>File count/size, same target as plain OPTIMIZE</td>
+          <td>Automatic, triggered right after each write</td>
+          <td class="impact-good">Same as plain OPTIMIZE, continuously maintained</td>
+          <td class="impact-cost">Small added cost on writes that trigger it</td>
+          <td>Yes, when triggered</td>
+          <td class="notes-cell">The production answer to <b>"won't a re-run undo this?"</b> — stops your Copy activity table from re-fragmenting on every reload.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">onCheckpointOnly mode</div>
+            <span class="badge tuning"><span class="badge-icon">▽</span>TUNING</span>
+          </td>
+          <td><code>SET spark.microsoft.delta.<br>autoCompact.onCheckpointOnly.<br>enabled = TRUE</code></td>
+          <td>Reduces overhead of auto compaction's own fragmentation checks</td>
+          <td>Session-level, modifies auto compaction</td>
+          <td class="impact-neutral">No direct read impact</td>
+          <td class="impact-good">Lowers per-commit overhead</td>
+          <td>N/A — tuning only</td>
+          <td class="notes-cell">Requires <b>runtime 2.0 (Delta 4.1)</b>. Defers evaluation to checkpoint commits (~every 10) instead of every write.</td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">File-level compaction targets</div>
+            <span class="badge tuning"><span class="badge-icon">▽</span>TUNING</span>
+          </td>
+          <td><code>SET spark.microsoft.delta.<br>optimize.fileLevelTarget.<br>enabled = TRUE</code></td>
+          <td>Prevents re-compacting files that already met a prior target size</td>
+          <td>Session-level, modifies OPTIMIZE</td>
+          <td class="impact-neutral">No direct read impact</td>
+          <td class="impact-good">Reduces write amplification</td>
+          <td>Fewer files touched</td>
+          <td class="notes-cell">Not on by default — <b>Microsoft recommends enabling it.</b></td>
+        </tr>
+        <tr>
+          <td class="technique-cell">
+            <div class="technique-name">VACUUM</div>
+            <span class="badge deferred"><span class="badge-icon">○</span>DEFERRED</span>
+          </td>
+          <td><code>VACUUM dbo.table<br>[RETAIN n HOURS]</code></td>
+          <td>Physically deletes old file versions no longer part of current table state</td>
+          <td>Manual, separate from OPTIMIZE</td>
+          <td class="impact-neutral">No benefit to current queries</td>
+          <td class="impact-neutral">Storage cleanup, not query optimization</td>
+          <td>Deletes, doesn't rewrite</td>
+          <td class="notes-cell">Default retention 7 days. This is what your <b>Dataflow Gen2 table</b> needs — old overwrite versions still sitting there.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    <b>Reading the matrix:</b> ○ deferred techniques cost nothing until you invoke them — the "put data anywhere, clean up later" model. ◆ per-write techniques cost something on <b>every</b> write, continuously, in exchange for never letting the problem accumulate. ■ one-off is a deliberate, infrequent operation. ▽ tuning settings don't optimize anything themselves — they change how another technique behaves.
+  </div>
+</div>
+</body>
+</html>
