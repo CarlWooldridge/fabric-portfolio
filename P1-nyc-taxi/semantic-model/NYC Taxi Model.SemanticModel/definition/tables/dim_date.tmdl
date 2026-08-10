@@ -1,0 +1,96 @@
+table dim_date
+	lineageTag: a64755b4-bbb2-48dd-94bc-32affe78e421
+	sourceLineageTag: [gold].[dim_date]
+	dataCategory: Time
+
+	column Datetime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f8d86557-c77e-49b7-9f90-889c6eb18d58
+		sourceLineageTag: Datetime
+		summarizeBy: none
+		sourceColumn: Datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: 8d1ee9a3-e7b9-46f5-9246-4edb040558ca
+		sourceLineageTag: Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = DataType
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: e82c3c6a-44af-4792-9012-50e134e44516
+		sourceLineageTag: Year
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 85e66dc5-37f5-4742-97ec-0d4cb5c1f725
+		sourceLineageTag: Month
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 981046de-7aea-427c-9d60-af5685274f0c
+		sourceLineageTag: Quarter
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: 4f15b229-4acc-4606-af75-e53224481923
+		sourceLineageTag: MonthName
+		summarizeBy: none
+		sourceColumn: MonthName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		dataType: string
+		lineageTag: 3070d566-f5f8-4f44-9992-a19c180b8b79
+		sourceLineageTag: DayName
+		summarizeBy: none
+		sourceColumn: DayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column holiday
+		dataType: string
+		lineageTag: 57d908e9-129d-489a-ba25-1d75bba96003
+		sourceLineageTag: holiday
+		summarizeBy: none
+		sourceColumn: holiday
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = entity
+		mode: directLake
+		source
+			entityName: dim_date
+			schemaName: gold
+			expressionSource: 'DirectLake - NYCTaxiLH'
+

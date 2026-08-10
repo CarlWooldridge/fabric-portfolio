@@ -1,0 +1,91 @@
+table _Measures
+	lineageTag: b63b64bc-7a34-4230-a498-7412b84b72cf
+
+	measure TripCnt = COUNTROWS(fact_trips)
+		formatString: #,0
+		lineageTag: 6390e333-f204-419d-a74f-81fc22ac4d5c
+
+	measure AvgTripMins = DIVIDE([AvgDuration],60)
+		formatString: 0.0
+		lineageTag: 111b8c54-5f20-4b89-b47b-85ee739883c9
+
+	measure AvgDuration = AVERAGE('fact_trips'[Duration])
+		lineageTag: b48e10d7-a183-4b29-b7b8-4c565f9f947d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalRevenue = SUM('fact_trips'[totalAmount])
+		lineageTag: a425b7b7-6354-4f3f-9c2c-d7be603d0694
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure AvgFare = AVERAGE('fact_trips'[fareAmount])
+		lineageTag: 24097dd1-e722-4836-a2e4-607a677afbd9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure AvgTripDistance = AVERAGE('fact_trips'[tripDistance])
+		lineageTag: b8cb055e-e8bc-4afe-8ff4-bcf3cc9e7e67
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalTips = SUM('fact_trips'[tipAmount])
+		lineageTag: 0d3d3091-7690-43eb-9249-0a5aa2d4d2c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TipPercentage = DIVIDE([TotalTips], [TotalRevenue])
+		lineageTag: e3c7977f-2c52-4578-93ec-89399c2db8e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure AvgFarePerMile = DIVIDE([TotalRevenue], SUM('fact_trips'[tripDistance]))
+		lineageTag: f1389eed-f676-4f5b-9651-47418eb83a41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalTolls = SUM('fact_trips'[tollsAmount])
+		lineageTag: 14643280-b42d-4b1a-92c0-4f4ed0cc30a1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalFare = SUM('fact_trips'[fareAmount])
+		lineageTag: 913e3c6c-b216-4fdb-b7c9-6ade65d81d57
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalExtra = SUM('fact_trips'[extra])
+		lineageTag: 5aae6ed4-7104-498d-aa61-75612acef969
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalImprovementSurcharge = SUM('fact_trips'[improvementSurcharge])
+		lineageTag: 2bd11740-bb90-4aad-9df1-834b657a571f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalEhailFee = SUM('fact_trips'[ehailFee])
+		lineageTag: 279036c0-94ca-49ec-ae51-01d8542285b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TipPctLY = CALCULATE([TipPercentage],SAMEPERIODLASTYEAR(dim_date[Date]))
+		lineageTag: 5acf91bf-c0d9-4f03-9af8-87c40dc82e22
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Value
+		formatString: 0
+		lineageTag: 94d8d180-695f-443c-aa8d-0afaa9fcc698
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = {BLANK()}
+
+	annotation PBI_Id = 2b53d7bf7cd344a8a20946fde5111f5c
+

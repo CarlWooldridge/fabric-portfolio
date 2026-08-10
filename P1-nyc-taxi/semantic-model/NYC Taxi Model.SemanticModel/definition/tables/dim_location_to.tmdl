@@ -1,0 +1,67 @@
+table dim_location_to
+	lineageTag: 01707687-0016-4898-8342-6de73b58c5c9
+	sourceLineageTag: [gold].[dim_location_to]
+
+	column LocationId
+		dataType: int64
+		formatString: 0
+		lineageTag: 907be9be-265d-47fd-a9b0-f5f904ccf7fe
+		sourceLineageTag: LocationId
+		summarizeBy: none
+		sourceColumn: LocationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Borough
+		dataType: string
+		lineageTag: b24b18a6-5b1e-4d6f-bca7-8a8531b8f932
+		sourceLineageTag: Borough
+		summarizeBy: none
+		sourceColumn: Borough
+
+		annotation SummarizationSetBy = Automatic
+
+	column Zone
+		dataType: string
+		lineageTag: 3f2013c5-eada-4a11-8167-f977127878e5
+		sourceLineageTag: Zone
+		summarizeBy: none
+		sourceColumn: Zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column ServiceZone
+		dataType: string
+		lineageTag: f5bd641e-cd45-4e55-bf4d-c0d61d08bc18
+		sourceLineageTag: ServiceZone
+		summarizeBy: none
+		sourceColumn: ServiceZone
+
+		annotation SummarizationSetBy = Automatic
+
+	column NeighborhoodType
+		dataType: string
+		lineageTag: 4203dcd7-e4e1-4e8c-868a-ce7d426576f1
+		sourceLineageTag: NeighborhoodType
+		summarizeBy: none
+		sourceColumn: NeighborhoodType
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsAirport
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 35f59634-8ec7-4260-a72e-5ec8b3ecd7d3
+		sourceLineageTag: IsAirport
+		summarizeBy: none
+		sourceColumn: IsAirport
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_location_to = entity
+		mode: directLake
+		source
+			entityName: dim_location_to
+			schemaName: gold
+			expressionSource: 'DirectLake - NYCTaxiLH'
+

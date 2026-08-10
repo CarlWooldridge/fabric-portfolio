@@ -1,0 +1,39 @@
+table dim_ratecode
+	lineageTag: b7566fdc-1c8b-4994-9708-1c2dfb345bf0
+	sourceLineageTag: [gold].[dim_ratecode]
+
+	column RateCodeID
+		dataType: int64
+		formatString: 0
+		lineageTag: e43ca030-bd53-4e2b-b482-08660f9d8b7f
+		sourceLineageTag: RateCodeID
+		summarizeBy: none
+		sourceColumn: RateCodeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RateCodeName
+		dataType: string
+		lineageTag: a6fbd5f7-d010-4af4-b3ca-86d06e5c6022
+		sourceLineageTag: RateCodeName
+		summarizeBy: none
+		sourceColumn: RateCodeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: 078b9f19-431d-4c6a-8e51-f2d6aec6c332
+		sourceLineageTag: Description
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_ratecode = entity
+		mode: directLake
+		source
+			entityName: dim_ratecode
+			schemaName: gold
+			expressionSource: 'DirectLake - NYCTaxiLH'
+

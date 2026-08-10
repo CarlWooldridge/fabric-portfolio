@@ -1,0 +1,48 @@
+table dim_vendor
+	lineageTag: 5e2f8639-db23-4bf9-90b3-abd6dd7ba91a
+	sourceLineageTag: [gold].[dim_vendor]
+
+	column VendorID
+		dataType: int64
+		formatString: 0
+		lineageTag: fb3a45b5-1667-48c9-9c8b-b2d871f6a77e
+		sourceLineageTag: VendorID
+		summarizeBy: none
+		sourceColumn: VendorID
+
+		annotation SummarizationSetBy = Automatic
+
+	column VendorName
+		dataType: string
+		lineageTag: a943c23d-884c-47a9-9dd9-64ea85887650
+		sourceLineageTag: VendorName
+		summarizeBy: none
+		sourceColumn: VendorName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyName
+		dataType: string
+		lineageTag: ec78fdd5-cd23-47be-ad18-3f9036326cd3
+		sourceLineageTag: CompanyName
+		summarizeBy: none
+		sourceColumn: CompanyName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TechnologyPlatform
+		dataType: string
+		lineageTag: 5f8832b1-a786-4fbf-aaf5-df3e4225a315
+		sourceLineageTag: TechnologyPlatform
+		summarizeBy: none
+		sourceColumn: TechnologyPlatform
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_vendor = entity
+		mode: directLake
+		source
+			entityName: dim_vendor
+			schemaName: gold
+			expressionSource: 'DirectLake - NYCTaxiLH'
+

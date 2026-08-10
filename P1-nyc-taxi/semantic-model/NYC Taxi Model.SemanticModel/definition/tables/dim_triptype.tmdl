@@ -1,0 +1,39 @@
+table dim_triptype
+	lineageTag: 6f606a6d-e7fd-489d-8297-e9b0166becc6
+	sourceLineageTag: [gold].[dim_triptype]
+
+	column TripTypeID
+		dataType: int64
+		formatString: 0
+		lineageTag: ecc6a828-8b27-4128-9d16-4b627a7c4d7a
+		sourceLineageTag: TripTypeID
+		summarizeBy: none
+		sourceColumn: TripTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TripTypeName
+		dataType: string
+		lineageTag: 2047faed-0795-48f4-91c5-928ca75762d9
+		sourceLineageTag: TripTypeName
+		summarizeBy: none
+		sourceColumn: TripTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: 7f588d53-8bc4-4708-84d5-7a79bf0f2996
+		sourceLineageTag: Description
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_triptype = entity
+		mode: directLake
+		source
+			entityName: dim_triptype
+			schemaName: gold
+			expressionSource: 'DirectLake - NYCTaxiLH'
+

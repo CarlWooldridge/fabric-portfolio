@@ -1,0 +1,11 @@
+expression 'DirectLake - NYCTaxiLH' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/8cdf1706-1fd1-4985-9125-a22e233cd933/5838af0b-f450-4a52-8644-a7269ea77912", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: ccbf757c-79d6-413f-935e-5fb38ec2510d
+
+	annotation PBI_IncludeFutureArtifacts = False
+
+	annotation PBI_RemovedChildren = [{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_rides_copy_activity_optimize]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_rides_copy_activity_vorder]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_rides_copy_activity_zorder]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[sys_dq_metrics]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_summary_mlv]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[external].[public_holidays]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_rides_copy_activity]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_rides_notebook]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[dbo].[taxi_rides_dataflow]"}},"objectType":"Table"}]
+

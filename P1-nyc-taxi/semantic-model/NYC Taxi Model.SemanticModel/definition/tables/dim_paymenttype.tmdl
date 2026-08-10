@@ -1,0 +1,52 @@
+table dim_paymenttype
+	lineageTag: 7ae7e752-f4e3-4179-a1f0-5f331698f20a
+	sourceLineageTag: [gold].[dim_paymenttype]
+
+	column PaymentTypeID
+		dataType: int64
+		formatString: 0
+		lineageTag: eeabd88a-77f0-4550-9e8b-c3afd06e8bd6
+		sourceLineageTag: PaymentTypeID
+		summarizeBy: none
+		sourceColumn: PaymentTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentMethod
+		dataType: string
+		lineageTag: 2f4f83d5-c476-465b-93d6-852b139f1e72
+		sourceLineageTag: PaymentMethod
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ElectronicPayment
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 93f9d660-b021-470b-9917-2ecdf9bbd7f1
+		sourceLineageTag: ElectronicPayment
+		summarizeBy: none
+		sourceColumn: ElectronicPayment
+
+		annotation SummarizationSetBy = Automatic
+
+	column RequiresTipEntry
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 222abab5-2f9e-425d-bd7f-dbedf889899d
+		sourceLineageTag: RequiresTipEntry
+		summarizeBy: none
+		sourceColumn: RequiresTipEntry
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_paymenttype = entity
+		mode: directLake
+		source
+			entityName: dim_paymenttype
+			schemaName: gold
+			expressionSource: 'DirectLake - NYCTaxiLH'
+
