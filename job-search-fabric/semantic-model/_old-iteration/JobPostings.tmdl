@@ -1,0 +1,266 @@
+table JobPostings
+	lineageTag: d428d00e-746a-41d5-a383-177f2d8cf3fd
+	sourceLineageTag: [dbo].[JobPostings]
+
+	column Job_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: cfc41500-3ba7-4d94-b4af-50dd43f8593b
+		sourceLineageTag: Job_ID
+		summarizeBy: count
+		sourceColumn: Job_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date_Evaluated
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: acab5d72-cf9c-475b-9edc-741cee6dcbee
+		sourceLineageTag: Date_Evaluated
+		summarizeBy: none
+		sourceColumn: Date_Evaluated
+
+		changedProperty = DataType
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Company
+		dataType: string
+		lineageTag: 8c4d25cd-451e-435e-b3b4-a241c027e4dc
+		sourceLineageTag: Company
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column Role_Title
+		dataType: string
+		lineageTag: 47930e48-8e76-4401-b105-7d00d79365e3
+		sourceLineageTag: Role_Title
+		summarizeBy: none
+		sourceColumn: Role_Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 0e09853b-1593-47e0-b6b1-e2ce551ff979
+		sourceLineageTag: Location
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Work_Type
+		dataType: string
+		lineageTag: eb3097a7-837b-4b8a-8028-ff56ac3681e2
+		sourceLineageTag: Work_Type
+		summarizeBy: none
+		sourceColumn: Work_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Employment_Type
+		dataType: string
+		lineageTag: 8fadb644-6e89-4743-8407-79e16bc060ff
+		sourceLineageTag: Employment_Type
+		summarizeBy: none
+		sourceColumn: Employment_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comp_Posted
+		dataType: string
+		lineageTag: 4814d84f-255a-4b32-9cb9-76149ee1152d
+		sourceLineageTag: Comp_Posted
+		summarizeBy: none
+		sourceColumn: Comp_Posted
+
+		annotation SummarizationSetBy = Automatic
+
+	column Applicant_Volume
+		dataType: string
+		lineageTag: 22d713c9-bdb7-4f00-92f7-6fb7b9544f43
+		sourceLineageTag: Applicant_Volume
+		summarizeBy: none
+		sourceColumn: Applicant_Volume
+
+		annotation SummarizationSetBy = Automatic
+
+	column Source
+		dataType: string
+		lineageTag: f41ea534-92b0-4561-bc54-d7cf58b920c8
+		sourceLineageTag: Source
+		summarizeBy: none
+		sourceColumn: Source
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL
+		dataType: string
+		lineageTag: 272e889d-382a-4683-9301-68c9137536de
+		sourceLineageTag: URL
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: URL
+
+		changedProperty = DataCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Verdict
+		dataType: string
+		lineageTag: 7670c392-9ea9-44e2-b87f-3e440e975c3b
+		sourceLineageTag: Verdict
+		summarizeBy: none
+		sourceColumn: Verdict
+
+		annotation SummarizationSetBy = Automatic
+
+	column Score
+		dataType: int64
+		formatString: 0
+		lineageTag: 432d77fa-8b5d-4094-b572-01ac1b10239d
+		sourceLineageTag: Score
+		summarizeBy: sum
+		sourceColumn: Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column Role_Type
+		dataType: string
+		lineageTag: eb29543c-6e17-4e0c-8dfc-606033bc5563
+		sourceLineageTag: Role_Type
+		summarizeBy: none
+		sourceColumn: Role_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comp_Flag
+		dataType: string
+		lineageTag: 1d982fd4-d35c-4a5b-8995-83917ed7e4e7
+		sourceLineageTag: Comp_Flag
+		summarizeBy: none
+		sourceColumn: Comp_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column Biggest_Gap
+		dataType: string
+		lineageTag: fff81e02-295d-486b-8ef6-7e94fecfa795
+		sourceLineageTag: Biggest_Gap
+		summarizeBy: none
+		sourceColumn: Biggest_Gap
+
+		annotation SummarizationSetBy = Automatic
+
+	column Biggest_Strength
+		dataType: string
+		lineageTag: 35e07acf-83ed-46e7-be99-722d2cc2a856
+		sourceLineageTag: Biggest_Strength
+		summarizeBy: none
+		sourceColumn: Biggest_Strength
+
+		annotation SummarizationSetBy = Automatic
+
+	column Recommended_Action
+		dataType: string
+		lineageTag: c4cd8992-3578-48ae-acc3-e9020d51f391
+		sourceLineageTag: Recommended_Action
+		summarizeBy: none
+		sourceColumn: Recommended_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carls_Action
+		dataType: string
+		lineageTag: 7dee7247-84f5-4c07-bf28-928f226a57f5
+		sourceLineageTag: Carls_Action
+		summarizeBy: none
+		sourceColumn: Carls_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carls_Action_Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: e01cc9eb-18d3-4ad4-ba53-03dae8d71628
+		sourceLineageTag: Carls_Action_Date
+		summarizeBy: none
+		sourceColumn: Carls_Action_Date
+
+		changedProperty = DataType
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Outcome
+		dataType: string
+		lineageTag: ec13ae12-90ae-49b6-ac60-11a35e5d77ef
+		sourceLineageTag: Outcome
+		summarizeBy: none
+		sourceColumn: Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reason
+		dataType: string
+		lineageTag: 3b29c4d9-832e-41fa-b496-3ebc494ea13a
+		sourceLineageTag: Reason
+		summarizeBy: none
+		sourceColumn: Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: d9a17b89-93b8-4862-9497-e1e32c754155
+		sourceLineageTag: Notes
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column __filepath__
+		dataType: string
+		lineageTag: a2ee1973-8c68-4636-9921-e165621825b6
+		sourceLineageTag: __filepath__
+		summarizeBy: none
+		sourceColumn: __filepath__
+
+		annotation SummarizationSetBy = Automatic
+
+	column __corrupt__
+		dataType: string
+		lineageTag: 712c79ea-6ce1-4763-9061-cfc678c4fe27
+		sourceLineageTag: __corrupt__
+		summarizeBy: none
+		sourceColumn: __corrupt__
+
+		annotation SummarizationSetBy = Automatic
+
+	column __ingestion_timestamp__
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c1d46852-2b71-447a-a7e9-bc5bd1cc2a74
+		sourceLineageTag: __ingestion_timestamp__
+		summarizeBy: none
+		sourceColumn: __ingestion_timestamp__
+
+		annotation SummarizationSetBy = Automatic
+
+	partition JobPostings = entity
+		mode: directLake
+		source
+			entityName: JobPostings
+			schemaName: dbo
+			expressionSource: 'DirectLake - JobSearch_LH'
+
+
