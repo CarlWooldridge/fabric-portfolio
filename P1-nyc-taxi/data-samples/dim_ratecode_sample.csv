@@ -1,0 +1,8 @@
+RateCodeID,RateCodeName,Description
+1,Standard Rate,Normal metered fare
+2,JFK,Flat fare to/from JFK
+3,Newark,Trips involving Newark Airport
+4,Nassau or Westchester,Outside NYC county fare
+5,Negotiated Fare,Pre-arranged negotiated fare
+6,Group Ride,Shared ride
+99,Unknown,Unknown or missing rate

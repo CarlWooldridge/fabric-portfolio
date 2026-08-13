@@ -1,0 +1,3 @@
+TripTypeID,TripTypeName,Description
+1,Street Hail,Passenger hailed taxi on street
+2,Dispatch,Trip dispatched or e-hail

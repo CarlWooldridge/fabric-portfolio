@@ -1,0 +1,6 @@
+PaymentTypeID,PaymentMethod,ElectronicPayment,RequiresTipEntry
+1,Credit Card,True,True
+2,Cash,False,False
+3,No Charge,False,False
+4,Dispute,False,False
+5,Unknown,False,False

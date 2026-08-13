@@ -1,0 +1,266 @@
+LocationId,Borough,Zone,ServiceZone,NeighborhoodType,IsAirport
+1,EWR,Newark Airport,Airport,Airport,True
+2,Brooklyn,Zone 2,Yellow Zone,Industrial,False
+3,Brooklyn,Zone 3,Boro Zone,Entertainment,False
+4,Manhattan,Zone 4,Boro Zone,Entertainment,False
+5,Staten Island,Zone 5,Airport,Entertainment,False
+6,Queens,Zone 6,Yellow Zone,Entertainment,False
+7,Brooklyn,Zone 7,Yellow Zone,Mixed,False
+8,Staten Island,Zone 8,Yellow Zone,Commercial,False
+9,Manhattan,Zone 9,Boro Zone,Industrial,False
+10,Staten Island,Zone 10,Yellow Zone,Mixed,False
+11,Manhattan,Zone 11,Yellow Zone,Entertainment,False
+12,Manhattan,Zone 12,Boro Zone,Entertainment,False
+13,Brooklyn,Zone 13,Boro Zone,Commercial,False
+14,Manhattan,Zone 14,Boro Zone,Residential,False
+15,Brooklyn,Zone 15,Airport,Entertainment,False
+16,Brooklyn,Zone 16,Boro Zone,Mixed,False
+17,Manhattan,Zone 17,Yellow Zone,Entertainment,False
+18,Queens,Zone 18,Yellow Zone,Industrial,False
+19,Manhattan,Zone 19,Boro Zone,Commercial,False
+20,Staten Island,Zone 20,Boro Zone,Mixed,False
+21,Staten Island,Zone 21,Boro Zone,Mixed,False
+22,Bronx,Zone 22,Airport,Commercial,False
+23,Queens,Zone 23,Yellow Zone,Commercial,False
+24,Manhattan,Zone 24,Airport,Residential,False
+25,Staten Island,Zone 25,Airport,Mixed,False
+26,Queens,Zone 26,Yellow Zone,Commercial,False
+27,Bronx,Zone 27,Yellow Zone,Mixed,False
+28,Queens,Zone 28,Airport,Mixed,False
+29,Staten Island,Zone 29,Airport,Mixed,False
+30,Manhattan,Zone 30,Airport,Industrial,False
+31,Staten Island,Zone 31,Airport,Mixed,False
+32,Bronx,Zone 32,Boro Zone,Residential,False
+33,Queens,Zone 33,Airport,Commercial,False
+34,Queens,Zone 34,Yellow Zone,Mixed,False
+35,Queens,Zone 35,Yellow Zone,Entertainment,False
+36,Brooklyn,Zone 36,Airport,Residential,False
+37,Brooklyn,Zone 37,Boro Zone,Mixed,False
+38,Manhattan,Zone 38,Yellow Zone,Entertainment,False
+39,Brooklyn,Zone 39,Airport,Commercial,False
+40,Manhattan,Zone 40,Boro Zone,Mixed,False
+41,Staten Island,Zone 41,Airport,Mixed,False
+42,Queens,Zone 42,Airport,Commercial,False
+43,Brooklyn,Zone 43,Yellow Zone,Industrial,False
+44,Bronx,Zone 44,Yellow Zone,Residential,False
+45,Queens,Zone 45,Boro Zone,Industrial,False
+46,Bronx,Zone 46,Boro Zone,Mixed,False
+47,Staten Island,Zone 47,Airport,Entertainment,False
+48,Manhattan,Zone 48,Airport,Mixed,False
+49,Bronx,Zone 49,Airport,Residential,False
+50,Brooklyn,Zone 50,Boro Zone,Commercial,False
+51,Manhattan,Zone 51,Boro Zone,Residential,False
+52,Staten Island,Zone 52,Yellow Zone,Industrial,False
+53,Staten Island,Zone 53,Boro Zone,Residential,False
+54,Brooklyn,Zone 54,Airport,Residential,False
+55,Manhattan,Zone 55,Boro Zone,Commercial,False
+56,Queens,Zone 56,Boro Zone,Industrial,False
+57,Bronx,Zone 57,Airport,Industrial,False
+58,Staten Island,Zone 58,Yellow Zone,Entertainment,False
+59,Staten Island,Zone 59,Boro Zone,Industrial,False
+60,Brooklyn,Zone 60,Yellow Zone,Commercial,False
+61,Queens,Zone 61,Airport,Commercial,False
+62,Brooklyn,Zone 62,Boro Zone,Commercial,False
+63,Bronx,Zone 63,Boro Zone,Residential,False
+64,Brooklyn,Zone 64,Boro Zone,Residential,False
+65,Manhattan,Zone 65,Airport,Entertainment,False
+66,Bronx,Zone 66,Airport,Residential,False
+67,Bronx,Zone 67,Airport,Entertainment,False
+68,Queens,Zone 68,Boro Zone,Mixed,False
+69,Manhattan,Zone 69,Airport,Mixed,False
+70,Staten Island,Zone 70,Airport,Residential,False
+71,Manhattan,Zone 71,Boro Zone,Residential,False
+72,Staten Island,Zone 72,Boro Zone,Industrial,False
+73,Brooklyn,Zone 73,Yellow Zone,Residential,False
+74,Bronx,Zone 74,Boro Zone,Industrial,False
+75,Bronx,Zone 75,Boro Zone,Residential,False
+76,Queens,Zone 76,Boro Zone,Mixed,False
+77,Queens,Zone 77,Yellow Zone,Mixed,False
+78,Brooklyn,Zone 78,Boro Zone,Entertainment,False
+79,Queens,Zone 79,Airport,Mixed,False
+80,Bronx,Zone 80,Yellow Zone,Entertainment,False
+81,Staten Island,Zone 81,Boro Zone,Mixed,False
+82,Brooklyn,Zone 82,Yellow Zone,Mixed,False
+83,Queens,Zone 83,Airport,Commercial,False
+84,Staten Island,Zone 84,Yellow Zone,Residential,False
+85,Queens,Zone 85,Yellow Zone,Entertainment,False
+86,Queens,Zone 86,Boro Zone,Mixed,False
+87,Brooklyn,Zone 87,Boro Zone,Residential,False
+88,Queens,Zone 88,Yellow Zone,Entertainment,False
+89,Staten Island,Zone 89,Airport,Entertainment,False
+90,Queens,Zone 90,Yellow Zone,Commercial,False
+91,Bronx,Zone 91,Yellow Zone,Mixed,False
+92,Staten Island,Zone 92,Yellow Zone,Commercial,False
+93,Queens,Zone 93,Boro Zone,Residential,False
+94,Queens,Zone 94,Airport,Mixed,False
+95,Staten Island,Zone 95,Yellow Zone,Commercial,False
+96,Brooklyn,Zone 96,Yellow Zone,Commercial,False
+97,Queens,Zone 97,Yellow Zone,Entertainment,False
+98,Bronx,Zone 98,Yellow Zone,Entertainment,False
+99,Queens,Zone 99,Airport,Entertainment,False
+100,Staten Island,Zone 100,Airport,Residential,False
+101,Bronx,Zone 101,Airport,Residential,False
+102,Queens,Zone 102,Airport,Commercial,False
+103,Brooklyn,Zone 103,Boro Zone,Entertainment,False
+104,Brooklyn,Zone 104,Boro Zone,Entertainment,False
+105,Bronx,Zone 105,Boro Zone,Commercial,False
+106,Bronx,Zone 106,Yellow Zone,Mixed,False
+107,Bronx,Zone 107,Yellow Zone,Entertainment,False
+108,Manhattan,Zone 108,Airport,Commercial,False
+109,Brooklyn,Zone 109,Airport,Residential,False
+110,Brooklyn,Zone 110,Boro Zone,Industrial,False
+111,Manhattan,Zone 111,Yellow Zone,Entertainment,False
+112,Queens,Zone 112,Yellow Zone,Residential,False
+113,Manhattan,Zone 113,Boro Zone,Commercial,False
+114,Bronx,Zone 114,Yellow Zone,Mixed,False
+115,Manhattan,Zone 115,Airport,Industrial,False
+116,Bronx,Zone 116,Airport,Entertainment,False
+117,Queens,Zone 117,Boro Zone,Commercial,False
+118,Bronx,Zone 118,Yellow Zone,Commercial,False
+119,Manhattan,Zone 119,Yellow Zone,Industrial,False
+120,Manhattan,Zone 120,Yellow Zone,Entertainment,False
+121,Staten Island,Zone 121,Boro Zone,Commercial,False
+122,Manhattan,Zone 122,Yellow Zone,Residential,False
+123,Queens,Zone 123,Yellow Zone,Commercial,False
+124,Manhattan,Zone 124,Yellow Zone,Industrial,False
+125,Queens,Zone 125,Airport,Mixed,False
+126,Manhattan,Zone 126,Airport,Commercial,False
+127,Staten Island,Zone 127,Yellow Zone,Commercial,False
+128,Manhattan,Zone 128,Airport,Residential,False
+129,Bronx,Zone 129,Airport,Entertainment,False
+130,Queens,Zone 130,Boro Zone,Entertainment,False
+131,Bronx,Zone 131,Yellow Zone,Industrial,False
+132,Manhattan,Zone 132,Airport,Industrial,False
+133,Queens,Zone 133,Boro Zone,Industrial,False
+134,Queens,Zone 134,Boro Zone,Entertainment,False
+135,Bronx,Zone 135,Airport,Entertainment,False
+136,Manhattan,Zone 136,Yellow Zone,Mixed,False
+137,Bronx,Zone 137,Airport,Residential,False
+138,Bronx,Zone 138,Yellow Zone,Residential,False
+139,Staten Island,Zone 139,Boro Zone,Entertainment,False
+140,Bronx,Zone 140,Yellow Zone,Residential,False
+141,Bronx,Zone 141,Yellow Zone,Industrial,False
+142,Queens,Zone 142,Yellow Zone,Mixed,False
+143,Bronx,Zone 143,Boro Zone,Industrial,False
+144,Bronx,Zone 144,Yellow Zone,Entertainment,False
+145,Brooklyn,Zone 145,Boro Zone,Commercial,False
+146,Staten Island,Zone 146,Yellow Zone,Residential,False
+147,Queens,Zone 147,Airport,Commercial,False
+148,Manhattan,Zone 148,Boro Zone,Industrial,False
+149,Queens,Zone 149,Yellow Zone,Industrial,False
+150,Bronx,Zone 150,Yellow Zone,Industrial,False
+151,Staten Island,Zone 151,Boro Zone,Residential,False
+152,Bronx,Zone 152,Boro Zone,Residential,False
+153,Staten Island,Zone 153,Boro Zone,Industrial,False
+154,Manhattan,Zone 154,Airport,Residential,False
+155,Brooklyn,Zone 155,Yellow Zone,Mixed,False
+156,Bronx,Zone 156,Yellow Zone,Commercial,False
+157,Brooklyn,Zone 157,Yellow Zone,Entertainment,False
+158,Bronx,Zone 158,Boro Zone,Residential,False
+159,Brooklyn,Zone 159,Yellow Zone,Residential,False
+160,Brooklyn,Zone 160,Airport,Mixed,False
+161,Bronx,Zone 161,Airport,Commercial,False
+162,Brooklyn,Zone 162,Airport,Mixed,False
+163,Manhattan,Zone 163,Boro Zone,Mixed,False
+164,Staten Island,Zone 164,Airport,Industrial,False
+165,Queens,Zone 165,Boro Zone,Entertainment,False
+166,Manhattan,Zone 166,Yellow Zone,Mixed,False
+167,Brooklyn,Zone 167,Boro Zone,Commercial,False
+168,Queens,Zone 168,Yellow Zone,Residential,False
+169,Brooklyn,Zone 169,Yellow Zone,Residential,False
+170,Bronx,Zone 170,Airport,Industrial,False
+171,Bronx,Zone 171,Yellow Zone,Residential,False
+172,Brooklyn,Zone 172,Airport,Industrial,False
+173,Bronx,Zone 173,Boro Zone,Industrial,False
+174,Queens,Zone 174,Yellow Zone,Entertainment,False
+175,Bronx,Zone 175,Boro Zone,Entertainment,False
+176,Bronx,Zone 176,Airport,Industrial,False
+177,Queens,Zone 177,Boro Zone,Commercial,False
+178,Brooklyn,Zone 178,Airport,Entertainment,False
+179,Bronx,Zone 179,Boro Zone,Commercial,False
+180,Bronx,Zone 180,Airport,Industrial,False
+181,Brooklyn,Zone 181,Yellow Zone,Entertainment,False
+182,Bronx,Zone 182,Boro Zone,Commercial,False
+183,Staten Island,Zone 183,Boro Zone,Mixed,False
+184,Brooklyn,Zone 184,Yellow Zone,Entertainment,False
+185,Bronx,Zone 185,Airport,Industrial,False
+186,Brooklyn,Zone 186,Airport,Entertainment,False
+187,Bronx,Zone 187,Yellow Zone,Industrial,False
+188,Bronx,Zone 188,Boro Zone,Commercial,False
+189,Brooklyn,Zone 189,Boro Zone,Residential,False
+190,Manhattan,Zone 190,Airport,Entertainment,False
+191,Brooklyn,Zone 191,Airport,Commercial,False
+192,Manhattan,Zone 192,Airport,Mixed,False
+193,Brooklyn,Zone 193,Boro Zone,Mixed,False
+194,Staten Island,Zone 194,Boro Zone,Commercial,False
+195,Bronx,Zone 195,Airport,Entertainment,False
+196,Manhattan,Zone 196,Boro Zone,Mixed,False
+197,Brooklyn,Zone 197,Yellow Zone,Residential,False
+198,Bronx,Zone 198,Airport,Mixed,False
+199,Bronx,Zone 199,Airport,Residential,False
+200,Queens,Zone 200,Boro Zone,Industrial,False
+201,Manhattan,Zone 201,Yellow Zone,Mixed,False
+202,Queens,Zone 202,Boro Zone,Mixed,False
+203,Staten Island,Zone 203,Yellow Zone,Residential,False
+204,Brooklyn,Zone 204,Boro Zone,Mixed,False
+205,Manhattan,Zone 205,Yellow Zone,Residential,False
+206,Queens,Zone 206,Boro Zone,Commercial,False
+207,Manhattan,Zone 207,Yellow Zone,Entertainment,False
+208,Staten Island,Zone 208,Yellow Zone,Commercial,False
+209,Brooklyn,Zone 209,Airport,Entertainment,False
+210,Staten Island,Zone 210,Yellow Zone,Residential,False
+211,Manhattan,Zone 211,Yellow Zone,Commercial,False
+212,Staten Island,Zone 212,Boro Zone,Mixed,False
+213,Staten Island,Zone 213,Yellow Zone,Mixed,False
+214,Manhattan,Zone 214,Yellow Zone,Residential,False
+215,Staten Island,Zone 215,Yellow Zone,Commercial,False
+216,Bronx,Zone 216,Airport,Entertainment,False
+217,Staten Island,Zone 217,Airport,Mixed,False
+218,Manhattan,Zone 218,Yellow Zone,Residential,False
+219,Staten Island,Zone 219,Boro Zone,Mixed,False
+220,Queens,Zone 220,Airport,Residential,False
+221,Queens,Zone 221,Yellow Zone,Entertainment,False
+222,Bronx,Zone 222,Boro Zone,Entertainment,False
+223,Queens,Zone 223,Boro Zone,Residential,False
+224,Queens,Zone 224,Yellow Zone,Entertainment,False
+225,Brooklyn,Zone 225,Boro Zone,Residential,False
+226,Brooklyn,Zone 226,Airport,Entertainment,False
+227,Manhattan,Zone 227,Airport,Entertainment,False
+228,Manhattan,Zone 228,Airport,Mixed,False
+229,Manhattan,Zone 229,Boro Zone,Mixed,False
+230,Bronx,Zone 230,Boro Zone,Mixed,False
+231,Staten Island,Zone 231,Boro Zone,Mixed,False
+232,Manhattan,Zone 232,Yellow Zone,Commercial,False
+233,Bronx,Zone 233,Boro Zone,Industrial,False
+234,Manhattan,Zone 234,Boro Zone,Residential,False
+235,Staten Island,Zone 235,Yellow Zone,Industrial,False
+236,Staten Island,Zone 236,Airport,Residential,False
+237,Brooklyn,Zone 237,Yellow Zone,Mixed,False
+238,Bronx,Zone 238,Airport,Mixed,False
+239,Staten Island,Zone 239,Yellow Zone,Mixed,False
+240,Bronx,Zone 240,Yellow Zone,Mixed,False
+241,Brooklyn,Zone 241,Airport,Commercial,False
+242,Brooklyn,Zone 242,Boro Zone,Residential,False
+243,Manhattan,Zone 243,Airport,Industrial,False
+244,Manhattan,Zone 244,Yellow Zone,Industrial,False
+245,Queens,Zone 245,Airport,Mixed,False
+246,Brooklyn,Zone 246,Yellow Zone,Mixed,False
+247,Staten Island,Zone 247,Yellow Zone,Commercial,False
+248,Staten Island,Zone 248,Boro Zone,Residential,False
+249,Brooklyn,Zone 249,Airport,Industrial,False
+250,Bronx,Zone 250,Boro Zone,Mixed,False
+251,Manhattan,Zone 251,Yellow Zone,Entertainment,False
+252,Staten Island,Zone 252,Airport,Residential,False
+253,Bronx,Zone 253,Boro Zone,Mixed,False
+254,Queens,Zone 254,Boro Zone,Entertainment,False
+255,Brooklyn,Zone 255,Airport,Commercial,False
+256,Manhattan,Zone 256,Airport,Residential,False
+257,Bronx,Zone 257,Airport,Industrial,False
+258,Staten Island,Zone 258,Boro Zone,Residential,False
+259,Staten Island,Zone 259,Airport,Commercial,False
+260,Brooklyn,Zone 260,Airport,Industrial,False
+261,Brooklyn,Zone 261,Boro Zone,Residential,False
+262,Bronx,Zone 262,Airport,Industrial,False
+263,Brooklyn,Zone 263,Airport,Residential,False
+264,Brooklyn,Zone 264,Yellow Zone,Residential,False
+265,Queens,Zone 265,Yellow Zone,Mixed,False

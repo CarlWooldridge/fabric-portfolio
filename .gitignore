@@ -1,0 +1,8 @@
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+*.parquet
+*.pbix
+.DS_Store
+__pycache__/
+*.pyc
