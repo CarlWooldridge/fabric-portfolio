@@ -34,9 +34,9 @@ Architecture ownership and lifecycle: original source data, a written architectu
 
 Built during P1, kept because it stayed useful independent of the project that produced it:
 
-- **[Delta compaction & optimization matrix](P1-nyc-taxi/reference/delta-compaction-matrix-v2.html)** — every technique with syntax, read/write impact, and whether its cost is deferred or paid per-write
-- **[Fabric glossary](P1-nyc-taxi/reference/fabric-glossary.html)** — terminology, with mappings to SQL Server and Power BI equivalents where they exist
-- **[DP-600 project checklist](P1-nyc-taxi/reference/dp600-project-checklist.html)** — the three-project structure this work was built against
+- **[Delta compaction & optimization matrix](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/delta-compaction-matrix-v2.html)** ([source](P1-nyc-taxi/reference/delta-compaction-matrix-v2.html)) — every technique with syntax, read/write impact, and whether its cost is deferred or paid per-write
+- **[Fabric glossary](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/fabric-glossary.html)** ([source](P1-nyc-taxi/reference/fabric-glossary.html)) — terminology, with mappings to SQL Server and Power BI equivalents where they exist
+- **[DP-600 project checklist](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/dp600-project-checklist.html)** ([source](P1-nyc-taxi/reference/dp600-project-checklist.html)) — the three-project structure this work was built against
 
 ---
 

@@ -182,6 +182,6 @@ Dimensional naming starts at the layer where dimensional modeling actually happe
 
 ## Reference artifacts
 
-- [`reference/delta-compaction-matrix-v2.html`](reference/delta-compaction-matrix-v2.html) — every compaction and optimization technique, with syntax, read/write impact, and whether cost is deferred or per-write
-- [`reference/fabric-glossary.html`](reference/fabric-glossary.html) — Fabric terminology, with mappings to SQL Server / Power BI equivalents where they exist
-- [`reference/dp600-project-checklist.html`](reference/dp600-project-checklist.html) — the three-project checklist this work was built against
+- [Delta compaction & optimization matrix](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/delta-compaction-matrix-v2.html) ([source](reference/delta-compaction-matrix-v2.html)) — every compaction and optimization technique, with syntax, read/write impact, and whether cost is deferred or per-write
+- [Fabric glossary](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/fabric-glossary.html) ([source](reference/fabric-glossary.html)) — Fabric terminology, with mappings to SQL Server / Power BI equivalents where they exist
+- [DP-600 project checklist](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/dp600-project-checklist.html) ([source](reference/dp600-project-checklist.html)) — the three-project checklist this work was built against
