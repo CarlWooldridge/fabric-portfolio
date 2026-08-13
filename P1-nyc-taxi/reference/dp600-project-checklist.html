@@ -350,7 +350,13 @@ const DATA = [
 ];
 
 const STORAGE_KEY = "dp600-checklist-state";
-let state = { checked: {}, collapsed: {} };
+let state = {
+  checked: {
+    "p1-0": true, "p1-1": true, "p1-2": true, "p1-3": true, "p1-4": true,
+    "p1-5": true, "p1-6": true, "p1-7": true, "p1-8": true
+  },
+  collapsed: {}
+};
 
 function itemId(projectId, idx) { return projectId + "-" + idx; }
 
