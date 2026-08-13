@@ -1,0 +1,3 @@
+*.ipynb linguist-generated=true
+*.m linguist-language=M
+P1-nyc-taxi/reference/*.html linguist-documentation=true
