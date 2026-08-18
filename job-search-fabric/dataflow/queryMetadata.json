@@ -1,0 +1,60 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "JD_Transform",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "Fact_JobPostings": {
+      "queryId": "6a9f1f0e-f42f-4042-84df-30215b295666",
+      "queryName": "Fact_JobPostings",
+      "loadEnabled": false
+    },
+    "Existing_WriteBack": {
+      "queryId": "48804c8c-02ee-4f4d-ae4a-364802ac8002",
+      "queryName": "Existing_WriteBack"
+    },
+    "Bridge_ScoreComponents": {
+      "queryId": "157b6cbc-3cba-4aec-a439-36201c9847c7",
+      "queryName": "Bridge_ScoreComponents",
+      "loadEnabled": false
+    },
+    "Bridge_ScoreComponents_DataDestination": {
+      "queryId": "d9ff83c3-a642-4448-b975-2c319a80be98",
+      "queryName": "Bridge_ScoreComponents_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "Fact_Messages": {
+      "queryId": "ebc34f82-d193-4d03-9ddb-557b1216a65a",
+      "queryName": "Fact_Messages",
+      "loadEnabled": false
+    },
+    "Fact_Messages_DataDestination": {
+      "queryId": "81404fae-e524-4575-9ccd-a7c1da9b85f2",
+      "queryName": "Fact_Messages_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "Fact_JobPostings_DataDestination": {
+      "queryId": "8b0eaeb4-7732-46eb-b48d-b5b6de051177",
+      "queryName": "Fact_JobPostings_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"3ae14c82-6b22-44d4-92f2-9f49cd4116b6\",\"DatasourceId\":\"1ed0624b-2cd8-4496-b743-95328d19fdb5\"}"
+    },
+    {
+      "path": "FabricSql",
+      "kind": "FabricSql",
+      "connectionId": "{\"ClusterId\":\"3ae14c82-6b22-44d4-92f2-9f49cd4116b6\",\"DatasourceId\":\"834350b8-226d-47ea-8d10-e7a228d14485\"}"
+    }
+  ]
+}
