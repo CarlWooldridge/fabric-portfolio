@@ -1,0 +1,89 @@
+table Fact_Messages
+	lineageTag: a4d2b93c-83bd-4e4d-be77-18dff547aa3b
+	sourceLineageTag: [dbo].[Fact_Messages]
+
+	column Thread_ID
+		dataType: string
+		lineageTag: f3a5c3e6-cd27-453c-b32d-fb4a1756bcf0
+		sourceLineageTag: Thread_ID
+		summarizeBy: none
+		sourceColumn: Thread_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Thread_URL
+		dataType: string
+		lineageTag: b4edbbaf-37f3-4a29-ae55-9babfe16ca2a
+		sourceLineageTag: Thread_URL
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: Thread_URL
+
+		changedProperty = DataCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Message_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 4d8ffff1-9147-4502-9660-7970e6e7ffaa
+		sourceLineageTag: Message_Date
+		summarizeBy: none
+		sourceColumn: Message_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Message_Date_Only
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 37c16b5a-319a-4445-9395-75357a4ba3bd
+		sourceLineageTag: Message_Date_Only
+		summarizeBy: none
+		sourceColumn: Message_Date_Only
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sender
+		dataType: string
+		lineageTag: f94b222c-1f4f-4af4-9b01-c29c34879aee
+		sourceLineageTag: Sender
+		summarizeBy: none
+		sourceColumn: Sender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Message
+		dataType: string
+		lineageTag: 3c9f6b53-608e-4ecd-8e7b-a893e77d4b90
+		sourceLineageTag: Message
+		summarizeBy: none
+		sourceColumn: Message
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reply
+		dataType: string
+		lineageTag: ca4548de-6ccd-426b-b7ed-1f1ab3cb3696
+		sourceLineageTag: Reply
+		summarizeBy: none
+		sourceColumn: Reply
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 040eba32-02a8-44ec-bb1b-08f64b93dfc9
+		sourceLineageTag: Status
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Messages = entity
+		mode: directLake
+		source
+			entityName: Fact_Messages
+			schemaName: dbo
+			expressionSource: 'DirectLake - JobSearch_DB'
+
+

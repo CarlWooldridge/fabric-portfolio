@@ -1,0 +1,69 @@
+table Dim_Date
+	lineageTag: 99b81202-4ef7-4719-93cb-91c91e936ae9
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 285ad01b-a718-485f-ac4e-9843465b8a23
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		formatString: 0
+		lineageTag: 711c94c1-c1c0-425d-bb4e-c017f8c35dd8
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		lineageTag: bccee384-a70a-41e9-85eb-f45cece9746b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNum
+		formatString: 0
+		lineageTag: 30ee143f-bead-4ca2-bd05-fbccb1d215ff
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MonthNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekStart
+		formatString: Short Date
+		lineageTag: 249212ed-bf45-4359-807f-02fefad00ec9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [WeekStart]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Dim_Date = calculated
+		mode: import
+		source = ```
+				
+				   ADDCOLUMNS(
+				       CALENDAR(DATE(2026,1,1), DATE(2027,12,31)),
+				       "Year", YEAR([Date]),
+				       "MonthName", FORMAT([Date], "MMM"),
+				       "MonthNum", MONTH([Date]),
+				       "WeekStart", [Date] - WEEKDAY([Date], 2) + 1
+				   )
+				```
+
+	annotation PBI_Id = cc73719059574583a8e3395de1a4a84a
+
+

@@ -1,0 +1,24 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DirectLake - JobSearch_DB"]
+
+annotation PBI_ProTooling = ["DirectLakeOnOneLakeInWeb","WebModelingEdit"]
+
+ref table Fact_JobPostings
+ref table Dim_Date
+ref table _Measures
+ref table Bridge_ScoreComponents
+ref table Writeback_Action
+ref table Writeback_Outcome
+ref table Fact_Messages
+ref table Fact_WriteBack
+
+

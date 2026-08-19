@@ -1,0 +1,22 @@
+relationship f2e81b52-11de-ce35-fc3c-54a85c22da1a
+	isActive: false
+	fromColumn: Fact_JobPostings.Carls_Action_Date
+	toColumn: Dim_Date.Date
+
+relationship e879994b-80a2-9c79-1168-a90c73158b23
+	fromColumn: Fact_JobPostings.Date_Evaluated
+	toColumn: Dim_Date.Date
+
+relationship 8e3c3329-d596-6d15-b886-b58bee2999e8
+	fromColumn: Bridge_ScoreComponents.Job_ID
+	toColumn: Fact_JobPostings.Job_ID
+
+relationship 254ed040-c744-3b6f-fcea-f0b69478142d
+	fromColumn: Fact_Messages.Message_Date_Only
+	toColumn: Dim_Date.Date
+
+relationship b80de03d-86e2-f0dd-3a81-284f2d719a5b
+	fromColumn: Fact_WriteBack.Job_ID
+	toColumn: Fact_JobPostings.Job_ID
+
+

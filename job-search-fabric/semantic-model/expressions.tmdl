@@ -1,0 +1,10 @@
+expression 'DirectLake - JobSearch_DB' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/<workspace-id>/<sql-database-id>", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: 633a4462-4843-4c91-be61-832a6a69e76c
+
+	annotation PBI_IncludeFutureArtifacts = False
+
+

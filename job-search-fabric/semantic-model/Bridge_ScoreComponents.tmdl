@@ -1,0 +1,41 @@
+table Bridge_ScoreComponents
+	lineageTag: c265310e-2d6f-4aee-bb71-e287b9ac734d
+	sourceLineageTag: [dbo].[Bridge_ScoreComponents]
+
+	column Job_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 85475ed6-8070-440d-9a83-3d509ddb44df
+		sourceLineageTag: Job_ID
+		summarizeBy: none
+		sourceColumn: Job_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Component
+		dataType: string
+		lineageTag: 61dd1252-ac6d-47cd-9f67-26013792865b
+		sourceLineageTag: Component
+		summarizeBy: none
+		sourceColumn: Component
+
+		annotation SummarizationSetBy = Automatic
+
+	column Points
+		dataType: int64
+		formatString: 0
+		lineageTag: 7be5529d-23e4-41a1-bb5a-98df1147d0bf
+		sourceLineageTag: Points
+		summarizeBy: sum
+		sourceColumn: Points
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_ScoreComponents = entity
+		mode: directLake
+		source
+			entityName: Bridge_ScoreComponents
+			schemaName: dbo
+			expressionSource: 'DirectLake - JobSearch_DB'
+
+

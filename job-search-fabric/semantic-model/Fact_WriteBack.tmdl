@@ -1,0 +1,88 @@
+table Fact_WriteBack
+	lineageTag: 6f3ddb59-8c1f-4a9b-9f2b-92375fe3e120
+	sourceLineageTag: [dbo].[Fact_WriteBack]
+
+	column WriteBack_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: dd9e0e82-047d-4aac-8d6f-fb1e51a6f3e9
+		sourceLineageTag: WriteBack_ID
+		summarizeBy: count
+		sourceColumn: WriteBack_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Job_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: b4c62323-fbb7-4dd5-b71f-61e573d47d6c
+		sourceLineageTag: Job_ID
+		summarizeBy: none
+		sourceColumn: Job_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carls_Action
+		dataType: string
+		lineageTag: 8c76e7fe-04fa-4627-b358-66f6af43e117
+		sourceLineageTag: Carls_Action
+		summarizeBy: none
+		sourceColumn: Carls_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carls_Action_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a89ce5c0-fe21-4265-9769-1c527ea95017
+		sourceLineageTag: Carls_Action_Date
+		summarizeBy: none
+		sourceColumn: Carls_Action_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Outcome
+		dataType: string
+		lineageTag: 59b1d0aa-4391-40ab-9a65-1e0a002a9f8e
+		sourceLineageTag: Outcome
+		summarizeBy: none
+		sourceColumn: Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reason
+		dataType: string
+		lineageTag: 16fe50c6-8f6d-47e6-bf57-1c70b7ac62cc
+		sourceLineageTag: Reason
+		summarizeBy: none
+		sourceColumn: Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column Written_At
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7d51dede-fc31-4cba-a3e0-6e4d9edfdcc3
+		sourceLineageTag: Written_At
+		summarizeBy: none
+		sourceColumn: Written_At
+
+		annotation SummarizationSetBy = Automatic
+
+	column Written_By
+		dataType: string
+		lineageTag: 1cd404ef-c9dc-4c3b-ae1c-d0b4e649e119
+		sourceLineageTag: Written_By
+		summarizeBy: none
+		sourceColumn: Written_By
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_WriteBack = entity
+		mode: directLake
+		source
+			entityName: Fact_WriteBack
+			schemaName: dbo
+			expressionSource: 'DirectLake - JobSearch_DB'
+
+

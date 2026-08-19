@@ -1,0 +1,17 @@
+table Writeback_Action
+	lineageTag: fbd71fe8-9aa4-4494-b11b-3d6ee8108d97
+
+	column Action
+		lineageTag: ad5a527d-d337-47f6-88ef-08139b4b931f
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Writeback_Action = calculated
+		mode: import
+		source = { "Pass", "Applied", "Referral Requested", "Withdrew" }
+
+	annotation PBI_Id = a72b529844994fa3a0f036802cc96d9c
+
+

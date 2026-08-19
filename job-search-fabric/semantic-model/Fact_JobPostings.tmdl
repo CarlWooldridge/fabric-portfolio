@@ -1,0 +1,453 @@
+table Fact_JobPostings
+	lineageTag: 99a5b2b5-b56d-4d8e-a73c-a042003eba9f
+	sourceLineageTag: [dbo].[Fact_JobPostings]
+
+	column Job_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: fb9d8f62-c41c-4eee-85c8-c960d0ba8a3d
+		sourceLineageTag: Job_ID
+		summarizeBy: none
+		sourceColumn: Job_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date_Evaluated
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 4898006e-c46a-4f20-af9c-5e4656825508
+		sourceLineageTag: Date_Evaluated
+		summarizeBy: none
+		sourceColumn: Date_Evaluated
+
+		changedProperty = DataType
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Company
+		dataType: string
+		lineageTag: 5d6edc60-69ea-4ca0-a52b-aa12c364cedc
+		sourceLineageTag: Company
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column Role_Title
+		dataType: string
+		lineageTag: cbc12c84-a835-4105-bdc5-10e81d5689a6
+		sourceLineageTag: Role_Title
+		summarizeBy: none
+		sourceColumn: Role_Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: e9f6c459-4d80-4d8a-8b85-ffada552ed21
+		sourceLineageTag: Location
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location_City
+		dataType: string
+		lineageTag: fdb238fe-eab5-42e4-9099-b07a13aeb3b7
+		sourceLineageTag: Location_City
+		summarizeBy: none
+		sourceColumn: Location_City
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location_State
+		dataType: string
+		lineageTag: 4ad4d7c0-30e6-40ff-a1a6-670080d4e99e
+		sourceLineageTag: Location_State
+		summarizeBy: none
+		sourceColumn: Location_State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Work_Type
+		dataType: string
+		lineageTag: b52ebc0f-249f-4e0f-b9b1-313b5a536775
+		sourceLineageTag: Work_Type
+		summarizeBy: none
+		sourceColumn: Work_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Employment_Type
+		dataType: string
+		lineageTag: 4fd9c438-5498-48fd-9549-6fc73174454b
+		sourceLineageTag: Employment_Type
+		summarizeBy: none
+		sourceColumn: Employment_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comp_Min
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 1975984f-5518-444a-8a39-83655ab54900
+		sourceLineageTag: Comp_Min
+		summarizeBy: sum
+		sourceColumn: Comp_Min
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Comp_Max
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: c0e79c5a-59c2-45be-af80-9794e9917de8
+		sourceLineageTag: Comp_Max
+		summarizeBy: sum
+		sourceColumn: Comp_Max
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Comp_Mid
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e0e417e8-bf79-4762-84f5-e3959ef6c701
+		sourceLineageTag: Comp_Mid
+		summarizeBy: sum
+		sourceColumn: Comp_Mid
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Applicant_Volume
+		dataType: string
+		lineageTag: e8398242-afcb-4f5b-ada6-95ca2d1862c9
+		sourceLineageTag: Applicant_Volume
+		summarizeBy: none
+		sourceColumn: Applicant_Volume
+
+		annotation SummarizationSetBy = Automatic
+
+	column Applicant_Volume_Num
+		dataType: int64
+		formatString: 0
+		lineageTag: d7dc57a6-568f-4b91-8c36-fe591a7c8a91
+		sourceLineageTag: Applicant_Volume_Num
+		summarizeBy: sum
+		sourceColumn: Applicant_Volume_Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column Source
+		dataType: string
+		lineageTag: c8531291-81a5-4b35-94e9-4d64d60f6069
+		sourceLineageTag: Source
+		summarizeBy: none
+		sourceColumn: Source
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL
+		dataType: string
+		lineageTag: 8e0b31c7-be12-4e90-bd1d-7d011e7e5a81
+		sourceLineageTag: URL
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: URL
+
+		changedProperty = DataCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Verdict
+		dataType: string
+		lineageTag: 9c47ba89-5b43-4f55-940b-50ece0a2ad12
+		sourceLineageTag: Verdict
+		summarizeBy: none
+		sourceColumn: Verdict
+
+		annotation SummarizationSetBy = Automatic
+
+	column Score
+		dataType: int64
+		formatString: 0
+		lineageTag: 09d54332-90e0-44cb-9dea-3ee9613631a2
+		sourceLineageTag: Score
+		summarizeBy: sum
+		sourceColumn: Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column Role_Type
+		dataType: string
+		lineageTag: aac471c6-2e5f-4a1c-b922-7b7a2802679c
+		sourceLineageTag: Role_Type
+		summarizeBy: none
+		sourceColumn: Role_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comp_Flag
+		dataType: string
+		lineageTag: 1e2176a8-36a5-49ff-b9ef-3090b0e36069
+		sourceLineageTag: Comp_Flag
+		summarizeBy: none
+		sourceColumn: Comp_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column Biggest_Gap
+		dataType: string
+		lineageTag: 7cb6d65c-0546-455f-9a5c-34d8601eecce
+		sourceLineageTag: Biggest_Gap
+		summarizeBy: none
+		sourceColumn: Biggest_Gap
+
+		annotation SummarizationSetBy = Automatic
+
+	column Biggest_Strength
+		dataType: string
+		lineageTag: 2f0a224c-6bf1-449c-92c6-c1224ddefcf2
+		sourceLineageTag: Biggest_Strength
+		summarizeBy: none
+		sourceColumn: Biggest_Strength
+
+		annotation SummarizationSetBy = Automatic
+
+	column Recommended_Action
+		dataType: string
+		lineageTag: 236513bc-350a-4b2a-8f1c-32c69ffe31e4
+		sourceLineageTag: Recommended_Action
+		summarizeBy: none
+		sourceColumn: Recommended_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carls_Action
+		dataType: string
+		lineageTag: 29f57496-2877-4615-8b55-645e1ac80248
+		sourceLineageTag: Carls_Action
+		summarizeBy: none
+		sourceColumn: Carls_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carls_Action_Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 431203bb-2d8b-4402-9237-88592f487311
+		sourceLineageTag: Carls_Action_Date
+		summarizeBy: none
+		sourceColumn: Carls_Action_Date
+
+		changedProperty = DataType
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Outcome
+		dataType: string
+		lineageTag: 9e5848e8-7be1-4236-8afe-172d28fae2ca
+		sourceLineageTag: Outcome
+		summarizeBy: none
+		sourceColumn: Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reason
+		dataType: string
+		lineageTag: 4b73f56a-fea4-4a73-9b43-49e1a74c2a0a
+		sourceLineageTag: Reason
+		summarizeBy: none
+		sourceColumn: Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: c275a218-30a6-4300-9c8f-da5c187c21ad
+		sourceLineageTag: Notes
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScoreFormula
+		dataType: string
+		lineageTag: 9a2be177-b5c3-42da-8483-09dd5f76a93c
+		sourceLineageTag: ScoreFormula
+		summarizeBy: none
+		sourceColumn: ScoreFormula
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Lane
+		dataType: int64
+		formatString: 0
+		lineageTag: f00bc2ac-3d2d-4237-af75-bdee2a8192b3
+		sourceLineageTag: Pts_Lane
+		summarizeBy: sum
+		sourceColumn: Pts_Lane
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Scope
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f78558b-1f12-4d90-97ae-20d19fc9f0e4
+		sourceLineageTag: Pts_Scope
+		summarizeBy: sum
+		sourceColumn: Pts_Scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Comp
+		dataType: int64
+		formatString: 0
+		lineageTag: d5ecb5da-028f-4e01-a565-25436f540df0
+		sourceLineageTag: Pts_Comp
+		summarizeBy: sum
+		sourceColumn: Pts_Comp
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Location
+		dataType: int64
+		formatString: 0
+		lineageTag: 11c5fce3-e3c8-4e3b-80f3-f20c102eace4
+		sourceLineageTag: Pts_Location
+		summarizeBy: sum
+		sourceColumn: Pts_Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Skills
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d82ec77-9387-4437-93ac-49deb500ec50
+		sourceLineageTag: Pts_Skills
+		summarizeBy: sum
+		sourceColumn: Pts_Skills
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Perks
+		dataType: int64
+		formatString: 0
+		lineageTag: 490a4e84-b99b-45e6-afaa-30580c49b3c2
+		sourceLineageTag: Pts_Perks
+		summarizeBy: sum
+		sourceColumn: Pts_Perks
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Applicants
+		dataType: int64
+		formatString: 0
+		lineageTag: 1be45fbf-b3e8-4467-9b28-4ae4f2aca86d
+		sourceLineageTag: Pts_Applicants
+		summarizeBy: sum
+		sourceColumn: Pts_Applicants
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Deductions
+		dataType: int64
+		formatString: 0
+		lineageTag: 77861f76-8d13-4436-bfc2-2d1dd5a60fc9
+		sourceLineageTag: Pts_Deductions
+		summarizeBy: sum
+		sourceColumn: Pts_Deductions
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_Capped_Score
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6f87f338-ec20-40f8-a03c-f46c7a5189f8
+		sourceLineageTag: Is_Capped_Score
+		summarizeBy: none
+		sourceColumn: Is_Capped_Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column WriteBack_Applied
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 7409d6bb-3419-411e-9fa4-fa65efab088b
+		sourceLineageTag: WriteBack_Applied
+		summarizeBy: none
+		sourceColumn: WriteBack_Applied
+
+		annotation SummarizationSetBy = Automatic
+
+	column Days_To_Action
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c032989-4f3f-4b72-8312-b914104962c5
+		sourceLineageTag: Days_To_Action
+		summarizeBy: sum
+		sourceColumn: Days_To_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Days_To_Action_Bin_Start
+		dataType: int64
+		formatString: 0
+		lineageTag: 5289772d-ce4b-450c-bd96-725b7ebc3957
+		sourceLineageTag: Days_To_Action_Bin_Start
+		summarizeBy: sum
+		sourceColumn: Days_To_Action_Bin_Start
+
+		annotation SummarizationSetBy = Automatic
+
+	column Days_To_Action_Bucket
+		dataType: string
+		isHidden
+		lineageTag: 7ab3402d-ccdd-4b62-ab63-edcfd0f197e1
+		sourceLineageTag: Days_To_Action_Bucket
+		summarizeBy: none
+		sourceColumn: Days_To_Action_Bucket
+		sortByColumn: Days_To_Action_Bin_Start
+
+		changedProperty = IsHidden
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Score_Raw
+		dataType: int64
+		formatString: 0
+		lineageTag: f653c32d-603a-4502-9e6e-f1321280e8b2
+		sourceLineageTag: Score_Raw
+		summarizeBy: sum
+		sourceColumn: Score_Raw
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_JobPostings = entity
+		mode: directLake
+		source
+			entityName: Fact_JobPostings
+			schemaName: dbo
+			expressionSource: 'DirectLake - JobSearch_DB'
+
+

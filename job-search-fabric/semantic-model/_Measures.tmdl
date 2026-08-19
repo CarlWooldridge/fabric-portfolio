@@ -1,0 +1,204 @@
+table _Measures
+	lineageTag: d811c846-0bf9-4e68-814b-2f785dc0ef81
+
+	measure 'Total Evaluated' = COUNTROWS(Fact_JobPostings)
+		formatString: #,0
+		lineageTag: 51958e2a-1da9-4350-952e-11720048982e
+
+	measure 'Pursue Count' = CALCULATE([Total Evaluated], Fact_JobPostings[Verdict] = "Pursue")
+		formatString: #,0
+		lineageTag: 36d56938-6956-462d-8019-b80513412339
+
+	measure 'Pursue Rate' = DIVIDE([Pursue Count], [Total Evaluated])
+		formatString: #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 8e8c37d4-12b6-4dae-9871-6f4de06922bc
+
+	measure 'Avg Score' = AVERAGE(Fact_JobPostings[Score])
+		formatString: 0
+		lineageTag: dbe4d9c1-8021-4490-8412-edc36bdaae66
+
+	measure 'Avg Comp Mid' = AVERAGE(Fact_JobPostings[Comp_Mid])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 9f6c1250-c1be-4304-bcfc-488639131c9c
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Active Applications' =
+			
+			CALCULATE(
+			    COUNTROWS(Fact_JobPostings),
+			    FILTER(
+			        Fact_JobPostings,
+			        ISBLANK([Effective Outcome]) &&
+			        [Effective Carls_Action] IN {"Applied", "Referral"}
+			    )
+			)
+		formatString: #,0
+		lineageTag: bd9d5abe-3303-4021-8952-4bafbd55a961
+
+	measure 'Days to Action' =
+			
+			AVERAGEX(
+			    FILTER(Fact_JobPostings, NOT ISBLANK(Fact_JobPostings[Carls_Action_Date]) && Fact_JobPostings[Days_To_Action] >= 0),
+			    Fact_JobPostings[Days_To_Action]
+			)
+		formatString: 0
+		lineageTag: cf885757-5d55-464c-b868-34ac62cebbee
+
+	measure 'Avg Component Points' = AVERAGE(Bridge_ScoreComponents[Points])
+		formatString: 0
+		lineageTag: 8982d528-b70d-4d7f-9271-d94a3800ddb4
+
+	measure 'Postings This Week' = ```
+			
+			   VAR ThisWeekStart = TODAY() - WEEKDAY(TODAY(), 2) + 1
+			   RETURN
+			   CALCULATE(
+			       [Total Evaluated],
+			       Fact_JobPostings[Date_Evaluated] >= ThisWeekStart,
+			       Fact_JobPostings[Date_Evaluated] <= TODAY()
+			   )
+			```
+		formatString: 0
+		lineageTag: 4e523403-3d3f-4d2c-925d-b7891153f01c
+
+	measure 'Component Row Count' = COUNTROWS(Bridge_ScoreComponents)
+		formatString: 0
+		lineageTag: 66f540f4-3c92-4341-b09c-4e400aac94a3
+
+	measure 'Applied Count' =
+			
+			CALCULATE(
+			    [Total Evaluated],
+			    Fact_JobPostings[Carls_Action] IN {"Applied", "Referral"}
+			)
+		formatString: 0
+		lineageTag: c86590be-7452-4704-98c5-3ee36e7d5702
+
+	measure 'Interview Count' =
+			
+			CALCULATE(
+			    [Total Evaluated],
+			    CONTAINSSTRING(Fact_JobPostings[Outcome] , "Interview")
+			)
+		formatString: 0
+		lineageTag: b818ef56-dd36-4469-b18c-ab3929ec354b
+
+	measure 'Days To Action Row Count' =
+			
+			CALCULATE(COUNTROWS(Fact_JobPostings), NOT ISBLANK(Fact_JobPostings[Days_To_Action]))
+		lineageTag: 784e29cb-a143-4269-bc15-c056214b4075
+
+	measure 'Latest WriteBack ID' =
+			
+			CALCULATE (
+			    MAX ( Fact_WriteBack[WriteBack_ID] ),
+			    ALLEXCEPT ( Fact_WriteBack, Fact_WriteBack[Job_ID], Fact_JobPostings[Job_ID] )
+			)
+		formatString: 0
+		displayFolder: WriteBack
+		lineageTag: 818e3a4d-2d10-4428-9657-a3ad99c4f31d
+
+		changedProperty = Name
+
+	measure 'Latest Carls_Action' =
+			
+			VAR LatestWritebackID = [Latest WriteBack ID]
+			RETURN
+			CALCULATE(SELECTEDVALUE(Fact_WriteBack[Carls_Action]), Fact_WriteBack[WriteBack_ID] = LatestWritebackID)
+		displayFolder: WriteBack
+		lineageTag: a4d9db49-ed2b-4158-8b86-ad4ff5b337fd
+
+	measure 'Latest Outcome' =
+			
+			VAR LatestWritebackID = [Latest WriteBack ID]
+			RETURN
+			CALCULATE(SELECTEDVALUE(Fact_WriteBack[Outcome]), Fact_WriteBack[WriteBack_ID] = LatestWritebackID)
+		displayFolder: WriteBack
+		lineageTag: 2753ae6c-b6c1-44b2-97d9-603bf2d751b3
+
+	measure 'Latest Reason' =
+			
+			VAR LatestWritebackID = [Latest WriteBack ID]
+			RETURN
+			CALCULATE(SELECTEDVALUE(Fact_WriteBack[Reason]), Fact_WriteBack[WriteBack_ID] = LatestWritebackID)
+		displayFolder: WriteBack
+		lineageTag: fb607e3f-9baa-4605-8998-0e237ba1b8ed
+
+	measure 'Latest Carls_Action_Date' =
+			
+			VAR LatestWritebackID = [Latest WriteBack ID]
+			RETURN
+			CALCULATE(SELECTEDVALUE(Fact_WriteBack[Carls_Action_Date]), Fact_WriteBack[WriteBack_ID] = LatestWritebackID)
+		formatString: General Date
+		displayFolder: WriteBack
+		lineageTag: 2c8b440d-06ec-4327-8d6a-5dee74da29e3
+
+	measure 'Effective Carls_Action' =
+			
+			VAR WB = [Latest Carls_Action]
+			RETURN IF(NOT ISBLANK(WB), WB, SELECTEDVALUE(Fact_JobPostings[Carls_Action]))
+		displayFolder: WriteBack
+		lineageTag: a4cf80fa-e4cc-46d8-99fa-7bd76d9c1f21
+
+		changedProperty = Name
+
+	measure 'Effective Outcome' =
+			
+			VAR WB = [Latest Outcome]
+			RETURN IF(NOT ISBLANK(WB), WB, SELECTEDVALUE(Fact_JobPostings[Outcome]))
+		displayFolder: WriteBack
+		lineageTag: 36adcdbc-4556-40b7-afec-d873feee725f
+
+	measure 'Effective Reason' =
+			
+			VAR WB = [Latest Reason]
+			RETURN IF(NOT ISBLANK(WB), WB, SELECTEDVALUE(Fact_JobPostings[Reason]))
+		displayFolder: WriteBack
+		lineageTag: 4e99f4e4-a90f-4d11-a926-dbfaaf8b37a3
+
+	measure 'Effective Carls_Action_Date' =
+			
+			VAR WB = [Latest Carls_Action_Date]
+			RETURN IF(NOT ISBLANK(WB), WB, SELECTEDVALUE(Fact_JobPostings[Carls_Action_Date]))
+		formatString: General Date
+		displayFolder: WriteBack
+		lineageTag: 3bc02760-af51-4b3b-a076-91cb76e9f599
+
+	measure Opportunities =
+			CALCULATE([Total Evaluated]
+			    , Fact_JobPostings[Verdict] IN {"Pursue", "Review"}
+			    , Fact_JobPostings[Carls_Action] = BLANK()
+			    , Fact_JobPostings[Outcome] = BLANK()
+			)
+		formatString: 0
+		lineageTag: 3f91b5eb-5941-4caa-a963-c83d726d9ffd
+
+	measure Rejections =
+			
+			CALCULATE(
+			    COUNTROWS(Fact_JobPostings),
+			    FILTER(
+			        Fact_JobPostings,
+			        CONTAINSSTRING([Effective Outcome], "Reject")
+			    )
+			)
+		formatString: 0
+		lineageTag: 48b2882e-ef17-4f8a-934d-ab31cc7b9a68
+
+	column Value
+		formatString: 0
+		lineageTag: 0f725fc0-ede7-4adb-a41d-743b1aa2a7fd
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = {BLANK()}
+
+	annotation PBI_Id = b699b003c793458f93e241cf87f6389c
+
+

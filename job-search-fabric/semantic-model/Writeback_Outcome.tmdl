@@ -1,0 +1,17 @@
+table Writeback_Outcome
+	lineageTag: 39d9a8ea-08de-4c96-89eb-58c07634f7b4
+
+	column Outcome
+		lineageTag: 6000ebab-7c1b-4289-858d-ea8df9852e6c
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Writeback_Outcome = calculated
+		mode: import
+		source = { "Interview", "Rejected", "No Response", "Offer" }
+
+	annotation PBI_Id = 8967f60801044d23ad14e473e21ea287
+
+
