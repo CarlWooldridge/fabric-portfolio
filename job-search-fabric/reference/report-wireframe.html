@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Job Search Report — Wireframe</title>
+<style>
+  :root{
+    --bg:#F3F4F8;
+    --canvas:#FFFFFF;
+    --ink:#252423;
+    --ink-soft:#605E5C;
+    --line:#D9D9D9;
+    --yellow:#F2C811;
+    --teal:#118DFF;
+    --coral:#E66C37;
+    --purple:#8764B8;
+    --green:#4C9A2A;
+    --ph-fill:#EDEEF3;
+    --ph-line:#C7C9D4;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:32px 16px 64px;
+    background:var(--bg);
+    font-family:"Segoe UI", system-ui, -apple-system, sans-serif;
+    color:var(--ink);
+  }
+  h1.title{ font-size:20px; font-weight:600; margin:0 0 4px; }
+  p.sub{ margin:0 0 24px; color:var(--ink-soft); font-size:13px; }
+
+  .frame{
+    max-width:1180px; margin:0 auto;
+    background:var(--canvas);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    overflow:hidden;
+  }
+  .canvas{
+    position:relative;
+    aspect-ratio:16/9;
+    padding:12px 16px 16px;
+    display:none;
+    background:var(--canvas);
+  }
+  .canvas.active{ display:block; }
+  .canvas.hidden-page{ background:#FAFAFC; }
+
+  .ribbon{
+    position:absolute; top:0; left:0; right:0;
+    background:#F9E9A8; color:#5C4A00;
+    font-size:11px; font-weight:600; letter-spacing:.03em;
+    padding:4px 16px; text-transform:uppercase;
+  }
+
+  /* Power BI "Page Navigator" visual — pill buttons, appears on every visible page */
+  .pagenav{
+    display:flex; gap:6px; justify-content:flex-end;
+    margin-bottom:8px;
+  }
+  .pagenav .pill{
+    font-size:10px; font-weight:600; padding:4px 10px;
+    border-radius:14px; border:1px solid var(--line);
+    color:var(--ink-soft); background:#fff;
+    cursor:pointer;
+  }
+  .pagenav .pill.current{
+    background:var(--yellow); border-color:var(--yellow); color:#4A3B00;
+  }
+  .pagenav .label{
+    font-size:9px; color:var(--ink-soft); align-self:center; margin-right:4px; font-style:italic;
+  }
+
+  .page-title{ font-size:14px; font-weight:600; margin:0 0 2px; }
+  .page-note{ font-size:11px; color:var(--ink-soft); margin:0 0 10px; }
+
+  .info-bar{
+    background:#EFF6FC; border:1px solid #C7E0F4; color:#004578;
+    font-size:11px; padding:6px 10px; border-radius:2px; margin-bottom:8px;
+  }
+
+  .grid{ display:grid; gap:8px; }
+
+  .ph{
+    background:var(--ph-fill);
+    border:1px solid var(--ph-line);
+    border-radius:2px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:var(--ink-soft);
+    font-size:10px;
+    text-align:center;
+    padding:6px;
+    position:relative;
+  }
+  .ph .lbl{ font-weight:600; color:var(--ink); font-size:11px; margin-bottom:2px; }
+  .ph.clickable{ cursor:pointer; transition:box-shadow .15s, border-color .15s; }
+  .ph.clickable:hover{ border-color:var(--teal); box-shadow:0 0 0 2px rgba(17,141,255,0.25); }
+  .ph.clickable::after{
+    content:"click → drillthrough";
+    position:absolute; bottom:4px; font-size:8px; color:var(--teal); font-weight:600;
+  }
+
+  .kpi{ background:#fff; border:1px solid var(--line); }
+  .kpi .num{ font-size:20px; font-weight:700; color:var(--ink); }
+  .kpi .lbl{ font-size:9px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.03em; }
+
+  .bar-shape{ display:flex; align-items:flex-end; gap:3px; height:60%; width:80%; }
+  .bar-shape i{ flex:1; background:var(--teal); border-radius:1px 1px 0 0; }
+  .bar-shape i:nth-child(3n){ background:var(--coral); }
+  .bar-shape i:nth-child(4n){ background:var(--purple); }
+  .waterfall i.neg{ background:var(--coral); }
+
+  .donut{
+    width:44px; height:44px; border-radius:50%;
+    background:conic-gradient(var(--teal) 0 40%, var(--yellow) 40% 65%, var(--coral) 65% 100%);
+    margin-bottom:4px;
+  }
+
+  .funnel-shape{ display:flex; flex-direction:column; gap:2px; width:70%; align-items:center; }
+  .funnel-shape i{ height:14px; background:var(--teal); border-radius:1px; }
+
+  .scatter-shape{ position:relative; width:80%; height:60%; }
+  .scatter-shape span{ position:absolute; width:5px; height:5px; border-radius:50%; background:var(--teal); }
+
+  .table-shape{ width:100%; height:100%; display:flex; flex-direction:column; gap:2px; }
+  .table-shape .row{ display:flex; gap:2px; height:16px; }
+  .table-shape .cell{ flex:1; background:var(--ph-fill); border:1px solid var(--ph-line); font-size:9px; display:flex; align-items:center; padding-left:3px; color:var(--ink-soft); }
+  .table-shape .row.head .cell{ background:#E1E1E6; font-weight:600; color:var(--ink); }
+  .table-shape .row.click{ cursor:pointer; }
+  .table-shape .row.click .cell{ border-color:var(--ph-line); }
+  .table-shape .row.click:hover .cell{ border-color:var(--teal); }
+  .table-shape .row.warn .cell{ background:#FDF3E7; border-color:#E8B15C; }
+
+  .writeback-panel{ display:flex; flex-direction:column; gap:6px; align-items:stretch; justify-content:flex-start; }
+  .writeback-panel .ph{ height:34px; }
+  .btn-save{
+    height:36px; background:var(--yellow); border:1px solid #D8AE0A; border-radius:3px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; color:#4A3B00; cursor:default; margin-top:4px;
+  }
+
+  .slicer-panel{ display:flex; flex-direction:column; gap:6px; align-items:stretch; justify-content:flex-start; }
+  .slicer-panel .ph{ height:36px; }
+
+  .card-field{ background:#fff; border:1px solid var(--line); text-align:left; align-items:flex-start; justify-content:flex-start; }
+  .card-field .lbl{ text-transform:uppercase; font-size:8px; color:var(--ink-soft); letter-spacing:.03em; }
+  .card-field .val{ font-size:12px; font-weight:600; color:var(--ink); }
+
+  .backbtn{
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:11px; color:var(--teal); font-weight:600;
+    cursor:pointer; margin-bottom:8px;
+  }
+
+  .tabbar{
+    display:flex; gap:2px; background:#EDEDF3; border-top:1px solid var(--line);
+    padding:0 8px; flex-wrap:wrap;
+  }
+  .tab{
+    padding:8px 12px; font-size:10.5px; font-weight:600; color:var(--ink-soft);
+    cursor:pointer; border-bottom:2px solid transparent; user-select:none;
+  }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--yellow); background:#fff; }
+  .tab.hidden-tab{ font-style:italic; opacity:.6; }
+  .devnote{ font-size:10px; color:var(--ink-soft); text-align:center; padding:6px; background:#EDEDF3; }
+</style>
+</head>
+<body>
+
+<h1 class="title">JD Evaluation Log — Report Wireframe</h1>
+<p class="sub">Layout mockup, not final visuals. The pill row on each page is the Power BI Page Navigator visual — it only lists visible pages, so Job Detail never appears there. The tab strip at the very bottom is just this mockup's own controls, not part of the report.</p>
+
+<div class="frame">
+
+  <!-- PAGE 1: Command Center -->
+  <div class="canvas active" id="page-overview">
+    <div class="pagenav">
+      <span class="label">Page Navigator</span>
+      <span class="pill current">Command Center</span>
+      <span class="pill" onclick="showTab('page-alljobs')">All Jobs</span>
+      <span class="pill" onclick="showTab('page-queue')">Action Queue</span>
+      <span class="pill" onclick="showTab('page-score')">Score Breakdown</span>
+      <span class="pill" onclick="showTab('page-pipeline')">Pipeline &amp; Outcomes</span>
+    </div>
+    <div class="page-title">Command Center</div>
+    <div class="page-note">Landing page · filters: date range, Verdict, Role_Type, Work_Type</div>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr); grid-template-rows:52px 1fr 1fr; height:calc(100% - 90px);">
+      <div class="ph kpi"><div class="num">677</div><div class="lbl">Total Evaluated</div></div>
+      <div class="ph kpi"><div class="num">18%</div><div class="lbl">Pursue Rate</div></div>
+      <div class="ph kpi"><div class="num">41</div><div class="lbl">Avg Score</div></div>
+      <div class="ph kpi"><div class="num">6</div><div class="lbl">Active Applications</div></div>
+      <div class="ph kpi"><div class="num">12</div><div class="lbl">This Week</div></div>
+
+      <div class="ph" style="grid-column:1/4; grid-row:2/4;">
+        <div class="lbl">Postings Evaluated Over Time</div>
+        <div class="bar-shape">
+          <i style="height:30%"></i><i style="height:45%"></i><i style="height:35%"></i>
+          <i style="height:60%"></i><i style="height:50%"></i><i style="height:70%"></i>
+          <i style="height:40%"></i><i style="height:55%"></i><i style="height:65%"></i>
+          <i style="height:48%"></i><i style="height:72%"></i><i style="height:58%"></i>
+        </div>
+        <span>stacked area, by Verdict</span>
+      </div>
+      <div class="ph" style="grid-column:4/6; grid-row:2/3;">
+        <div class="donut"></div>
+        <div class="lbl">Verdict Breakdown</div>
+      </div>
+      <div class="ph" style="grid-column:4/6; grid-row:3/4;">
+        <div class="lbl">Top Skip Reasons</div>
+        <div class="bar-shape" style="height:50%;"><i style="height:80%"></i><i style="height:60%"></i><i style="height:45%"></i><i style="height:30%"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: All Jobs -->
+  <div class="canvas" id="page-alljobs">
+    <div class="pagenav">
+      <span class="label">Page Navigator</span>
+      <span class="pill" onclick="showTab('page-overview')">Command Center</span>
+      <span class="pill current">All Jobs</span>
+      <span class="pill" onclick="showTab('page-queue')">Action Queue</span>
+      <span class="pill" onclick="showTab('page-score')">Score Breakdown</span>
+      <span class="pill" onclick="showTab('page-pipeline')">Pipeline &amp; Outcomes</span>
+    </div>
+    <div class="page-title">All Jobs</div>
+    <div class="page-note">Full evaluated postings, filterable. Right-click any row → drillthrough to Job Detail.</div>
+    <div class="grid" style="grid-template-columns:140px 1fr; height:calc(100% - 70px);">
+      <div class="ph slicer-panel" style="background:none; border:none; padding:0;">
+        <div class="ph">Verdict</div>
+        <div class="ph">Role_Type</div>
+        <div class="ph">Work_Type</div>
+        <div class="ph">Location</div>
+        <div class="ph">Score range</div>
+        <div class="ph">Date range</div>
+      </div>
+      <div class="ph" style="align-items:stretch; justify-content:flex-start;">
+        <div class="table-shape">
+          <div class="row head">
+            <div class="cell">Company</div><div class="cell">Role</div><div class="cell">Location</div>
+            <div class="cell">Verdict</div><div class="cell">Score</div><div class="cell">Comp</div><div class="cell">Date</div>
+          </div>
+          <div class="row click" onclick="drillthrough('page-alljobs','All Jobs')">
+            <div class="cell">Company-25</div><div class="cell">Sr Snowflake Modeler</div><div class="cell">Nashville, TN</div>
+            <div class="cell">Pursue</div><div class="cell">78</div><div class="cell">—</div><div class="cell">2026-08-17</div>
+          </div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Action Queue -->
+  <div class="canvas" id="page-queue">
+    <div class="pagenav">
+      <span class="label">Page Navigator</span>
+      <span class="pill" onclick="showTab('page-overview')">Command Center</span>
+      <span class="pill" onclick="showTab('page-alljobs')">All Jobs</span>
+      <span class="pill current">Action Queue</span>
+      <span class="pill" onclick="showTab('page-score')">Score Breakdown</span>
+      <span class="pill" onclick="showTab('page-pipeline')">Pipeline &amp; Outcomes</span>
+    </div>
+    <div class="page-title">Action Queue</div>
+    <div class="page-note">Jobs to Pursue (undecided) and Recently Skipped (rubric spot-check). Click a row in Jobs to Pursue, set the fields, then Save Action — this is the Translytical Task Flow write-back.</div>
+    <div class="grid" style="grid-template-columns:1.5fr 0.7fr; grid-template-rows:1fr 0.7fr; height:calc(100% - 84px);">
+      <div class="ph" style="align-items:stretch; justify-content:flex-start;">
+        <div class="lbl" style="align-self:flex-start;">Jobs to Pursue &middot; Verdict = Pursue, no action yet</div>
+        <div class="table-shape">
+          <div class="row head"><div class="cell">Company</div><div class="cell">Role</div><div class="cell">Score</div><div class="cell">Comp</div><div class="cell">Date</div><div class="cell">Biggest_Strength</div></div>
+          <div class="row click" onclick="drillthrough('page-queue','Action Queue')">
+            <div class="cell">Company-25</div><div class="cell">Sr Snowflake Modeler</div><div class="cell">78</div><div class="cell">—</div><div class="cell">2026-08-17</div><div class="cell">Semantic layer feeds Power BI</div>
+          </div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        </div>
+      </div>
+      <div class="ph writeback-panel" style="background:none; border:none; padding:0;">
+        <div class="ph" style="height:auto; padding:8px;">
+          <div class="lbl" style="margin-bottom:6px;">Write-back (TTF)</div>
+          <div class="writeback-panel" style="width:100%;">
+            <div class="ph">Carls_Action <span style="font-size:8px;color:var(--ink-soft);">list slicer</span></div>
+            <div class="ph">Outcome <span style="font-size:8px;color:var(--ink-soft);">list slicer</span></div>
+            <div class="ph">Reason <span style="font-size:8px;color:var(--ink-soft);">text slicer</span></div>
+            <div class="btn-save">Save Action</div>
+          </div>
+        </div>
+      </div>
+      <div class="ph" style="grid-column:1/3; align-items:stretch; justify-content:flex-start;">
+        <div class="lbl" style="align-self:flex-start;">Recently Skipped &middot; last 14 days</div>
+        <div class="info-bar" style="margin-bottom:4px;">ⓘ Rows with Score 50–69 highlighted — the old dead-band range, worth a rubric spot-check.</div>
+        <div class="table-shape">
+          <div class="row head"><div class="cell">Company</div><div class="cell">Role</div><div class="cell">Score</div><div class="cell">Reason</div><div class="cell">Biggest_Gap</div></div>
+          <div class="row warn"><div class="cell">Company-400</div><div class="cell">Sr Enterprise Systems PM</div><div class="cell">55</div><div class="cell">staffing/travel</div><div class="cell">Anonymous end client</div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Score Breakdown -->
+  <div class="canvas" id="page-score">
+    <div class="pagenav">
+      <span class="label">Page Navigator</span>
+      <span class="pill" onclick="showTab('page-overview')">Command Center</span>
+      <span class="pill" onclick="showTab('page-alljobs')">All Jobs</span>
+      <span class="pill" onclick="showTab('page-queue')">Action Queue</span>
+      <span class="pill current">Score Breakdown</span>
+      <span class="pill" onclick="showTab('page-pipeline')">Pipeline &amp; Outcomes</span>
+    </div>
+    <div class="page-title">Score Breakdown</div>
+    <div class="page-note">Component contribution, powered by Fact_ScoreComponents</div>
+    <div class="info-bar">ⓘ Deductions shown only for non-capped rows — capped-score rows display named components without a forced reconciliation.</div>
+    <div class="grid" style="grid-template-columns:1.4fr 1fr; grid-template-rows:1fr 0.8fr; height:calc(100% - 100px);">
+      <div class="ph clickable" style="grid-row:1/2;" onclick="drillthrough('page-score','Score Breakdown')">
+        <div class="lbl">Score Component Waterfall</div>
+        <div class="bar-shape waterfall">
+          <i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
+          <i style="height:50%"></i><i style="height:65%"></i><i style="height:20%"></i>
+          <i style="height:30%"></i><i class="neg" style="height:45%"></i>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="lbl">Score vs. Applicant Volume</div>
+        <div class="scatter-shape">
+          <span style="left:10%;top:70%;"></span><span style="left:25%;top:40%;"></span>
+          <span style="left:40%;top:60%;"></span><span style="left:55%;top:20%;"></span>
+          <span style="left:70%;top:50%;"></span><span style="left:85%;top:30%;"></span>
+          <span style="left:30%;top:80%;background:var(--coral);"></span>
+          <span style="left:60%;top:75%;background:var(--coral);"></span>
+        </div>
+      </div>
+      <div class="ph" style="grid-column:1/3;">
+        <div class="lbl">Component Distribution by Verdict (small multiples)</div>
+        <div class="bar-shape" style="height:50%;"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 5: Pipeline & Outcomes -->
+  <div class="canvas" id="page-pipeline">
+    <div class="pagenav">
+      <span class="label">Page Navigator</span>
+      <span class="pill" onclick="showTab('page-overview')">Command Center</span>
+      <span class="pill" onclick="showTab('page-alljobs')">All Jobs</span>
+      <span class="pill" onclick="showTab('page-queue')">Action Queue</span>
+      <span class="pill" onclick="showTab('page-score')">Score Breakdown</span>
+      <span class="pill current">Pipeline &amp; Outcomes</span>
+    </div>
+    <div class="page-title">Pipeline &amp; Outcomes</div>
+    <div class="page-note">Evaluated → Pursue → Applied → Interview/Offer</div>
+    <div class="grid" style="grid-template-columns:1fr 1.3fr; grid-template-rows:1fr 0.6fr; height:calc(100% - 70px);">
+      <div class="ph" style="grid-row:1/2;">
+        <div class="lbl">Funnel</div>
+        <div class="funnel-shape"><i style="width:100%"></i><i style="width:70%"></i><i style="width:40%"></i><i style="width:20%"></i></div>
+      </div>
+      <div class="ph" style="grid-row:1/2; align-items:stretch; justify-content:flex-start;">
+        <div class="lbl" style="align-self:flex-start;">Active Applications</div>
+        <div class="table-shape">
+          <div class="row head"><div class="cell">Company</div><div class="cell">Date</div><div class="cell">Status</div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        </div>
+      </div>
+      <div class="ph" style="grid-column:1/3;">
+        <div class="lbl">Days to Action (histogram)</div>
+        <div class="bar-shape" style="height:50%;"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: Job Detail (drillthrough, hidden — Page Navigator never lists this) -->
+  <div class="canvas hidden-page" id="page-detail">
+    <div class="ribbon">Hidden page · drillthrough only · excluded from Page Navigator</div>
+    <div style="height:14px;"></div>
+    <span class="backbtn" onclick="goBack()">&#8592; <span id="back-label">Back</span></span>
+    <div class="page-title">Job Detail</div>
+    <div class="page-note">Filtered to selected Job_ID</div>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr); grid-template-rows:40px 40px 1fr; height:calc(100% - 90px);">
+      <div class="ph card-field"><div class="lbl">Company</div><div class="val">Company-25</div></div>
+      <div class="ph card-field"><div class="lbl">Role</div><div class="val">Sr Snowflake Modeler</div></div>
+      <div class="ph card-field"><div class="lbl">Verdict</div><div class="val">Pursue</div></div>
+      <div class="ph card-field"><div class="lbl">Score</div><div class="val">78</div></div>
+      <div class="ph card-field"><div class="lbl">Location</div><div class="val">Nashville, TN</div></div>
+      <div class="ph card-field"><div class="lbl">Applicant Volume</div><div class="val">66</div></div>
+      <div class="ph" style="grid-column:1/3;">
+        <div class="lbl">Score Waterfall (filtered to this job)</div>
+        <div class="bar-shape waterfall"><i style="height:60%"></i><i style="height:40%"></i><i style="height:25%"></i><i style="height:50%"></i><i style="height:80%"></i></div>
+      </div>
+      <div class="ph" style="text-align:left; align-items:flex-start;">
+        <div class="lbl">Notes</div>
+        <div style="font-size:9px; color:var(--ink-soft); margin-top:4px;">Full Notes text rendered here as a text box…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="devnote">Mockup controls only — not part of the report</div>
+  <div class="tabbar">
+    <div class="tab active" data-tab="page-overview" onclick="showTab('page-overview')">Command Center</div>
+    <div class="tab" data-tab="page-alljobs" onclick="showTab('page-alljobs')">All Jobs</div>
+    <div class="tab" data-tab="page-queue" onclick="showTab('page-queue')">Action Queue</div>
+    <div class="tab" data-tab="page-score" onclick="showTab('page-score')">Score Breakdown</div>
+    <div class="tab" data-tab="page-pipeline" onclick="showTab('page-pipeline')">Pipeline &amp; Outcomes</div>
+    <div class="tab hidden-tab" data-tab="page-detail" onclick="showTab('page-detail')">Job Detail (hidden)</div>
+  </div>
+</div>
+
+<script>
+  let cameFrom = 'page-overview';
+  let cameFromLabel = 'Command Center';
+
+  function showTab(id){
+    document.querySelectorAll('.canvas').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    var t = document.querySelector('.tab[data-tab="'+id+'"]');
+    if(t) t.classList.add('active');
+  }
+
+  function drillthrough(fromId, fromLabel){
+    cameFrom = fromId;
+    cameFromLabel = fromLabel;
+    document.getElementById('back-label').textContent = 'Back to ' + fromLabel;
+    showTab('page-detail');
+  }
+
+  function goBack(){
+    showTab(cameFrom);
+  }
+</script>
+
+</body>
+</html>
