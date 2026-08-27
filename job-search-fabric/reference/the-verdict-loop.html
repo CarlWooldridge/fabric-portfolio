@@ -1,0 +1,672 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>The Verdict Loop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+:root {
+  --ground:      #F4F6F6;
+  --surface:     #FFFFFF;
+  --surface-alt: #EAEEEE;
+  --ink:         #131A1F;
+  --ink-2:       #3C4A50;
+  --ink-3:       #66777D;
+  --rule:        #D3DBDB;
+  --rule-soft:   #E3E9E9;
+  --accent:      #0F6169;
+  --accent-2:    #14818A;
+  --accent-wash: #DCEAEA;
+  --good:        #2E6F53;
+  --warn:        #8A5A12;
+  --crit:        #9E3B30;
+  --good-wash:   #DFEBE4;
+  --warn-wash:   #F2E7D2;
+  --crit-wash:   #F1DEDB;
+  --shadow:      0 1px 2px rgba(19,26,31,.05), 0 8px 24px -12px rgba(19,26,31,.12);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #0E1418;
+    --surface:     #161F24;
+    --surface-alt: #1C272D;
+    --ink:         #E3EAEB;
+    --ink-2:       #B0BEC2;
+    --ink-3:       #7D8E93;
+    --rule:        #2A373D;
+    --rule-soft:   #202B31;
+    --accent:      #58B8BE;
+    --accent-2:    #7FD0D4;
+    --accent-wash: #163336;
+    --good:        #6FBF95;
+    --warn:        #D6A253;
+    --crit:        #E08376;
+    --good-wash:   #163025;
+    --warn-wash:   #322715;
+    --crit-wash:   #331F1C;
+    --shadow:      0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:      #0E1418;
+  --surface:     #161F24;
+  --surface-alt: #1C272D;
+  --ink:         #E3EAEB;
+  --ink-2:       #B0BEC2;
+  --ink-3:       #7D8E93;
+  --rule:        #2A373D;
+  --rule-soft:   #202B31;
+  --accent:      #58B8BE;
+  --accent-2:    #7FD0D4;
+  --accent-wash: #163336;
+  --good:        #6FBF95;
+  --warn:        #D6A253;
+  --crit:        #E08376;
+  --good-wash:   #163025;
+  --warn-wash:   #322715;
+  --crit-wash:   #331F1C;
+  --shadow:      0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.62;
+  margin: 0;
+  padding: 0 clamp(1rem, 4vw, 3rem) 6rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 60rem; margin: 0 auto; }
+.measure { max-width: 40rem; }
+
+/* ---------- masthead ---------- */
+.masthead {
+  padding: clamp(3rem, 8vw, 5.5rem) 0 2.25rem;
+  border-bottom: 2px solid var(--ink);
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .7rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent);
+}
+h1 {
+  font-family: "Archivo", ui-sans-serif, sans-serif;
+  font-weight: 700; font-size: clamp(2.6rem, 7vw, 4.25rem);
+  line-height: .98; letter-spacing: -.03em;
+  margin: 0; text-wrap: balance;
+}
+.standfirst {
+  font-size: 1.14rem; color: var(--ink-2);
+  max-width: 42rem; margin: 0; text-wrap: pretty;
+}
+.meta {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.75rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .74rem; color: var(--ink-3);
+  letter-spacing: .04em; padding-top: .5rem;
+}
+.meta b { color: var(--ink-2); font-weight: 500; }
+
+/* ---------- parts & sections ---------- */
+.part {
+  margin-top: 4.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.part-head { display: flex; flex-direction: column; gap: .6rem; margin-bottom: 2.5rem; }
+.part-tag {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+h2 {
+  font-family: "Archivo", ui-sans-serif, sans-serif;
+  font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.5rem);
+  line-height: 1.06; letter-spacing: -.022em;
+  margin: 0; text-wrap: balance;
+}
+h3 {
+  font-family: "Archivo", ui-sans-serif, sans-serif;
+  font-weight: 600; font-size: 1.32rem; line-height: 1.22;
+  letter-spacing: -.012em; margin: 3rem 0 .9rem; text-wrap: balance;
+}
+h4 {
+  font-family: "Archivo", ui-sans-serif, sans-serif;
+  font-weight: 600; font-size: 1.02rem; letter-spacing: -.004em;
+  margin: 2rem 0 .6rem;
+}
+p { margin: 0 0 1.05rem; max-width: 40rem; text-wrap: pretty; }
+ul, ol { margin: 0 0 1.15rem; padding-left: 1.2rem; max-width: 40rem; }
+li { margin-bottom: .5rem; }
+li::marker { color: var(--ink-3); }
+strong { font-weight: 600; }
+em { font-style: italic; color: var(--ink-2); }
+code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .855em; background: var(--surface-alt);
+  padding: .1em .36em; border-radius: 3px;
+  border: 1px solid var(--rule-soft);
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent-2); outline-offset: 3px; border-radius: 2px;
+}
+
+/* ---------- lede ---------- */
+.lede {
+  font-size: 1.06rem; color: var(--ink-2);
+  border-left: 3px solid var(--accent);
+  padding: .1rem 0 .1rem 1.15rem;
+  max-width: 40rem;
+}
+
+/* ---------- decisions strip ---------- */
+.decisions {
+  display: grid; gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  background: var(--rule); border: 1px solid var(--rule);
+  border-radius: 5px; overflow: hidden; margin: 2rem 0 2.5rem;
+}
+.decision { background: var(--surface); padding: 1.25rem 1.35rem; }
+.decision .n {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .68rem; letter-spacing: .14em; color: var(--accent);
+  text-transform: uppercase; display: block; margin-bottom: .5rem;
+}
+.decision h4 { margin: 0 0 .4rem; font-size: .99rem; }
+.decision p { font-size: .89rem; color: var(--ink-2); margin: 0; max-width: none; }
+
+/* ---------- tables ---------- */
+.tw { overflow-x: auto; margin: 1.5rem 0 2rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .89rem; min-width: 34rem; }
+caption {
+  caption-side: bottom; text-align: left; padding: .7rem .95rem;
+  font-size: .78rem; color: var(--ink-3); border-top: 1px solid var(--rule-soft);
+}
+th, td { padding: .58rem .95rem; text-align: left; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+thead th {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .68rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3);
+  background: var(--surface-alt); border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none; }
+.num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.hi td { background: var(--accent-wash); }
+tr.hi td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+
+/* ---------- verdict pills ---------- */
+.pill {
+  display: inline-block; font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .68rem; font-weight: 600; letter-spacing: .06em;
+  padding: .16em .55em; border-radius: 3px; white-space: nowrap;
+  border: 1px solid transparent;
+}
+.pill.keep { background: var(--good-wash); color: var(--good); border-color: currentColor; }
+.pill.demote { background: var(--crit-wash); color: var(--crit); border-color: currentColor; }
+.pill.new { background: var(--warn-wash); color: var(--warn); border-color: currentColor; }
+
+/* ---------- code blocks ---------- */
+.code {
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 5px; overflow-x: auto; margin: 1.4rem 0 2rem;
+}
+.code-head {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); padding: .6rem .95rem;
+  border-bottom: 1px solid var(--rule-soft); background: var(--surface-alt);
+}
+pre { margin: 0; padding: 1rem .95rem; font-size: .8rem; line-height: 1.62; }
+pre, pre code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  background: none; border: none; padding: 0; font-size: inherit;
+}
+.c-key { color: var(--accent); }
+.c-str { color: var(--good); }
+.c-num { color: var(--warn); }
+.c-com { color: var(--ink-3); font-style: italic; }
+
+/* ---------- flow steps ---------- */
+.flow { list-style: none; padding: 0; margin: 1.5rem 0 2rem; max-width: 44rem; counter-reset: step; }
+.flow li {
+  position: relative; padding-left: 3rem; margin-bottom: 1.4rem; counter-increment: step;
+}
+.flow li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute; left: 0; top: .06rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .74rem; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--rule); background: var(--surface);
+  border-radius: 3px; width: 2.1rem; text-align: center; padding: .16rem 0;
+}
+.flow b { font-family: "Archivo", sans-serif; font-weight: 600; display: block; margin-bottom: .12rem; }
+.flow p { font-size: .93rem; color: var(--ink-2); margin: 0; }
+
+/* ---------- callouts ---------- */
+.note {
+  border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+  background: var(--surface); border-radius: 0 5px 5px 0;
+  padding: 1.1rem 1.25rem; margin: 1.75rem 0; max-width: 42rem;
+}
+.note.warn { border-left-color: var(--warn); }
+.note.crit { border-left-color: var(--crit); }
+.note h4 { margin: 0 0 .4rem; font-size: .95rem; }
+.note p { margin: 0; font-size: .93rem; color: var(--ink-2); max-width: none; }
+.note p + p { margin-top: .7rem; }
+
+/* ---------- ledger (cost model) ---------- */
+.ledger { margin: 1.75rem 0 2.25rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface); overflow: hidden; }
+.ledger-row {
+  display: grid; grid-template-columns: 1fr auto auto;
+  gap: .75rem 1.25rem; align-items: baseline;
+  padding: .72rem 1.1rem; border-bottom: 1px solid var(--rule-soft);
+}
+.ledger-row:last-child { border-bottom: none; }
+.ledger-row.total { background: var(--surface-alt); border-top: 1px solid var(--rule); font-weight: 600; }
+.ledger-row .lbl { font-size: .92rem; }
+.ledger-row .lbl small { display: block; color: var(--ink-3); font-size: .78rem; font-weight: 400; }
+.ledger-row .val {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums; font-size: .88rem; white-space: nowrap;
+}
+.ledger-row .tag {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .66rem; letter-spacing: .08em; text-transform: uppercase;
+  padding: .14em .5em; border-radius: 3px; white-space: nowrap;
+  background: var(--surface-alt); color: var(--ink-3); border: 1px solid var(--rule-soft);
+}
+.ledger-row .tag.avoidable { background: var(--crit-wash); color: var(--crit); border-color: currentColor; }
+
+/* ---------- bar viz ---------- */
+.bars { margin: 1.5rem 0 2.25rem; max-width: 42rem; display: flex; flex-direction: column; gap: .75rem; }
+.bar-row { display: grid; grid-template-columns: 12.5rem 1fr 4.5rem; gap: .85rem; align-items: center; }
+.bar-row .bl { font-size: .87rem; color: var(--ink-2); }
+.bar-track { height: 1.4rem; background: var(--surface-alt); border: 1px solid var(--rule-soft); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--accent); opacity: .3; }
+.bar-fill.strong { opacity: 1; }
+.bar-row .bv { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .82rem; font-variant-numeric: tabular-nums; text-align: right; }
+.baseline-note { font-size: .82rem; color: var(--ink-3); font-family: "IBM Plex Mono", monospace; }
+
+/* ---------- edits list ---------- */
+.edits { border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; margin: 1.5rem 0 2rem; }
+.edit { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.25rem; padding: .9rem 1.1rem; background: var(--surface); border-bottom: 1px solid var(--rule-soft); }
+.edit:last-child { border-bottom: none; }
+.edit .loc { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .76rem; color: var(--accent); }
+.edit .what { font-size: .92rem; }
+.edit .what b { font-weight: 600; }
+
+@media (max-width: 640px) {
+  .bar-row { grid-template-columns: 1fr; gap: .3rem; }
+  .bar-row .bv { text-align: left; }
+  .edit { grid-template-columns: 1fr; gap: .3rem; }
+  .ledger-row { grid-template-columns: 1fr auto; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <span class="eyebrow">JD Evaluation Pipeline · Design Spec</span>
+  <h1>The Verdict Loop</h1>
+  <p class="standfirst">Turning Carl's write-back actions into a rubric that corrects itself — and a hard look at what the evaluation run actually costs to execute.</p>
+  <div class="meta">
+    <span><b>Drafted</b> 2026-08-26</span>
+    <span><b>Evidence</b> 894 logged rows, 201 applications</span>
+    <span><b>Source</b> Fabric <code>JobSearch_DB</code>, live</span>
+    <span><b>Status</b> for review</span>
+  </div>
+</header>
+
+<section class="part" style="border-top:none;padding-top:2.5rem">
+  <p class="lede">Three decisions are settled and specified below. Two rubric triggers get demoted from vetoes to deductions, a fourth verdict is added for the compensable middle, and the uncapped score gets recorded so that middle can be ranked. Everything else here is the machinery to keep them honest.</p>
+
+  <div class="decisions">
+    <div class="decision">
+      <span class="n">Decision A</span>
+      <h4>Demote two vetoes</h4>
+      <p><code>contract</code> and consulting-by-JD-language return to being deductions. Carl overrode them 45% and 48% of the time.</p>
+    </div>
+    <div class="decision">
+      <span class="n">Decision B</span>
+      <h4>Add <code>Review</code></h4>
+      <p>A fourth verdict for rows where a <em>compensable</em> veto fired. 53% of those turn into applications.</p>
+    </div>
+    <div class="decision">
+      <span class="n">Decision C</span>
+      <h4>Record <code>Score_Raw</code></h4>
+      <p>The uncapped, pre-override score, logged beside <code>Score</code>, so capped rows stop collapsing into an unrankable pile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART ONE ============ -->
+<section class="part">
+  <div class="part-head">
+    <span class="part-tag">Part One</span>
+    <h2>The self-learning rubric</h2>
+  </div>
+
+  <h3>Why a weights file, not the instructions</h3>
+  <p><code>COWORK_INSTRUCTIONS.md</code> is 2,374 lines and ~40,700 tokens, and it holds the safety rules — the blank-gate, the dual-write discipline, the OneDrive reconciliation contract — interleaved with the scoring rules. A process that patches that prose to adjust a weight can damage a rule that has nothing to do with scoring.</p>
+  <p>Splitting them means the worst a bad learning run can do is produce bad scores, never break the write protocol. It also makes the weights <em>computable</em>, which the backtest step requires.</p>
+
+  <div class="code">
+    <div class="code-head">rubric/weights.json — proposed schema</div>
+<pre><code>{
+  <span class="c-key">"version"</span>: <span class="c-str">"2026-08-26.1"</span>,
+  <span class="c-key">"effective_from"</span>: <span class="c-str">"2026-08-26"</span>,
+  <span class="c-key">"supersedes"</span>: <span class="c-str">"2026-08-10.1"</span>,
+
+  <span class="c-key">"components"</span>: {
+    <span class="c-com">// max points per component; semantics stay in the .md</span>
+    <span class="c-key">"lane"</span>:       { <span class="c-key">"max"</span>: <span class="c-num">30</span> },
+    <span class="c-key">"scope"</span>:      { <span class="c-key">"max"</span>: <span class="c-num">15</span> },
+    <span class="c-key">"comp"</span>:       { <span class="c-key">"max"</span>: <span class="c-num">20</span> },
+    <span class="c-key">"location"</span>:   { <span class="c-key">"max"</span>: <span class="c-num">15</span> },
+    <span class="c-key">"skills"</span>:     { <span class="c-key">"max"</span>: <span class="c-num">15</span> },
+    <span class="c-key">"perks"</span>:      { <span class="c-key">"max"</span>: <span class="c-num">5</span>  },
+    <span class="c-key">"applicants"</span>: { <span class="c-key">"max"</span>: <span class="c-num">5</span>,
+      <span class="c-key">"under_review"</span>: <span class="c-str">"inverted vs. behaviour; see learning_log 2026-08-26"</span> }
+  },
+
+  <span class="c-key">"comp"</span>: {
+    <span class="c-com">// revised 2026-08-26: floor raised, veto line held where it is measured</span>
+    <span class="c-key">"veto_below_usd"</span>:  <span class="c-num">VETO_LINE_USD</span>,   <span class="c-com">// override rate 0.04 — earns veto status</span>
+    <span class="c-key">"floor_usd"</span>:       <span class="c-num">FLOOR_USD</span>,   <span class="c-com">// base; below this scores 4 and flags Review</span>
+    <span class="c-key">"target_usd"</span>:      <span class="c-num">TARGET_USD</span>,   <span class="c-com">// total comp, bonus/variable counts</span>
+    <span class="c-key">"veto_at_floor_would_have_blocked"</span>: <span class="c-num">0.22</span>
+  },
+
+  <span class="c-key">"deductions"</span>: {
+    <span class="c-key">"contract"</span>:            { <span class="c-key">"points"</span>: <span class="c-num">-10</span>, <span class="c-key">"was"</span>: <span class="c-str">"veto"</span>, <span class="c-key">"n"</span>: <span class="c-num">22</span> },
+    <span class="c-key">"consulting_language"</span>: { <span class="c-key">"points"</span>: <span class="c-num">-10</span>, <span class="c-key">"was"</span>: <span class="c-str">"veto"</span>, <span class="c-key">"n"</span>: <span class="c-num">52</span> },
+    <span class="c-key">"people_management_core"</span>: { <span class="c-key">"points"</span>: <span class="c-num">-10</span>,
+      <span class="c-key">"note"</span>: <span class="c-str">"scope=0 + this; NOT a gate — see G9 in the .md"</span> },
+    <span class="c-key">"domain_as_deliverable"</span>: { <span class="c-key">"points"</span>: <span class="c-num">-15</span> },
+    <span class="c-key">"third_party_board"</span>:     { <span class="c-key">"points"</span>: <span class="c-num">-10</span> }
+  },
+
+  <span class="c-key">"vetoes"</span>: {
+    <span class="c-com">// only rules with a measured override rate at or near zero</span>
+    <span class="c-key">"low_comp"</span>:          { <span class="c-key">"threshold_usd"</span>: <span class="c-num">VETO_LINE_USD</span>, <span class="c-key">"override_rate"</span>: <span class="c-num">0.04</span> },
+    <span class="c-key">"ladders_post"</span>:      { <span class="c-key">"override_rate"</span>: <span class="c-num">0.00</span> },
+    <span class="c-key">"consulting_named"</span>:  { <span class="c-key">"override_rate"</span>: <span class="c-num">0.00</span>,
+      <span class="c-key">"firms"</span>: [<span class="c-str">"Company-704"</span>,<span class="c-str">"Company-196"</span>,<span class="c-str">"Company-700"</span>,<span class="c-str">"Company-682"</span>,<span class="c-str">"Company-679"</span>,<span class="c-str">"Company-09"</span>,<span class="c-str">"Company-681"</span>] }
+  },
+
+  <span class="c-key">"verdict"</span>: {
+    <span class="c-key">"pursue_at"</span>: <span class="c-num">70</span>,
+    <span class="c-key">"review_when"</span>: <span class="c-str">"compensable_veto_fired"</span>,
+    <span class="c-key">"review_precision"</span>: <span class="c-num">0.53</span>
+  },
+
+  <span class="c-key">"provenance"</span>: {
+    <span class="c-key">"training_window"</span>: [<span class="c-str">"2026-08-10"</span>, <span class="c-str">"2026-08-26"</span>],
+    <span class="c-key">"rows_used"</span>: <span class="c-num">521</span>,
+    <span class="c-key">"excluded"</span>: [<span class="c-str">"pre-2026-08-10 Pursue"</span>, <span class="c-str">"closed-posting Pass"</span>, <span class="c-str">"blank action"</span>]
+  }
+}</code></pre>
+  </div>
+
+  <h3>Which rules survive as vetoes</h3>
+  <p>The rule is empirical, not editorial: <strong>a veto is justified only where Carl's override rate is at or near zero.</strong> That single test explains every disagreement in the log, and it matches how he describes his own decision — consulting <em>and</em> a bad commute still gets an application if the stack, comp and domain are interesting enough. The decision function is compensatory. Vetoes are the exception that must earn its place.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Override rate = share of rows where the rubric vetoed and Carl applied anyway. All 894 logged rows.</caption>
+      <thead>
+        <tr><th>Rule</th><th class="num">Fired</th><th class="num">Applied anyway</th><th class="num">Override rate</th><th>Disposition</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Ladders post</td><td class="num">26</td><td class="num">0</td><td class="num">0%</td><td><span class="pill keep">keep veto</span></td></tr>
+        <tr><td>Consulting — named Big-N firm</td><td class="num">28</td><td class="num">0</td><td class="num">0%</td><td><span class="pill keep">keep veto</span></td></tr>
+        <tr><td>Comp below VETO_LINE</td><td class="num">26</td><td class="num">1</td><td class="num">4%</td><td><span class="pill keep">keep veto</span></td></tr>
+        <tr class="hi"><td>Contract / C2C / fixed-term</td><td class="num">22</td><td class="num">10</td><td class="num">45%</td><td><span class="pill demote">→ deduction</span></td></tr>
+        <tr class="hi"><td>Consulting — JD-language heuristic</td><td class="num">52</td><td class="num">25</td><td class="num">48%</td><td><span class="pill demote">→ deduction</span></td></tr>
+        <tr class="hi"><td>Comp floor raised to FLOOR <span style="color:var(--ink-3)">(hypothetical veto)</span></td><td class="num">95</td><td class="num">11 of 49</td><td class="num">22%</td><td><span class="pill new">→ Review band</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <h4>The consulting trigger splits cleanly along its two detection methods</h4>
+    <p>The named-firm list is a perfect rule — 28 fired, zero overrides. The language heuristic is a coin flip, and it misfires on precisely Carl's lane: Company-285, Company-680, Company-66, Company-500, Company-178, Company-188 — Company-423-partner and IT-services shops hiring Power BI and Fabric people. One rule is doing two jobs and only one of them well.</p>
+  </div>
+
+  <div class="note warn">
+    <h4>Refinement, found while sweeping the unacted rows (2026-08-26)</h4>
+    <p>A plain demotion would release too much. The seven-firm Big-N list is too short — Company-575, Company-683, Company-04, Company-135, Company-697, Company-701, Company-178, Company-678, Company-459 and Company-653 are all genuine consultancies the <em>language</em> heuristic was catching correctly. Demoting it wholesale hands those back as false positives.</p>
+    <p>The cleaner signal is <strong>role shape, not employer</strong>. Compare what Carl applied to at consulting-flagged employers — Power BI Developer, BI Engineer, Data Architect, Solutions Architect, Advanced Analytics Developer — against what he left untouched: Engagement Manager, Managing Consultant, Sr Delivery Consultant, Data Program Delivery Lead, Principal Analytics. Hands-on stack roles versus client-delivery roles, and the employer barely matters. Company-178 appears on both sides: he applied to its Advanced Analytics Developer role (78) and ignored its Performance Improvement Consultant role (33).</p>
+    <p>So: expand the named-firm list, and rewrite the residual heuristic to key on delivery/engagement role shape rather than generic consulting language.</p>
+  </div>
+
+  <h3>The <code>Review</code> verdict</h3>
+  <p>The intuitive version — carve out a score band and call it Review — does not survive contact with the data. Within the current-era Skip population the apply rate is flat at 18–22% from score 10 all the way to 79. Score has almost no power to locate the applications.</p>
+
+  <div class="bars">
+    <div class="bar-row"><span class="bl">no filter (base rate)</span><span class="bar-track"><span class="bar-fill" style="width:20%"></span></span><span class="bv">20%</span></div>
+    <div class="bar-row"><span class="bl">capped score only</span><span class="bar-track"><span class="bar-fill" style="width:24%"></span></span><span class="bv">24%</span></div>
+    <div class="bar-row"><span class="bl">score band 50–69</span><span class="bar-track"><span class="bar-fill" style="width:26%"></span></span><span class="bv">26%</span></div>
+    <div class="bar-row"><span class="bl">score band 60–69</span><span class="bar-track"><span class="bar-fill" style="width:27%"></span></span><span class="bv">27%</span></div>
+    <div class="bar-row"><span class="bl"><b>compensable veto fired</b></span><span class="bar-track"><span class="bar-fill strong" style="width:53%"></span></span><span class="bv">53%</span></div>
+  </div>
+  <p class="baseline-note">Precision — share of surfaced rows Carl actually applied to. Current era (≥ 2026-08-10), 521 negatives, 104 applications.</p>
+
+  <p>Keying on the compensable vetoes surfaces <strong>64 rows and catches 34 applications</strong> — 2.6× the base rate, and a short enough list to actually read. So:</p>
+
+  <div class="note">
+    <h4>Definition</h4>
+    <p><code>Verdict = "Review"</code> fires when a <em>compensable</em> gate fired and no veto-class gate did. The compensable set is currently <code>contract</code>, consulting-by-language on a non-Big-N employer, and comp in the VETO_LINE–FLOOR band. It means: <em>the negatives fired, but this one is your call, not mine.</em></p>
+    <p>Precedence sits between Pass and Skip. A veto-class gate (<code>low comp</code> under VETO_LINE, <code>Ladders post</code>, named consulting firm) still produces <code>Pass</code> and outranks Review.</p>
+  </div>
+
+  <h3><code>Score_Raw</code> and the capped pile</h3>
+  <p>168 current-era rows sit in the 30–39 band because the lane-fit and exclusion caps flatten everything to ~35. Inside that bucket the rubric cannot rank at all — and 30 of Carl's applications are hiding in it undifferentiated. That is why "capped score only" scores 24%, barely above the 20% base rate.</p>
+  <p>Logging <code>Score_Raw</code> — uncapped, pre-override — makes the capped population rankable and lets a future Review rule fire on <em>high raw score killed by a gate</em>, which is the real pattern.</p>
+
+  <div class="note">
+    <h4>Migrated 2026-08-26 <span class="pill keep">done</span></h4>
+    <p>Both copies moved 23 → 24 columns via <code>scripts/migrate-add-score-raw.py</code>, backed up first, validated independently, data byte-identical to the pre-migration state. All 894 historical rows carry blank <code>Score_Raw</code> deliberately: of the 236 rows scoring exactly 35, only <strong>2</strong> retain component math in <code>Notes</code>, so the uncapped score is unrecoverable for the population that needed it. Blank means "not recorded at the time" — re-deriving it from a title would be fabrication.</p>
+    <p><strong>The chain past the OneLake shortcut is manual.</strong> <code>JD_Transform</code>'s column mapping, the SQL table, and the semantic model do not update themselves — <code>Score_Raw</code> stays invisible in Power BI until the dataflow is edited to carry it. The 2-minute shortcut poll does not finish this job.</p>
+  </div>
+
+  <h3>How the learner runs</h3>
+  <p>It proposes; Carl disposes. Nothing in this loop writes to the rubric, the log, or the database on its own authority — which matches the blank-gate discipline the rest of the workflow already enforces.</p>
+
+  <ol class="flow">
+    <li><b>Pull the authoritative actions</b><p><code>scripts/fabric-pull-actions.py</code> reads <code>Fact_JobPostings</code> from the Fabric semantic model — Direct Lake over the <code>JobSearch_DB</code> mirror, so it reflects report write-backs within about a minute. Read-only, token minted on demand from the existing <code>az login</code>. Output lands in <code>scratch/</code>, never the OneDrive root.</p></li>
+    <li><b>Build the training set</b><p>Apply the exclusions below. Anything that fails them is counted and reported, not silently dropped.</p></li>
+    <li><b>Measure, don't fit</b><p>Recompute override rate per veto, component means for applied vs. passed, and Review precision. A rule changes bucket only when its measured rate crosses the threshold — not because a regression nudged a coefficient.</p></li>
+    <li><b>Backtest before proposing</b><p>Replay the full training window under the proposed weights. Report how many of the historical disagreements would have resolved correctly, and how many previously-correct rows would break. A proposal that improves precision while destroying recall gets rejected here, not after it ships.</p></li>
+    <li><b>Write the proposal, not the change</b><p><code>rubric/weights.proposed.json</code> plus an entry in <code>rubric/learning_log.md</code>: what changed, from what to what, the evidence, the <em>n</em>, and the backtest delta. Carl reviews the diff.</p></li>
+    <li><b>Promote on approval only</b><p>On Carl's yes, <code>weights.proposed.json</code> becomes <code>weights.json</code>, the old version is retained by <code>version</code> for rollback, and the learning log entry is marked accepted.</p></li>
+  </ol>
+
+  <h3>What the training set must exclude</h3>
+  <p>Three exclusions, each of which would otherwise poison the labels:</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Exclusion</th><th class="num">Rows</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Pursue verdicts before 2026-08-10</b></td><td class="num">124</td>
+          <td>Produced under the deleted 50–69 Pursue band. A rubric that no longer exists. Including them understates current precision by 32 points.</td>
+        </tr>
+        <tr>
+          <td><b>Closed-posting <code>Pass</code> rows</b></td><td class="num">~22</td>
+          <td><code>Reason</code> of "No longer accepting applications", "anonymous end client", "boilerplate rejection". A closed posting <em>cannot</em> be applied to, so it lands permanently in the agreed column and silently inflates whatever veto it is stapled to.</td>
+        </tr>
+        <tr>
+          <td><b>Blank <code>Carls_Action</code></b></td><td class="num">489</td>
+          <td>"Never acted on", not "correctly skipped". A passive, unverified label. Confirmed actions carry the signal.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The era split is worth seeing directly, because it is the strongest evidence that this rubric already responds to correction:</p>
+
+  <div class="tw">
+    <table>
+      <caption>The 2026-08-10 threshold change did exactly what it was designed to do — and moved the cost to the other column.</caption>
+      <thead><tr><th>Era</th><th class="num">Pursue → applied</th><th class="num">Pursue → passed</th><th class="num">Precision</th><th class="num">Skip → applied anyway</th></tr></thead>
+      <tbody>
+        <tr><td>Before 2026-08-10</td><td class="num">44</td><td class="num">58</td><td class="num">43%</td><td class="num">6 of 148 · 4%</td></tr>
+        <tr class="hi"><td>After 2026-08-10</td><td class="num">33</td><td class="num">11</td><td class="num">75%</td><td class="num">70 of 380 · 18%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Precision went from 43% to 75% and all 36 sub-70 false positives disappeared. The recall cost the instructions predicted would "stay visible rather than invisible" has now arrived: 70 rows. That is the population <code>Review</code> exists to serve.</p>
+
+  <h3>Guardrails</h3>
+  <ul>
+    <li><b>Minimum <em>n</em> before any rule moves.</b> The post-08-10 Pursue→Pass set is 11 rows. That is too thin to tune weights on, and the learner should say so rather than fit noise.</li>
+    <li><b>Cap movement per run.</b> No single component weight moves more than a few points in one proposal, regardless of what the fit suggests.</li>
+    <li><b>The learner never touches gate G9.</b> A people-management gate was proposed and deliberately rejected on 2026-08-10; the identifier is left vacant on purpose. The data agrees — 47% of Carl's 201 applications carry a manager, director, head, VP or lead title. People-management is a deduction with <code>scope = 0</code>, and it stays one.</li>
+    <li><b>Never edit safety rules.</b> The learner's write scope is <code>rubric/</code> and nothing else. The dual-write, backup, and reconciliation rules are out of bounds by construction.</li>
+    <li><b>Outcome stays out, for now.</b> Only 19 of 77 Pursue applications and 9 of 76 Skip applications have a known outcome — and 100% of both are "Rejected". One interview in the entire dataset. Zero variance is zero signal; feeding it in would produce confident nonsense. Revisit near <em>n</em> ≈ 50 with real spread.</li>
+  </ul>
+
+  <h3>Edits to <code>COWORK_INSTRUCTIONS.md</code></h3>
+
+  <div class="edits">
+    <div class="edit"><span class="loc">§4.0 · G2, G2b <span style="color:var(--good)">✓ done</span></span><span class="what"><b>Comp floor raised to FLOOR base, target to TARGET total.</b> The veto stays at VETO_LINE, where its 4% override rate earns it; VETO_LINE–FLOOR becomes the new G2b <code>Review</code> band scoring 4 points. Applied 2026-08-26 across all seven places the old figure appeared.</span></div>
+    <div class="edit"><span class="loc">§4.0 · G1, G3</span><span class="what"><b>Demote.</b> G1 <code>contract</code> and the JD-language half of G3 stop setting a verdict; they become deductions again. Split G3 into G3a (named firm → Pass) and G3b (language → deduction).</span></div>
+    <div class="edit"><span class="loc">§4.0 gate table</span><span class="what"><b>Add the Review outcome</b> to the precedence note: Pass-type gates outrank Review, which outranks Skip-type gates.</span></div>
+    <div class="edit"><span class="loc">Verdict thresholds</span><span class="what"><b>Add the fourth value</b> with its definition and the 53%-precision evidence, so the next reader knows it was measured rather than guessed.</span></div>
+    <div class="edit"><span class="loc">Hard override triggers</span><span class="what"><b>Reduce to three</b> — low comp, Ladders, named consulting firm — and state the empirical test that admits a rule to this list.</span></div>
+    <div class="edit"><span class="loc">Hard override triggers</span><span class="what"><b>Stop using <code>Verdict = "Pass"</code> for closed postings.</b> Step 3 already writes <code>Carls_Action = None</code>; availability is not a preference. Leave the ~22 historical rows alone — <code>Verdict</code> is a never-touch field.</span></div>
+    <div class="edit"><span class="loc">Row format</span><span class="what"><b>Add <code>Score_Raw</code></b> as column 24, with the migration note for both CSV copies and the Fabric shortcut.</span></div>
+    <div class="edit"><span class="loc">Scoring rubric §</span><span class="what"><b>Point at the weights file.</b> Point values live in <code>rubric/weights.json</code>; the .md keeps the semantics and never hardcodes a number.</span></div>
+    <div class="edit"><span class="loc">new: Phase H</span><span class="what"><b>The learner run</b> — the six steps above, explicitly propose-only, explicitly out of scope for any file outside <code>rubric/</code>.</span></div>
+  </div>
+</section>
+
+<!-- ============ PART TWO ============ -->
+<section class="part">
+  <div class="part-head">
+    <span class="part-tag">Part Two</span>
+    <h2>What the run actually costs</h2>
+  </div>
+
+  <p class="lede">The evaluation run is slow and expensive for a reason that has little to do with which model is driving it: roughly half the token budget is spent on deterministic file work that a stable script should be doing, and a third of the instruction load is irrelevant to the task at hand.</p>
+
+  <h3>The cost model for one 25-JD run</h3>
+
+  <div class="ledger">
+    <div class="ledger-row">
+      <span class="lbl">Instruction file load<small>COWORK_INSTRUCTIONS.md, 2,374 lines</small></span>
+      <span class="val">~40,700 in</span><span class="tag">cacheable</span>
+    </div>
+    <div class="ledger-row">
+      <span class="lbl">…of which irrelevant to a JD-eval run<small>Phase G LinkedIn triage ~9,300 · triage phase ~3,500 · appendix ~860 · Phase E/F ~1,350</small></span>
+      <span class="val">~15,000 in</span><span class="tag avoidable">avoidable</span>
+    </div>
+    <div class="ledger-row">
+      <span class="lbl">Dedupe against the log<small>894 rows · 1.2 MB · unscripted, done by the model</small></span>
+      <span class="val">up to 304,000 in</span><span class="tag avoidable">avoidable</span>
+    </div>
+    <div class="ledger-row">
+      <span class="lbl">JD bodies<small>25 × ~2,038 tok mean</small></span>
+      <span class="val">~51,000 in</span><span class="tag">irreducible</span>
+    </div>
+    <div class="ledger-row">
+      <span class="lbl">Evaluation reasoning<small>25 × ~800–1,500 tok</small></span>
+      <span class="val">~20–37,000 out</span><span class="tag">irreducible</span>
+    </div>
+    <div class="ledger-row">
+      <span class="lbl">Append script, re-authored every run<small>39 KB / 21 KB / 11 KB observed in scratch/</small></span>
+      <span class="val">~10,000 out</span><span class="tag avoidable">avoidable</span>
+    </div>
+    <div class="ledger-row total">
+      <span class="lbl">Avoidable share of the run</span>
+      <span class="val">≈ 40–50%</span><span class="tag avoidable">before any model change</span>
+    </div>
+  </div>
+
+  <div class="note crit">
+    <h4>The single biggest finding: dedupe is not scripted</h4>
+    <p><code>scripts/README.md</code> instructs the operator to "extract job IDs, dedupe against <code>JD_Evaluation_Log.csv</code>, then run" — but no dedupe script exists. So the model does it, against a 1.2 MB / 894-row file, on every run. This is a pure set operation on <code>Job_ID</code>. It should never have reached a language model.</p>
+  </div>
+
+  <div class="note crit">
+    <h4>The second: the CSV writer is re-authored from scratch each run</h4>
+    <p><code>scratch/append_rows_20260816.py</code> is 39,306 bytes. <code>…20260817.py</code> is 21,241. Each is a fresh, hand-written script with every row's data inlined as Python source — roughly 10,000 output tokens per run to regenerate boilerplate that has not meaningfully changed. Output tokens are the expensive ones.</p>
+  </div>
+
+  <h3>What to script — in priority order</h3>
+  <ol class="flow">
+    <li><b>jd-dedupe.py</b> <span class="pill keep">built 2026-08-26</span><p>Takes extracted job IDs or full JSON records, returns new / exact-dupe / probable-repost / within-batch partitions, plus a blank-field backfill plan and flagged conflicts for each dupe hit. Repost detection is fuzzy on normalized company + title similarity, since a repost rarely reuses the title verbatim. Read-only; deterministic; near-zero tokens.</p></li>
+    <li><b>jd-append.py</b> <span class="pill keep">built 2026-08-26</span><p>A stable writer taking rows as JSON. Reconcile → one backup per run → append with <code>csv.writer</code> → validate → mirror to OneDrive independently → validate again. Encodes the dual-write discipline in code instead of re-deriving it from prose every run, which is where that discipline is most likely to be dropped. Halts on unknown columns, already-logged IDs, embedded newlines, and any OneDrive desync in the unexpected direction.</p></li>
+    <li><b>Split the instruction file</b> <span class="pill keep">done 2026-08-26</span><p>Done: 2,542 lines became a 106-line index plus seven parts in <code>instructions/</code>, split by run type. A Phase B job-alert run now loads the index + four parts and skips ~880 lines — Phase G's 559-line LinkedIn protocol, the triage and audit phases, and the legacy appendix. Verified line-for-line: zero content lines lost, 16 cross-file references rewritten to name their file.</p></li>
+    <li><b>jd-backfill.py</b><p>The blank-only merge rules are fully specified and entirely mechanical: fill blanks, never overwrite, never touch judgment fields, append a dated <code>Notes</code> line, flag conflicts. All of that belongs in code.</p></li>
+  </ol>
+
+  <h3>On running this on Haiku</h3>
+  <p>The instinct is right but the order matters. Splitting orchestration from evaluation is sound; doing it before the mechanical work is scripted would make things worse, not cheaper.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Role</th><th>Recommendation</th><th>Reasoning</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Orchestrator</b><br><span style="color:var(--ink-3);font-size:.85em">parse alerts, run scripts, assemble the summary</span></td>
+          <td><span class="pill new">Haiku — after step 2 above</span></td>
+          <td>Genuinely mechanical once dedupe and append are scripts. Today it is hand-writing CSV surgery under a dual-write contract with a documented desync failure mode — the last thing to hand to the cheapest model. Script first, then downgrade.</td>
+        </tr>
+        <tr>
+          <td><b>Evaluator</b><br><span style="color:var(--ink-3);font-size:.85em">gates, scoring, verdict</span></td>
+          <td><span class="pill keep">Sonnet, batched 5–8 JDs per agent</span></td>
+          <td>Tier-1/2/3 stack matching, lane classification, domain-as-deliverable and consulting-pattern detection are the judgment core. The 48% misfire rate on the consulting heuristic shows this is already the weak link.</td>
+        </tr>
+        <tr>
+          <td><b>Fan-out shape</b></td>
+          <td><span class="pill demote">never one agent per JD</span></td>
+          <td>Each subagent starts cold and needs the rubric — ~8,000 tokens of gates and scoring. 25 agents means loading it 25 times, which is worse than today's single cached context. Batching 5–8 amortises it and still parallelises the wall-clock.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <h4>The quality interaction worth naming</h4>
+    <p>The learner in Part One is only as good as the labels underneath it. Every evaluation is a training example, and a cheaper evaluator produces noisier <code>Verdict</code>, <code>Score</code> and component values — which the loop then learns from and encodes into the weights.</p>
+    <p>Savings on the evaluator compound into the rubric in a way savings on the orchestrator never do. That is the argument for spending the budget where the judgment is and taking it out of the file plumbing instead.</p>
+  </div>
+
+  <h3>On wall-clock time</h3>
+  <p>Most of the elapsed time is not token generation. <code>fetch-jds.js</code> retries up to 5 times per posting with jittered, attempt-multiplied backoff, capped at 25 postings per run — that pacing is deliberate anti-detection behaviour and should not be tuned for speed. The fetch is already a script and already cheap in tokens. <strong>Leave it alone;</strong> the time it takes is the price of the retrieval tier working at all.</p>
+  <p>The tractable wall-clock win is parallelism in evaluation, which the batched-subagent shape above provides, not faster fetching.</p>
+</section>
+
+<section class="part">
+  <div class="part-head">
+    <span class="part-tag">Sequencing</span>
+    <h2>What to do first</h2>
+  </div>
+  <p>The two parts are independent, but one ordering is meaningfully better: the mechanical cleanup makes every subsequent learner run cheaper to execute and easier to trust.</p>
+  <ol class="flow">
+    <li><b>Script dedupe and append</b><p>Largest cost reduction, zero design risk, and it hardens the dual-write discipline that currently lives only in prose.</p></li>
+    <li><b>Demote the two vetoes; add <code>Review</code></b><p>Pure instruction edits plus the initial <code>weights.json</code>. No schema migration required, so this can ship on its own.</p></li>
+    <li><b>Migrate the log for <code>Score_Raw</code></b><p>Its own change window, both copies together, Fabric shortcut verified afterward with the <code>junk_rows</code> query already documented in the consumer contract.</p></li>
+    <li><b>Stand up the learner as propose-only</b><p>Let it run alongside a few evaluation cycles and produce proposals Carl declines, until its backtest numbers earn confidence.</p></li>
+    <li><b>Split the instruction file</b> <span class="pill keep">done</span><p>Seven parts under <code>instructions/</code>, indexed from the root file, loaded per run type.</p></li>
+    <li><b>Move the orchestrator to Haiku</b><p>The remaining step, and now unblocked: every mechanical operation is a script, and the instruction load is scoped per run. This is the change most likely to need iteration, which is why it goes last.</p></li>
+  </ol>
+</section>
+
+</div>
+
+</body></html>

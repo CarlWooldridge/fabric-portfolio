@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Write-Back Data Loss — Post-Mortem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --ground:#F4F6F6; --surface:#FFFFFF; --surface-alt:#EAEEEE;
+  --ink:#131A1F; --ink-2:#3C4A50; --ink-3:#66777D;
+  --rule:#D3DBDB; --rule-soft:#E3E9E9;
+  --accent:#0F6169; --accent-2:#14818A; --accent-wash:#DCEAEA;
+  --good:#2E6F53; --warn:#8A5A12; --crit:#9E3B30;
+  --good-wash:#DFEBE4; --warn-wash:#F2E7D2; --crit-wash:#F1DEDB;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1418; --surface:#161F24; --surface-alt:#1C272D;
+    --ink:#E3EAEB; --ink-2:#B0BEC2; --ink-3:#7D8E93;
+    --rule:#2A373D; --rule-soft:#202B31;
+    --accent:#58B8BE; --accent-2:#7FD0D4; --accent-wash:#163336;
+    --good:#6FBF95; --warn:#D6A253; --crit:#E08376;
+    --good-wash:#163025; --warn-wash:#322715; --crit-wash:#331F1C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1418; --surface:#161F24; --surface-alt:#1C272D;
+  --ink:#E3EAEB; --ink-2:#B0BEC2; --ink-3:#7D8E93;
+  --rule:#2A373D; --rule-soft:#202B31;
+  --accent:#58B8BE; --accent-2:#7FD0D4; --accent-wash:#163336;
+  --good:#6FBF95; --warn:#D6A253; --crit:#E08376;
+  --good-wash:#163025; --warn-wash:#322715; --crit-wash:#331F1C;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  font-size:16.5px; line-height:1.62; margin:0;
+  padding:0 clamp(1rem,4vw,3rem) 6rem; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:60rem;margin:0 auto}
+.masthead{padding:clamp(3rem,8vw,5.5rem) 0 2.25rem;border-bottom:2px solid var(--ink);
+  display:flex;flex-direction:column;gap:1.25rem}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:700;
+  font-size:clamp(2.4rem,6.5vw,3.9rem);line-height:1;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.standfirst{font-size:1.14rem;color:var(--ink-2);max-width:42rem;margin:0;text-wrap:pretty}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.75rem;font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.74rem;color:var(--ink-3);letter-spacing:.04em;padding-top:.5rem}
+.meta b{color:var(--ink-2);font-weight:500}
+.part{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.part-tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.6rem}
+h2{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:700;
+  font-size:clamp(1.7rem,3.6vw,2.3rem);line-height:1.07;letter-spacing:-.022em;margin:0 0 1.6rem;text-wrap:balance}
+h3{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:600;font-size:1.28rem;
+  line-height:1.22;letter-spacing:-.012em;margin:2.6rem 0 .85rem;text-wrap:balance}
+p{margin:0 0 1.05rem;max-width:40rem;text-wrap:pretty}
+ul,ol{margin:0 0 1.15rem;padding-left:1.2rem;max-width:40rem}
+li{margin-bottom:.5rem}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+em{font-style:italic;color:var(--ink-2)}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.855em;background:var(--surface-alt);
+  padding:.1em .36em;border-radius:3px;border:1px solid var(--rule-soft)}
+.lede{font-size:1.06rem;color:var(--ink-2);border-left:3px solid var(--accent);
+  padding:.1rem 0 .1rem 1.15rem;max-width:40rem}
+pre{background:var(--surface);border:1px solid var(--rule);border-radius:5px;
+  padding:1rem 1.15rem;overflow-x:auto;margin:1.4rem 0 1.8rem}
+pre code{background:none;border:none;padding:0;font-size:.83rem;line-height:1.55}
+.tw{overflow-x:auto;margin:1.5rem 0 2rem;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.89rem;min-width:32rem}
+caption{caption-side:bottom;text-align:left;padding:.7rem .95rem;font-size:.78rem;
+  color:var(--ink-3);border-top:1px solid var(--rule-soft)}
+th,td{padding:.58rem .95rem;text-align:left;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+thead th{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.68rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-alt);
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+.note{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:5px;padding:1.1rem 1.3rem;margin:1.6rem 0 1.9rem}
+.note.crit{border-left-color:var(--crit);background:var(--crit-wash)}
+.note.good{border-left-color:var(--good);background:var(--good-wash)}
+.note h4{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:600;font-size:1rem;margin:0 0 .5rem}
+.note p:last-child{margin-bottom:0}
+.tl{list-style:none;padding:0;margin:1.6rem 0 2rem;max-width:44rem}
+.tl li{display:grid;grid-template-columns:9.5rem 1fr;gap:1rem;padding:.7rem 0;
+  border-bottom:1px solid var(--rule-soft);margin:0}
+.tl li:last-child{border-bottom:none}
+.tl .t{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.76rem;color:var(--accent);
+  letter-spacing:.02em;padding-top:.15rem}
+.pill{display:inline-block;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;
+  letter-spacing:.08em;text-transform:uppercase;padding:.16em .5em;border-radius:3px;
+  background:var(--accent-wash);color:var(--accent);white-space:nowrap}
+.pill.bad{background:var(--crit-wash);color:var(--crit)}
+.pill.ok{background:var(--good-wash);color:var(--good)}
+@media (max-width:34rem){ .tl li{grid-template-columns:1fr;gap:.15rem} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="eyebrow">Job Search Fabric Pipeline · Incident Report</span>
+  <h1>The table that was its own only backup</h1>
+  <p class="standfirst">A <code>DROP</code> and recreate destroyed every report write-back in the system. The data came back — but only because of a coincidence, and that is the part worth writing down.</p>
+  <div class="meta">
+    <span><b>Incident</b> 2026-08-26</span>
+    <span><b>Recovered</b> same day</span>
+    <span><b>Rows affected</b> 12</span>
+    <span><b>Permanent loss</b> none</span>
+    <span><b>Redesigned</b> 2026-08-27</span>
+  </div>
+</header>
+
+<section class="part" style="border-top:none;padding-top:2.5rem">
+  <p class="lede">Summary: <code>dbo.Fact_JobPostings</code> was dropped and recreated while building an unrelated feature. The next scheduled dataflow refresh rebuilt it from CSV and, in doing so, silently erased the evidence that any write-back had ever existed. No error was raised. The table looked completely healthy afterward.</p>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part One</span>
+  <h2>What happened</h2>
+
+  <ul class="tl">
+    <li><span class="t">16:54:55</span><span><code>Fact_JobPostings</code> is dropped and recreated. The semantic model's Direct Lake framing immediately begins failing — five consecutive <code>DirectLake_TableNotFound</code> errors between 16:54:55 and 16:55:35, visible in the model's refresh history.</span></li>
+    <li><span class="t">16:55:15</span><span>The new, empty table is created. <code>sys.objects.create_date</code> still records this moment — the catalog remembers what notes forget.</span></li>
+    <li><span class="t">~17:00</span><span>The next <code>JD_Transform</code> refresh runs. It rebuilds the table from the source CSV and writes <code>WriteBack_Applied = false</code> across all 894 rows.</span></li>
+    <li><span class="t">later</span><span>A pull of the action fields is taken and saved to <code>scratch/</code>. It <em>looks</em> like a pre-drop backup. It is not — see below.</span></li>
+    <li><span class="t">recovery</span><span>Point-in-time restore to a pre-drop timestamp creates <code>JobSearch_DB_backup</code>, which still holds the 12 rows with their flags intact.</span></li>
+  </ul>
+
+  <div class="note crit">
+    <h4>The false lead</h4>
+    <p><code>scripts/fabric-pull-actions.py</code> had produced a CSV that appeared to be a snapshot taken before the drop. It was not: the script issues a live DAX query through the semantic model, so it reflects whatever the table holds <em>at the moment it runs</em>. Pulled after the drop, it faithfully returned post-drop state. A file that looks like a backup, is named like a backup, and is dated plausibly — and contains none of the data you need.</p>
+  </div>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part Two</span>
+  <h2>Root cause: the self-referencing dataflow</h2>
+
+  <p><code>JD_Transform</code> contained two queries that, between them, closed a loop:</p>
+  <ul>
+    <li><strong><code>Fact_JobPostings</code></strong> — reads the CSV-derived Lakehouse table, transforms it, and <strong>writes to</strong> <code>JobSearch_DB.dbo.Fact_JobPostings</code>.</li>
+    <li><strong><code>Existing_WriteBack</code></strong> — <strong>reads from</strong> that same SQL table, so that values written from the report survive the next refresh.</li>
+  </ul>
+
+  <p>That circularity is exactly what made write-back persistence work. It also meant the table was the only copy of its own history.</p>
+
+  <p>The failure turns on a single line, and on a comment that was correct about the mechanism while being wrong about the consequence:</p>
+
+<pre><code>NormalizeFlag = Table.AddColumn(Expanded, "WriteBack_Applied",
+                                each [WB_Applied] = true, type logical),
+
+// WB_Applied is null on first run (empty table) or for any Job_ID never
+// touched by a real write-back — treat null the same as false.</code></pre>
+
+  <div class="note crit">
+    <h4>An empty table and "no write-back ever happened" are indistinguishable</h4>
+    <p>Both produce <code>null</code>. The refresh could not tell a dropped table from a clean slate, so it treated a catastrophic loss as a normal first run.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Each step behaved exactly as designed. The composition is what failed.</caption>
+      <thead><tr><th>Step</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Table dropped and recreated</td><td>SQL-side write-back values gone</td></tr>
+        <tr><td><code>Existing_WriteBack</code> reads it</td><td>returns empty / all nulls</td></tr>
+        <tr><td><code>NormalizeFlag</code></td><td><code>WriteBack_Applied = false</code> on all 894 rows</td></tr>
+        <tr><td><code>ResolveText</code> / <code>ResolveDate</code></td><td><code>locked = false</code> → <strong>CSV wins on every row</strong></td></tr>
+        <tr><td>Destination write (Replace)</td><td>table repopulated from CSV alone, all flags false</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>The refresh did not merely fail to restore the data. It overwrote the evidence that the data had ever existed.</strong> There is no error, no warning, and no degraded state to notice — which is what makes this failure mode worth more than the twelve rows it cost.</p>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part Three</span>
+  <h2>Why recovery worked, and why that is not reassuring</h2>
+
+  <p>Two things saved this. Neither was designed to.</p>
+
+  <div class="note good">
+    <h4>1. Fabric's automatic point-in-time restore</h4>
+    <p>SQL databases in Fabric take full, differential and log backups with a 7-day PITR window, on by default, working on trial capacity. Restore creates a <em>new</em> database rather than overwriting the original, so the operation is non-destructive and safe to attempt under pressure. It cannot restore across workspaces or regions, and deleting a database mid-restore cancels it unrecoverably.</p>
+  </div>
+
+  <div class="note good">
+    <h4>2. The CSV happened to mirror every write-back</h4>
+    <p>Comparing the 12 restored rows against the source CSV found <strong>zero differing cells</strong>. Production already held the correct values, because the dataflow had written them back in from the CSV. Only the <code>WriteBack_Applied</code> flag was actually lost, and a 12-row <code>UPDATE</code> repaired it.</p>
+  </div>
+
+  <p class="lede">This is the finding, not the recovery. Nothing in the architecture guaranteed the CSV would mirror the write-backs — that was a property of how this particular workflow happened to be used, not a safety net anyone designed. A write-back made only from the report, on a job the CSV never carried, would simply have been gone.</p>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part Four</span>
+  <h2>The fix: make the fact table genuinely disposable</h2>
+
+  <p>The error was not the <code>DROP</code>. <code>Fact_JobPostings</code> is a derived table — every column in it can be rebuilt from the CSV and the transformation logic. Treating it as disposable was correct. <em>It just wasn't true</em>, because write-backs were living in it.</p>
+
+  <p>Write-backs are source data. They belong somewhere the dataflow only ever reads.</p>
+
+  <h3>An append-only log</h3>
+  <p><code>dbo.Fact_WriteBack</code> records one row per write-back event and is never updated or deleted from. Each row is a <strong>complete snapshot</strong> of all four user-owned fields after that write, not a delta — because the write-back function performs partial updates, and a delta log would need per-field "latest non-null" resolution to reconstruct current state. Full snapshots make "latest row wins" simply correct, and keep the read view three lines long.</p>
+
+<pre><code>CREATE VIEW dbo.vw_WriteBack_Latest AS
+SELECT Job_ID, Carls_Action, Carls_Action_Date, Outcome, Reason, Written_At
+FROM (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY Job_ID ORDER BY WriteBack_ID DESC) AS rn
+    FROM dbo.Fact_WriteBack
+) t
+WHERE rn = 1;</code></pre>
+
+  <h3>The one-line change that breaks the circularity</h3>
+  <p><code>Existing_WriteBack</code> now navigates to <code>vw_WriteBack_Latest</code> instead of <code>Fact_JobPostings</code>. The dataflow no longer reads back from the table it writes.</p>
+
+  <h3>Presence replaces the stored flag</h3>
+  <p><code>WriteBack_Applied</code> stops being a stored column that can be lost in a <code>DROP</code> and becomes derived: if a job appears in the log at all, a genuine write-back happened.</p>
+
+<pre><code>NormalizeFlag = Table.AddColumn(Expanded, "WriteBack_Applied",
+                                each [WB_Job_ID] &lt;&gt; null, type logical),</code></pre>
+
+  <div class="note">
+    <h4>Why this specifically closes the hole</h4>
+    <p>The original ambiguity was between "no value recorded" and "value lost". A computed value cannot be lost in a drop the way a stored one can — there is no longer a state in which the system silently forgets that write-backs existed. The failure mode is designed out rather than guarded against.</p>
+  </div>
+
+  <p>The acceptance test is the scenario that caused the incident: <strong>drop and recreate <code>Fact_JobPostings</code>, run the dataflow, and confirm the write-backs come back.</strong> Passing it is what makes the table honestly disposable.</p>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part Five</span>
+  <h2>Operational findings worth keeping</h2>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Finding</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Cross-database queries fail on the transactional endpoint</b></td>
+          <td>Three-part naming returns <code>Msg 40515</code>. It works only on the read-only SQL analytics endpoint, which cannot be an <code>UPDATE</code> target. This is an endpoint limitation, not a tooling one — the Fabric SQL editor, VS Code and notebooks all fail identically. To reach the restored copy, open a second connection against it directly.</td>
+        </tr>
+        <tr>
+          <td><b>A live query is not a backup</b></td>
+          <td>Any export that reads through the semantic model reflects current state by definition. If it runs after the loss, it captures the loss.</td>
+        </tr>
+        <tr>
+          <td><b><code>sys.objects</code> is the honest timeline</b></td>
+          <td><code>create_date</code> and <code>modify_date</code> survive when memory and notes disagree. The OneLake mirror of a SQL table lags the table itself, so it is not a reliable "when did this change" source.</td>
+        </tr>
+        <tr>
+          <td><b>Refresh history is external evidence</b></td>
+          <td>The semantic model's <code>DirectLake_TableNotFound</code> failures timestamp the outage from outside the database, independent of anything the database itself records.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What would have caught it earlier</h3>
+  <ul>
+    <li><strong>An independent copy.</strong> The log is now the single source of truth for data that exists nowhere else, so it gets a periodic CSV export rather than relying solely on the 7-day PITR window.</li>
+    <li><strong>A row-count assertion on the flag.</strong> "Write-back count dropped to zero" is a one-line check and would have fired on the first post-drop refresh.</li>
+    <li><strong>Naming that carries the warning.</strong> Every other <code>Fact_*</code> table in this model is dataflow-owned and rebuildable. <code>Fact_WriteBack</code> is deliberately not, and its <code>CREATE TABLE</code> now says so at the top — because the assumption that a <code>Fact_</code> table is disposable is exactly the assumption that caused this.</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>
