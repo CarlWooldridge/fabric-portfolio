@@ -1,0 +1,198 @@
+{
+  "version": "2026-08-26.1",
+  "effective_from": "2026-08-26",
+  "supersedes": "2026-08-10.1",
+  "note": "Point semantics live in COWORK_INSTRUCTIONS.md. This file holds only the numbers, thresholds and rule classes. Never hardcode a value from here into the .md.",
+  "verdict": {
+    "pursue_at": 70,
+    "review_when": "a compensable gate fired and no veto-class gate did",
+    "review_precision_measured": 0.53,
+    "precedence": [
+      "veto",
+      "skip",
+      "review"
+    ]
+  },
+  "comp": {
+    "veto_below_usd": VETO_LINE_USD,
+    "floor_usd": FLOOR_USD,
+    "target_usd": TARGET_USD,
+    "points": {
+      "at_or_above_target": 20,
+      "floor_to_target": 12,
+      "veto_to_floor": 4,
+      "below_veto": 0,
+      "unlisted": 10
+    }
+  },
+  "components": {
+    "lane": {
+      "max": 25
+    },
+    "scope": {
+      "max": 15
+    },
+    "comp": {
+      "max": 20
+    },
+    "location": {
+      "max": 15
+    },
+    "skills": {
+      "max": 20,
+      "note": "was 15; absorbed the 5 perk points 2026-08-10"
+    },
+    "applicants": {
+      "max": 5,
+      "under_review": "measured inverted vs behaviour: applied mean 0.99 vs passed mean 2.00"
+    }
+  },
+  "deductions": {
+    "third_party_board": {
+      "points": -10
+    },
+    "contract": {
+      "points": -10,
+      "contract_to_hire": -5
+    },
+    "consulting_delivery": {
+      "points": -10,
+      "light_blend": -5
+    },
+    "travel": {
+      "points": -10
+    },
+    "domain_as_deliverable": {
+      "points": -15
+    },
+    "domain_soft_preference": {
+      "points": -3
+    },
+    "people_management_core": {
+      "points": -10,
+      "note": "with scope=0. NOT a gate - G9 is vacant by decision, see 03-scoring-rubric.md"
+    }
+  },
+  "rules": {
+    "low_comp": {
+      "gate": "G2",
+      "class": "veto",
+      "match_reason": "\\blow comp\\b|comp below floor|comp too low"
+    },
+    "consulting_named": {
+      "gate": "G3a",
+      "class": "veto",
+      "match_reason": "\\bconsulting\\b",
+      "requires_employer_list": "consulting_firms"
+    },
+    "ladders": {
+      "gate": "G4",
+      "class": "veto",
+      "match_reason": "Ladders"
+    },
+    "contract": {
+      "gate": "G1",
+      "class": "review",
+      "match_reason": "\\bcontract\\b",
+      "outranked_by_employer_list": "consulting_firms"
+    },
+    "comp_floor": {
+      "gate": "G2b",
+      "class": "review",
+      "match_reason": "sub-?target comp|comp at floor|\\bcomp gap\\b",
+      "excludes_reason_match": "\\blow comp\\b|comp below floor|comp too low",
+      "requires_field_match": {
+        "field": "Comp_Flag",
+        "boundary_date": "2026-08-26",
+        "pattern_before": "sub-?target|at floor",
+        "pattern_after": "below floor|at floor",
+        "note": "Comp_Flag's vocabulary shifted one band on 2026-08-26 when the floor went VETO_LINE -> FLOOR. G2b is the VETO_LINE-FLOOR band, which pre-boundary rows call 'Sub-target' and post-boundary rows call 'Below floor'. A single pattern is wrong for one era. AUTHORITATIVE VOCABULARY: the Comp_Flag list in instructions/04-log-and-write-discipline.md \u2014 these patterns match it and must be updated from it, never the other way round."
+      }
+    },
+    "delivery_role": {
+      "gate": "G3b",
+      "class": "review",
+      "match_reason": "consulting[\\s-]*(firm[\\s-]*)?delivery",
+      "outranked_by_employer_list": "consulting_firms"
+    }
+  },
+  "consulting_firms": [
+    "Company-704",
+    "Ernst & Young",
+    "Company-196",
+    "Company-700",
+    "PricewaterhouseCoopers",
+    "Company-715",
+    "Company-716",
+    "Company-713",
+    "Boston Consulting",
+    "Company-717",
+    "Company-09",
+    "Company-575",
+    "Company-178",
+    "Company-696",
+    "RSM",
+    "Grant Thornton",
+    "Protiviti",
+    "Huron",
+    "Guidehouse",
+    "Alvarez",
+    "AlixPartners",
+    "ZS Associates",
+    "Company-135",
+    "Company-697",
+    "Company-04",
+    "Company-02",
+    "Company-701",
+    "Company-678",
+    "Company-459",
+    "Company-116",
+    "Company-653",
+    "Gainwell"
+  ],
+  "training": {
+    "window_start": "2026-08-10",
+    "exclude": [
+      "Pursue verdicts evaluated before window_start (deleted 50-69 band)",
+      "Pass rows whose Reason records posting status, not preference",
+      "rows with blank Carls_Action (never acted on, not a confirmed negative)"
+    ],
+    "exclude_reason_match": "no longer accepting|boilerplate rejection|anonymous end client|duplicate job posting",
+    "min_n_to_move_a_rule": 15,
+    "max_component_move_per_run": 3,
+    "outcome_field_usable": false,
+    "outcome_note": "19 of 77 Pursue-applied and 9 of 76 Skip-applied have a known Outcome, and 100% of both are Rejected. Zero variance. Revisit near n=50."
+  },
+  "provenance": {
+    "rows_in_log": 894,
+    "training_rows": 521,
+    "measured_override_rates": {
+      "ladders": 0.0,
+      "consulting_named": 0.0,
+      "low_comp": 0.04,
+      "comp_at_150k_floor": 0.22,
+      "contract": 0.45,
+      "consulting_language_old": 0.48
+    }
+  },
+  "components_removed": {
+    "perks": {
+      "was_max": 5,
+      "removed": "2026-08-10",
+      "note": "points moved to skills; do not reinstate"
+    }
+  },
+  "_integrity": {
+    "components_sum": 100,
+    "must_equal": 100,
+    "checked": "2026-08-26",
+    "note": "Corrected 2026-08-26 after a Haiku orchestrator test run caught this file contradicting instructions/03-scoring-rubric.md. The seeded values (lane 30, skills 15, perks 5) were invented, not read from the rubric, and summed to 105. The rubric is authoritative for what a component is worth; this file must match it."
+  },
+  "provenance_rules": {
+    "match_reason_corrected": {
+      "date": "2026-08-31",
+      "why": "G2b and G3b measured n=0 because their patterns were written from memory rather than from the log. G2's was short by 4 rows for the same reason. Patterns are now derived from the Reason strings actually present, cross-checked against Comp_Flag.",
+      "note": "match_reason is measurement plumbing, not a rubric weight \u2014 it does not change any score or verdict."
+    }
+  }
+}
