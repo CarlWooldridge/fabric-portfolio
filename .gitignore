@@ -6,3 +6,8 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# working artefacts
+node_modules/
+.venv/
+*.eml

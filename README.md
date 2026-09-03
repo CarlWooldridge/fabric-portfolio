@@ -30,6 +30,23 @@ Architecture ownership and lifecycle: original source data, a written architectu
 
 ---
 
+## Applied project
+
+Outside the P1→P3 progression: a system built because I needed it, not because a checklist called for it.
+
+### [Job Search — an AI evaluation pipeline on Fabric](job-search-fabric/) *(complete)*
+
+An AI-assisted job-posting evaluation workflow I run daily, productionised on Fabric with write-back — so the report is something I act *in*, not just look at. 1,066 evaluated postings, 676 employers, a Direct Lake semantic model over a Fabric SQL Database, and a Python User Data Function wired to the report through Translytical Task Flows.
+
+**Selected findings:**
+- A `DROP` and recreate destroyed every report write-back, because the dataflow read its own output table to preserve them — the table was its own only backup. The refresh didn't just fail to restore the data, it overwrote the evidence any had existed. Recovered via point-in-time restore, then redesigned around an append-only log so the fact table is genuinely disposable
+- A DAX measure returning wrong answers for 8 of 9 rows while the measure, the relationship, the data and every field binding each verified correct — `ALLEXCEPT` operates on a table's *expanded* table, so it silently cleared the filter every visual actually supplies
+- Six Fabric boundaries hit the hard way, including a folder shortcut that merges a second CSV into the wrong schema rather than creating a table, a CSV reader that isn't multiline-aware, and a SQL view that falls an entire Direct Lake model back to DirectQuery
+- A scoring rubric calibrated by measured override rate rather than preference — two rules I believed in turned out to be coin flips at 45% and 48%, and a threshold change moved precision from 43% to 75% with the recall cost visible in the other column
+- Parsing an LLM's prose into a star schema: 93.9% of rows carry a machine-readable score formula inside a sentence, and the 26% whose arithmetic doesn't reconcile get a deliberate two-tier treatment rather than a forced number
+
+---
+
 ## Reference material
 
 Built during P1, kept because it stayed useful independent of the project that produced it:
@@ -38,11 +55,18 @@ Built during P1, kept because it stayed useful independent of the project that p
 - **[Fabric glossary](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/fabric-glossary.html)** ([source](P1-nyc-taxi/reference/fabric-glossary.html)) — terminology, with mappings to SQL Server and Power BI equivalents where they exist
 - **[DP-600 project checklist](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/dp600-project-checklist.html)** ([source](P1-nyc-taxi/reference/dp600-project-checklist.html)) — the three-project structure this work was built against
 
+From the Job Search project:
+
+- **[Write-back data loss — post-mortem](https://carlwooldridge.github.io/fabric-portfolio/job-search-fabric/reference/writeback-incident-postmortem.html)** ([source](job-search-fabric/reference/writeback-incident-postmortem.html)) — how a routine `DROP` erased its own evidence, why recovery was luck rather than design, and the redesign that removes the failure mode instead of guarding against it
+- **[The Verdict Loop](https://carlwooldridge.github.io/fabric-portfolio/job-search-fabric/reference/the-verdict-loop.html)** ([source](job-search-fabric/reference/the-verdict-loop.html)) — design spec for a scoring rubric that corrects itself from recorded decisions, with the measured override rates that justify each rule
+- **[Report wireframe](https://carlwooldridge.github.io/fabric-portfolio/job-search-fabric/reference/report-wireframe.html)** ([source](job-search-fabric/reference/report-wireframe.html)) — built before the report, and it caught real layout problems before they were built for real
+
 ---
 
 ## Documentation
 
 - [`P1-nyc-taxi/README.md`](P1-nyc-taxi/README.md) — the full P1 write-up: findings, benchmarks, gotchas
+- [`job-search-fabric/README.md`](job-search-fabric/README.md) — the Job Search write-up: write-back architecture, the data-loss incident, platform boundaries, and the AI evaluation pipeline behind it
 
 ---
 
