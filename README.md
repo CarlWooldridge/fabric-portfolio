@@ -53,7 +53,7 @@ Built during P1, kept because it stayed useful independent of the project that p
 
 - **[Delta compaction & optimization matrix](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/delta-compaction-matrix-v2.html)** ([source](P1-nyc-taxi/reference/delta-compaction-matrix-v2.html)) — every technique with syntax, read/write impact, and whether its cost is deferred or paid per-write
 - **[Fabric glossary](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/fabric-glossary.html)** ([source](P1-nyc-taxi/reference/fabric-glossary.html)) — terminology, with mappings to SQL Server and Power BI equivalents where they exist
-- **[DP-600 project checklist](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/dp600-project-checklist.html)** ([source](P1-nyc-taxi/reference/dp600-project-checklist.html)) — the three-project structure this work was built against
+- **[DP-600 project checklist](https://carlwooldridge.github.io/fabric-portfolio/P1-nyc-taxi/reference/dp600-project-checklist.html)** ([source](P1-nyc-taxi/reference/dp600-project-checklist.html)) — every build item mapped to the exam's own skills outline (revised 21 Jul 2026), tagged by domain and by whether it needs Fabric capacity
 
 From the Job Search project:
 

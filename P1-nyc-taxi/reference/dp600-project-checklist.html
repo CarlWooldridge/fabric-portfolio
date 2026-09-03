@@ -61,6 +61,13 @@
     line-height: 1.5;
   }
 
+  .outline-ref {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 6px;
+  }
+
   .overall {
     display: flex;
     align-items: center;
@@ -96,6 +103,112 @@
     transition: width 0.3s ease;
   }
 
+  /* ---- domain summary ---- */
+
+  .domains {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .domain-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 11px;
+  }
+
+  .domain-card .dc-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .domain-card .dc-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .domain-card .dc-pct {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+
+  .domain-card .dc-name {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    line-height: 1.35;
+    margin: 4px 0 7px;
+    min-height: 28px;
+  }
+
+  .domain-card .dc-weight {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+
+  .dc-bar-track {
+    height: 4px;
+    background: var(--panel-2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .dc-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  /* ---- filter bar ---- */
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 11px;
+    cursor: pointer;
+  }
+
+  .filter-btn:active { background: var(--panel-2); }
+
+  .filter-btn.active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .filter-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--warn);
+    margin-top: 8px;
+  }
+
+  /* ---- projects ---- */
+
   .project {
     margin-bottom: 20px;
     background: var(--panel);
@@ -103,6 +216,8 @@
     border-radius: 10px;
     overflow: hidden;
   }
+
+  .project.empty { display: none; }
 
   .project-head {
     display: flex;
@@ -227,6 +342,8 @@
   .checkbox svg { width: 12px; height: 12px; display: none; }
   .checkbox.checked svg { display: block; }
 
+  .item-main { min-width: 0; }
+
   .item-text {
     font-size: 13.5px;
     line-height: 1.45;
@@ -238,6 +355,40 @@
     color: var(--text-faint);
     text-decoration: line-through;
     text-decoration-color: var(--border);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  .tag.domain {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  /* Capacity markers are distinguished by GLYPH AND TEXT, never colour alone. */
+  .tag.cap-f { border-style: solid; }
+  .tag.cap-p { border-style: dashed; }
+
+  .item-note {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    line-height: 1.45;
+    margin-top: 4px;
   }
 
   .reset-row {
@@ -259,12 +410,34 @@
 
   .reset-btn:active { background: var(--panel); }
 
+  .legend {
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 11.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .legend code {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text);
+  }
+
   .loading {
     text-align: center;
     color: var(--text-faint);
     font-family: var(--font-mono);
     font-size: 12px;
     padding: 40px 0;
+  }
+
+  @media (max-width: 520px) {
+    .domains { grid-template-columns: 1fr; }
+    .domain-card .dc-name { min-height: 0; }
   }
 </style>
 </head>
@@ -273,14 +446,30 @@
   <header>
     <div class="eyebrow">Fabric &middot; DP-600</div>
     <h1>Project Checklist</h1>
-    <div class="subhead">NYC Taxi/WWI &rarr; Kaggle finance/supply-chain &rarr; Carl's own build. Checked state saves automatically.</div>
+    <div class="subhead">Hands-on build items mapped to the exam's own skills outline, so the question is &ldquo;am I ready for the exam?&rdquo; and not just &ldquo;did I finish the projects?&rdquo;</div>
+    <div class="outline-ref">Scoped against the skills outline of 21 Jul 2026 &middot; three domains, not four</div>
+
     <div class="overall">
       <div class="overall-num" id="overallNum">0%</div>
       <div class="overall-bar-track"><div class="overall-bar-fill" id="overallBar" style="width:0%"></div></div>
     </div>
+
+    <div class="domains" id="domainCards"></div>
+
+    <div class="filters" id="filters"></div>
+    <div class="filter-note" id="filterNote" style="display:none"></div>
   </header>
 
   <div id="projects"><div class="loading">Loading checklist…</div></div>
+
+  <div class="legend">
+    <strong>Tags.</strong>
+    <code>D1</code> <code>D2</code> <code>D3</code> mark the exam domain an item earns credit in.
+    <code>[F] Fabric</code> means the item needs an F-SKU Fabric capacity &mdash; a lakehouse, warehouse,
+    notebook, dataflow, pipeline, Direct Lake model, Eventhouse or OneLake.
+    <code>[P] PPU-ok</code> means it runs on Premium Per User alone. PPU does <em>not</em> provision a
+    Fabric capacity, so every <code>[F]</code> item stops working without one.
+  </div>
 
   <div class="reset-row">
     <button class="reset-btn" id="resetBtn">RESET ALL PROGRESS</button>
@@ -288,94 +477,178 @@
 </div>
 
 <script>
+/* ------------------------------------------------------------------
+   Item shape: { t: text, d: 1|2|3|0 (0 = no single domain), f: true
+   when the item needs Fabric capacity, n: optional note }
+   ------------------------------------------------------------------ */
+
+const DOMAINS = {
+  1: { name: "Maintain a data analytics solution", weight: "25–30%" },
+  2: { name: "Prepare data",                        weight: "45–50%" },
+  3: { name: "Implement and manage semantic models", weight: "25–30%" }
+};
+
 const DATA = [
   {
     id: "p1",
-    label: "Project 1",
-    title: "NYC Taxi or Wide World Importers",
-    goal: "Touch every mechanism once, on clean data. Speed over polish.",
+    label: "Project 1 · complete",
+    title: "NYC Taxi",
+    goal: "Touch every mechanism once, on clean data. Measure rather than assume.",
     note: null,
     items: [
-      "Workspace on trial capacity; Lakehouse created",
-      "Ingest same dataset 3 ways: Dataflow Gen2, Data pipeline (Copy activity), notebook — compare them",
-      "Load to Delta tables; inspect Files vs. Tables split in OneLake",
-      "Query via SQL analytics endpoint (T-SQL) and visual query editor",
-      "Build minimal star schema (1 fact, 3–4 dims)",
-      "Create Direct Lake semantic model; confirm it's actually Direct Lake, not fallback",
-      "5–8 DAX measures with a proper date table and time intelligence",
-      "One Power BI report on top",
-      "Create a Warehouse alongside the Lakehouse loading same data — note when you'd pick each"
+      { t: "Workspace on Fabric capacity; Lakehouse created", d: 2, f: true },
+      { t: "Ingest same dataset 3 ways: Dataflow Gen2, Data pipeline (Copy activity), notebook — compare them", d: 2, f: true },
+      { t: "Load to Delta tables; inspect Files vs. Tables split in OneLake", d: 2, f: true },
+      { t: "Query via SQL analytics endpoint (T-SQL) and Visual Query Editor", d: 2, f: true },
+      { t: "Build minimal star schema (1 fact, 3–4 dims)", d: 2, f: true },
+      { t: "Create Direct Lake semantic model; confirm it's actually Direct Lake, not fallback", d: 3, f: true },
+      { t: "5–8 DAX measures with a proper date table and time intelligence", d: 3, f: false },
+      { t: "One Power BI report on top", d: 3, f: false },
+      { t: "Create a Warehouse alongside the Lakehouse loading same data — note when you'd pick each", d: 2, f: true, n: "The single most-tested decision on the exam. Scenario questions lean on it constantly." },
+      { t: "Composite model — a second report bound to a Warehouse-backed composite, compared against the Direct Lake original", d: 3, f: true }
     ]
   },
   {
     id: "p2",
     label: "Project 2",
     title: "Kaggle finance or supply-chain dataset",
-    goal: "Messy real data + semantic model depth + first governance layer.",
-    note: "Assumes everything from Project 1 is already solid.",
+    goal: "Messy real data, then semantic model depth. Domains 2 and 3.",
+    note: "Assumes Project 1 is solid. Items marked ✚ were added from exam-report evidence, not from the original P2 scope.",
     items: [
-      "Data profiling before transforming — document what's actually wrong with the data",
-      "Bronze/silver/gold medallion layering",
-      "Incremental load pattern — not full refresh",
-      "At least one slowly changing dimension (Type 2)",
-      "Notebook-based Python transformation where Dataflow Gen2 can't cleanly do it",
-      "Calculation groups (replacing duplicated measure variants)",
-      "Field parameters and dynamic format strings",
-      "Row-level security, tested with a viewer account",
-      "Object-level security on at least one sensitive measure/column",
-      "Sensitivity labels + item endorsement",
-      "A deliberately bad model, then optimized — record before/after refresh and query times"
+      { t: "Data profiling before transforming — document what's actually wrong with the data", d: 2, f: true },
+      { t: "✚ Profile in the Dataflow web UI specifically, naming Column Quality, Column Distribution and Column Profile as three distinct things", d: 2, f: true, n: "Exam-reported: tested on the web experience UI, not Power Query Desktop." },
+      { t: "Bronze/silver/gold medallion layering as real schemas from the start", d: 2, f: true },
+      { t: "Incremental load pattern — not full refresh", d: 2, f: true },
+      { t: "At least one slowly changing dimension (Type 2)", d: 2, f: true },
+      { t: "Notebook-based Python transformation where Dataflow Gen2 can't cleanly do it", d: 2, f: true },
+      { t: "✚ Query folding — add a step that deliberately breaks folding, then find it in the Dataflow web experience", d: 2, f: true, n: "Exam-reported: knowing which steps fold, diagnosed in the web UI." },
+      { t: "✚ Dataflow Gen2 staging on and off — compare behaviour and where intermediate results land", d: 2, f: true },
+      { t: "✚ Create views, T-SQL functions and stored procedures in the Warehouse", d: 2, f: true, n: "Outline bullet with zero coverage so far — Job Search has views, but no functions or procedures." },
+      { t: "✚ Select, filter and aggregate through the Visual Query Editor deliberately, not just T-SQL", d: 2, f: true },
+      { t: "Resolve duplicates, missing data and nulls; denormalize, merge/join, convert types on genuinely messy data", d: 2, f: true },
+      { t: "✚ Run VACUUM; observe retention and time travel; confirm it does NOT improve query performance", d: 2, f: true, n: "The most-cited trap in exam write-ups: OPTIMIZE improves query speed, VACUUM does not." },
+      { t: "Calculation groups (replacing duplicated measure variants)", d: 3, f: false },
+      { t: "Field parameters and dynamic format strings", d: 3, f: false },
+      { t: "Row-level security on the semantic model, verified with Test as role", d: 1, f: false, n: "Below F64 every viewer needs Pro or PPU, so a second live viewer account costs a licence. Test as role proves the same thing." },
+      { t: "Object-level security on at least one sensitive measure and one column", d: 1, f: false },
+      { t: "Sensitivity labels + item endorsement", d: 1, f: false, n: "Named by a passing candidate as one of the two hardest sections, alongside version control." },
+      { t: "✚ DAX depth: windowing (WINDOW, OFFSET, INDEX, RANK), information functions, table filtering, iterator performance", d: 3, f: false, n: "Do not skip this on the advice of older study guides — the current outline names these explicitly." },
+      { t: "✚ Incremental refresh for the semantic model (distinct from the pipeline-level incremental load above)", d: 3, f: false },
+      { t: "✚ Many-to-many relationship in addition to the bridge table pattern already built", d: 3, f: false },
+      { t: "A deliberately bad model, then optimized — record before/after refresh and query times", d: 3, f: true }
     ]
   },
   {
     id: "p3",
     label: "Project 3",
-    title: "Carl's own build",
-    goal: "Architecture ownership + lifecycle. Portfolio centerpiece.",
-    note: "Consider: legacy SQL Server → Fabric migration simulation.",
+    title: "Original build",
+    goal: "Architecture ownership and lifecycle. Domain 1 in full, plus real-time.",
+    note: "Domain 1 is ~25–30% of the exam and the least-covered area — the readiness plan runs this project's lifecycle half FIRST, ahead of P2, because it is the cheapest work here per mark.",
     items: [
-      "Original source data assembled yourself (API pull, scraped, or spec'd)",
-      "Written architecture decision doc — Lakehouse vs. Warehouse vs. Eventhouse, and why",
-      "Git integration on the workspace; .pbip project format",
-      "Deployment pipeline: Dev → Test → Prod workspaces",
-      "Impact analysis run before a breaking rename/delete — screenshot it",
-      "Semantic model deployed/managed via XMLA endpoint (Tabular Editor or TMSL)",
-      "Reusable assets: a .pbit template + shared semantic model consumed by a 2nd report",
-      "File-level OneLake security",
-      "Large semantic model storage format enabled where justified",
-      "Eventhouse + KQL component (e.g. USGS or MTA feed)",
-      "Full README: architecture diagram, decisions, tradeoffs, what you'd change"
+      { t: "Original source data assembled yourself (API pull, scraped, or spec'd)", d: 2, f: true },
+      { t: "Written architecture decision record — Lakehouse vs. Warehouse vs. Eventhouse vs. SQL Database, and why", d: 2, f: false },
+      { t: "Git integration on the workspace; make a real change, commit it, revert it", d: 1, f: true, n: "Named by a passing candidate as one of the two hardest sections." },
+      { t: "Deployment pipeline: Dev → Test → Prod workspaces, including at least one deployment rule", d: 1, f: true },
+      { t: "Impact analysis run before a breaking rename on a lakehouse, a warehouse, a dataflow and a semantic model — screenshot each, they differ", d: 1, f: true },
+      { t: "Workspace-level access controls: Admin, Member, Contributor, Viewer — record what each can and cannot do", d: 1, f: false, n: "Exam asks least-privilege scenarios. Knowing the boundaries beats knowing the names." },
+      { t: "Item-level access controls — share a single item without granting workspace access", d: 1, f: false },
+      { t: "SQL-level row-level and column-level security on a Lakehouse/Warehouse (CREATE SECURITY POLICY, GRANT)", d: 1, f: true, n: "Deliberately distinct from the semantic-model RLS in P2. The exam tests both and they are easy to conflate." },
+      { t: "File-level OneLake security (data access roles)", d: 1, f: true },
+      { t: ".pbip project format for the model", d: 1, f: false },
+      { t: "Reusable assets: a .pbit template, a .pbids data source file, and a shared semantic model consumed by a second report", d: 1, f: false, n: "Exam-reported: the distinction between PBIX, PBIP, PBIT and PBIDS comes up directly." },
+      { t: "Semantic model deployed and managed via the XMLA endpoint (Tabular Editor or TMSL)", d: 1, f: false },
+      { t: "Large semantic model storage format enabled where justified", d: 3, f: false },
+      { t: "Eventhouse + KQL database; write 5–8 KQL queries (take, where, summarize, project, join, render)", d: 2, f: true, n: "A named exam skill with zero coverage. Keep it small — the questions are conceptual. Do NOT build a full Eventstream ingestion pipeline." },
+      { t: "OneLake integration for the Eventhouse; query the same data through a Lakehouse shortcut", d: 2, f: true },
+      { t: "Discover data through the OneLake catalog and the Real-Time hub", d: 2, f: true },
+      { t: "Configure Direct Lake fallback behaviour deliberately, then force a fallback and observe it", d: 3, f: true },
+      { t: "Build the same model both ways: Direct Lake on OneLake vs Direct Lake on SQL analytics endpoint — record where they diverge", d: 3, f: true, n: "Newest bullet in the Jul 2026 outline revision. Differences include composite models, calculated columns, SQL views and RLS behaviour." },
+      { t: "Full README: architecture diagram, decisions, tradeoffs, what you'd change", d: 0, f: false }
+    ]
+  },
+  {
+    id: "exam",
+    label: "Exam-only",
+    title: "Study items with nothing to build",
+    goal: "Tested, but no project produces them. Do not let the build crowd these out.",
+    note: "Take the free official practice assessment COLD, before studying anything — the per-domain breakdown re-prioritises everything else on this page.",
+    items: [
+      { t: "Official Microsoft practice assessment taken cold, for a baseline per-domain score", d: 0, f: false },
+      { t: "OPTIMIZE vs VACUUM: which one improves query performance, and which one does not", d: 2, f: false },
+      { t: "Managed vs unmanaged (external) Delta tables — what DROP does to each", d: 2, f: false },
+      { t: "F-SKU vs P-SKU, trial vs licensed, and what happens when capacity is exceeded (throttling, not deletion)", d: 1, f: false, n: "P1 diagnosed real throttling via the Capacity Metrics app — that is the worked example." },
+      { t: "Spark pools and starter pools at concept level only — do not memorise executor sizing", d: 2, f: false },
+      { t: "Microsoft Purview integration for governance, lineage and sensitivity labels — shallow, one or two questions' worth", d: 1, f: false },
+      { t: "External tools: Tabular Editor, ALM Toolkit, DAX Studio, Best Practice Analyzer, VertiPaq Analyzer — what each is for", d: 3, f: false, n: "Exam-reported and entirely uncovered. Point them at the models you already have." },
+      { t: "DMVs (Dynamic Management Views) and what each one is used for", d: 3, f: false },
+      { t: "PySpark syntax drill — fill-in-the-blank and pick-the-correct-syntax, using P1's own notebooks as source material", d: 2, f: false, n: "Exam-reported as a large and confusing block of questions." },
+      { t: "Power Query M formula fluency — read a step and say what it does", d: 2, f: false },
+      { t: "A running \"when would I reach for this instead of that?\" note, one line per feature", d: 0, f: false, n: "The exam is scenario-first with several plausible answers. This note is the direct answer to that format." }
     ]
   }
 ];
 
 const STORAGE_KEY = "dp600-checklist-state";
+
 let state = {
   checked: {
     "p1-0": true, "p1-1": true, "p1-2": true, "p1-3": true, "p1-4": true,
-    "p1-5": true, "p1-6": true, "p1-7": true, "p1-8": true
+    "p1-5": true, "p1-6": true, "p1-7": true, "p1-8": true, "p1-9": true
   },
   collapsed: {}
 };
 
+let filter = 0; // 0 = all, otherwise a domain number
+
 function itemId(projectId, idx) { return projectId + "-" + idx; }
+
+/* ------------------------------------------------------------------
+   Persistence. The page originally used window.storage only, which does
+   not exist when served from GitHub Pages — every read threw, the catch
+   swallowed it, and no checkbox ever persisted. Prefer window.storage
+   when it is present, fall back to localStorage otherwise.
+   ------------------------------------------------------------------ */
+
+function hasHostStorage() {
+  return typeof window !== "undefined"
+    && window.storage
+    && typeof window.storage.get === "function"
+    && typeof window.storage.set === "function";
+}
+
+async function readRaw(key) {
+  if (hasHostStorage()) {
+    const result = await window.storage.get(key, false);
+    if (result && result.value) return result.value;
+    return null;
+  }
+  return localStorage.getItem(key);
+}
+
+async function writeRaw(key, value) {
+  if (hasHostStorage()) {
+    await window.storage.set(key, value, false);
+    return;
+  }
+  localStorage.setItem(key, value);
+}
 
 async function loadState() {
   try {
-    const result = await window.storage.get(STORAGE_KEY, false);
-    if (result && result.value) {
-      state = JSON.parse(result.value);
+    const raw = await readRaw(STORAGE_KEY);
+    if (raw) {
+      state = JSON.parse(raw);
       if (!state.checked) state.checked = {};
       if (!state.collapsed) state.collapsed = {};
     }
   } catch (e) {
-    console.log("No saved state yet, starting fresh.");
+    console.warn("Could not load saved state; starting fresh.", e);
   }
 }
 
 async function saveState() {
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    await writeRaw(STORAGE_KEY, JSON.stringify(state));
   } catch (e) {
     console.error("Failed to save checklist state:", e);
   }
@@ -383,17 +656,92 @@ async function saveState() {
 
 function circumference(r) { return 2 * Math.PI * r; }
 
+function visibleItems(project) {
+  // Returns [{item, idx}] surviving the current domain filter.
+  const out = [];
+  project.items.forEach((item, idx) => {
+    if (filter === 0 || item.d === filter) out.push({ item, idx });
+  });
+  return out;
+}
+
+function renderDomainCards() {
+  const host = document.getElementById("domainCards");
+  host.innerHTML = "";
+
+  [1, 2, 3].forEach(d => {
+    let total = 0, done = 0;
+    DATA.forEach(project => {
+      project.items.forEach((item, idx) => {
+        if (item.d !== d) return;
+        total++;
+        if (state.checked[itemId(project.id, idx)]) done++;
+      });
+    });
+    const pct = total ? Math.round((done / total) * 100) : 0;
+
+    const card = document.createElement("div");
+    card.className = "domain-card";
+    card.innerHTML = `
+      <div class="dc-top">
+        <div class="dc-id">D${d}</div>
+        <div class="dc-pct">${pct}%</div>
+      </div>
+      <div class="dc-name">${DOMAINS[d].name}</div>
+      <div class="dc-weight">${DOMAINS[d].weight} of exam · ${done}/${total}</div>
+      <div class="dc-bar-track"><div class="dc-bar-fill" style="width:${pct}%"></div></div>
+    `;
+    host.appendChild(card);
+  });
+}
+
+function renderFilters() {
+  const host = document.getElementById("filters");
+  host.innerHTML = "";
+
+  const options = [
+    { v: 0, label: "ALL ITEMS" },
+    { v: 1, label: "D1 MAINTAIN" },
+    { v: 2, label: "D2 PREPARE" },
+    { v: 3, label: "D3 MODELS" }
+  ];
+
+  options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn" + (filter === opt.v ? " active" : "");
+    btn.textContent = opt.label;
+    btn.addEventListener("click", () => {
+      filter = opt.v;
+      render();
+    });
+    host.appendChild(btn);
+  });
+
+  const note = document.getElementById("filterNote");
+  if (filter === 0) {
+    note.style.display = "none";
+  } else {
+    note.style.display = "block";
+    note.textContent = "Filtered to Domain " + filter + " — every count on this page reflects the filter.";
+  }
+}
+
 function render() {
+  renderDomainCards();
+  renderFilters();
+
   const container = document.getElementById("projects");
   container.innerHTML = "";
 
   let totalItems = 0, totalChecked = 0;
 
   DATA.forEach(project => {
-    const total = project.items.length;
-    const checkedCount = project.items.filter((_, i) => state.checked[itemId(project.id, i)]).length;
+    const shown = visibleItems(project);
+    const total = shown.length;
+    const checkedCount = shown.filter(({ idx }) => state.checked[itemId(project.id, idx)]).length;
     totalItems += total;
     totalChecked += checkedCount;
+
     const pct = total ? Math.round((checkedCount / total) * 100) : 0;
     const r = 16;
     const c = circumference(r);
@@ -401,7 +749,9 @@ function render() {
     const isCollapsed = !!state.collapsed[project.id];
 
     const projectEl = document.createElement("div");
-    projectEl.className = "project" + (isCollapsed ? " collapsed" : "");
+    projectEl.className = "project"
+      + (isCollapsed ? " collapsed" : "")
+      + (total === 0 ? " empty" : "");
 
     const head = document.createElement("div");
     head.className = "project-head";
@@ -443,16 +793,31 @@ function render() {
     const ul = document.createElement("ul");
     ul.className = "items";
 
-    project.items.forEach((text, idx) => {
+    shown.forEach(({ item, idx }) => {
       const id = itemId(project.id, idx);
       const checked = !!state.checked[id];
       const li = document.createElement("li");
       li.className = "item" + (checked ? " done" : "");
+
+      const domainTag = item.d
+        ? `<span class="tag domain">D${item.d}</span>`
+        : "";
+      const capTag = item.f
+        ? `<span class="tag cap-f">▲ [F] FABRIC</span>`
+        : `<span class="tag cap-p">◇ [P] PPU-OK</span>`;
+      const noteHtml = item.n
+        ? `<div class="item-note">${item.n}</div>`
+        : "";
+
       li.innerHTML = `
         <div class="checkbox ${checked ? "checked" : ""}" data-id="${id}">
           <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="#14181C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="item-text" data-id="${id}">${text}</div>
+        <div class="item-main">
+          <div class="item-text" data-id="${id}">${item.t}</div>
+          <div class="tags">${domainTag}${capTag}</div>
+          ${noteHtml}
+        </div>
       `;
       const toggle = async () => {
         state.checked[id] = !state.checked[id];
