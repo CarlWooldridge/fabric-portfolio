@@ -29,7 +29,7 @@ session can pick up one phase and start work without re-deriving any of it.*
 | Lane-12 cap | Now **conditional on the handoff test** (option C). Backtested over all 22 rows sitting at 69 | **Done — not yet seen by a live run** |
 | `Comp_Flag` | Era drift found (the floor moved 2026-08-26 and both band names shifted one place). Banded tokens forward; four copies collapsed to one in `04` | **Done — no rows rewritten** |
 | `Verdict` | Measured under **current rules**, re-derived, never rewritten. Vocabulary completed — `Unretrieved` and `Not evaluated` were missing from it | **Carl's decision, implemented** |
-| `Role_Type` | Declared controlled; 16 of 32 off-spec rows normalised, qualifiers moved to `Notes` | **Done — 16 one-offs left by choice** |
+| `Role_Type` | Declared controlled; 16 of 32 off-spec rows normalized, qualifiers moved to `Notes` | **Done — 16 one-offs left by choice** |
 | `Outcome` | Spec widened to permit `Interview; Rejected`, which the process already depended on | **Done** |
 | `jd-evaluator` agent | Told about the conditional cap and the `Role_Type` vocabulary | **Done — it had neither** |
 | `Work_Type`, `Applicant_Volume` | Checked: 203 and 57 spellings, **zero ambiguous**, nothing reads them | **No action, by decision** |
@@ -59,7 +59,7 @@ Do not start by writing code. Phase B's wins came from measuring first.
 4. **Run it for real.** Dry-run first, show the rows, then write.
 
 **Do this on Sonnet or Opus, not Haiku.** Haiku is fine *running* a hardened process — that is
-what the pinning is for. Hardening one is judgement work over unfamiliar code, and Haiku tested
+what the pinning is for. Hardening one is judgment work over unfamiliar code, and Haiku tested
 badly at it: it halted on a misdiagnosed environment error, and it inverted `Score_Raw` against
 `Score` on capped rows.
 
@@ -86,12 +86,12 @@ prohibition is narrow: *not from a pull*.
 (Added 2026-08-27 at Carl's direction, after Phase D's tracker step proposed writing two rows he
 had already triaged in the Power BI report.) Before any phase writes `Carls_Action`,
 `Carls_Action_Date`, `Outcome` or `Reason`, it must **cross-reference `fabric-pull-actions.py`'s
-output and honour what the database holds**:
+output and honor what the database holds**:
 
 - `WriteBack_Applied = True` and the field is non-empty → **that is Carl's decision. Suppress the
   write. Leave the CSV blank.** Pre-filling it makes his override indistinguishable from a
   front-end pre-fill, which is the entire thing it exists to override.
-- **Honouring is not backfilling.** The pulled value decides *whether to write*; it is never
+- **Honoring is not backfilling.** The pulled value decides *whether to write*; it is never
   itself written. Nothing from a pull enters the CSV — that rule is unchanged.
 - The database wins even when it disagrees. On the first run, Fabric held
   `Carls_Action_Date = 2026-08-26` for Company-519 (4431006891) where LinkedIn's tracker computed
@@ -231,7 +231,7 @@ failure surface.** (Added 2026-08-28.)
   cost out loud, not a silent flag.
 
 **Built 2026-08-28: `scripts/stale-sweep.py`,** two modes on the `triage-match.py` pattern.
-`select` (default) queries the log, honours Fabric's write-backs and emits an ID list;
+`select` (default) queries the log, honors Fabric's write-backs and emits an ID list;
 `--classify DIR` reads what `fetch-jds.js` returned and emits a `jd-update.py` edit list. The
 script never decides what a posting *means* — only whether the closed phrase is present.
 
@@ -575,8 +575,8 @@ from a prompt.**
 
 **2026-08-26 — a rule with no definition decided differently on similar postings.** G10's
 "primary tooling" was never defined, so one run fired the gate on `"Looker (or similar BI tools)"`
-and another did not fire it on a tool buried in a list. **If a rule needs judgement, write down
-what the judgement is.**
+and another did not fire it on a tool buried in a list. **If a rule needs judgment, write down
+what the judgment is.**
 
 ---
 
@@ -608,7 +608,7 @@ recall audit surfaced two duplicate postings Carl spotted immediately: Company-4
 "Data Architect" logged twice (4367009665 on 08-11, 4457166880 on 08-25) and Selective
 Insurance "Data & Analytics Architect" logged three times (4249256573 applied 07-27 and
 rejected, then 4249254755 on 08-13 and 4436141178 on 08-15). Tested against the live script:
-both pairs normalise to an identical company — the suffix stripper handles "Corporation" — and
+both pairs normalize to an identical company — the suffix stripper handles "Corporation" — and
 score **title similarity 1.0**, well over the 0.82 floor. `probable_reposts` would have flagged
 every one. The gap is the invocation: `jd-dedupe.py <ids>` does **exact Job_ID matching only**,
 and a LinkedIn repost always carries a *new* Job_ID, so that path structurally cannot see one.
@@ -653,11 +653,11 @@ missing file. Harmless because it failed loudly; it would not have been harmless
 silently fallen back to the three-day-old capture. **Pass `--out` a path under `scripts/`, or move
 the file before running the writer.**
 
-**2026-08-31 — normalise against the thing the label describes, not against its spelling.** The
+**2026-08-31 — normalize against the thing the label describes, not against its spelling.** The
 `Role_Type` cleanup looked like string tidying: strip a parenthetical from two regular variants,
 16 rows. Checked against `Pts_Lane` instead of against itself, **9 of the 16 did not fit the naive
-strip** — 6 had no Lane score at all, and 3 scored Lane 25 while being labelled `Bridge`. A
-string-level normalisation would have run clean, reported 16 rows fixed, and quietly mislabelled
+strip** — 6 had no Lane score at all, and 3 scored Lane 25 while being labeled `Bridge`. A
+string-level normalization would have run clean, reported 16 rows fixed, and quietly mislabelled
 three. The qualifier turned out to be encoding a second concept the field does not mean — career
 significance rather than lane fit — which is why it could not be dropped without checking.
 
@@ -689,7 +689,7 @@ field after the `Comp_Flag` finding: is its meaning defined relative to a rule t
 changed, with nothing on the row saying which version applies? Four real instances. `Verdict =
 Pursue` (2026-08-10, the deleted 50-69 band, 124 rows) — **already guarded**, by
 `training_set()`'s `pre_window_pursue` exclusion, which is this exact defect handled correctly and
-never generalised. `Comp_Flag` (2026-08-26, 124 rows) — fixed the same day. `Pts_Comp` and
+never generalized. `Comp_Flag` (2026-08-26, 124 rows) — fixed the same day. `Pts_Comp` and
 `Pts_Skills`/`Pts_Perks` — two scales each, not currently biting because the compared population
 happens to sit inside one era, which is luck: `window_start` coincides with the 2026-08-10
 boundary and nothing protected the 2026-08-26 one. And `Role_Type = Bridge`, ambiguous for four
@@ -789,14 +789,14 @@ the same day, and it survived three sessions unnoticed. Corrected 2026-08-31.
    (VETO_LINE-150K)`), an era table in `01-intake-and-fetch.md`, and `field_matches()` in
    `rubric-learn.py` reading each row under its own era. **No rows rewritten** — each is correct
    under its era, and `Comp_Flag` is a judgment field the intake rules forbid overwriting.
-2h. **`Role_Type` normalised 2026-08-31 at Carl's direction — 16 of 16 written, 32 -> 16 off-spec
+2h. **`Role_Type` normalized 2026-08-31 at Carl's direction — 16 of 16 written, 32 -> 16 off-spec
    rows.** The 6 `Out of lane (retrospective)` rows all have a blank `Pts_Lane` (retrospective
    backfills, never component-scored) and went to `Out of lane`; 7 of the 10
    `Bridge (paycheck + currency…)` rows scored Lane 12 and went to `Bridge`. Qualifiers moved to
    `Notes`, not dropped. The 3 Lane-25 rows —
    Company-655 `4445863502`, Ancora `4447164680`, Company-148 `4447535851` — went to
    `Lane-advancing` at Carl's direction in a second run: the mapping wins, and *"paycheck +
-   currency, not a lane move"* is preserved in `Notes`. **All 16 normalised; off-spec rows 32 ->
+   currency, not a lane move"* is preserved in `Notes`. **All 16 normalized; off-spec rows 32 ->
    16**, the remainder being the one-offs Carl chose to leave. Both qualifier strings are now 0 in
    `Role_Type` and 16 in `Notes`; both copies byte-identical (sha `d43b5ff7c935577b`).
    **Open, but only if it comes up:** `Role_Type` has no way to say *"in lane, but not a career

@@ -196,7 +196,7 @@ def cmd_jobs(args):
     it = resolve(args.ref)
     # Fabric job instances cover dataflows, notebooks and pipelines. Semantic
     # models 404 here; their refreshes live on the Power BI surface instead.
-    # Neither endpoint honours $top reliably, so slice client-side.
+    # Neither endpoint honors $top reliably, so slice client-side.
     res = api(f"{FABRIC}/v1/workspaces/{WORKSPACE_ID}/items/{it['id']}/jobs/instances",
               RES_FABRIC, soft=True)
     rows = (res or {}).get("value", [])

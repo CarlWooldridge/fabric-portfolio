@@ -62,7 +62,7 @@ at all, the same saving `jd-dedupe.py` made in Phase B.
 direction.) Carl triages in the Power BI report, and those decisions live in `JobSearch_DB`, not
 in this CSV. `triage-match.py` loads `scratch/fabric_actions.csv` (from
 `fabric-pull-actions.py`) and **suppresses any write to a field the database already holds on a
-`WriteBack_Applied = True` row** — reporting it as honoured rather than writing it. The CSV stays
+`WriteBack_Applied = True` row** — reporting it as honored rather than writing it. The CSV stays
 blank there on purpose: pre-filling a field Carl has overridden makes his override
 indistinguishable from a front-end pre-fill. The pulled value decides *whether to write* and is
 never itself written, so this does not weaken the one-way rule in
@@ -295,8 +295,8 @@ from Phase B — it may never have launched (no new postings that run), and this
 
 - **First page only, always.** The tracker holds hundreds of entries; page 1 is the most recent
   ~10, which is all a daily run needs. Do not add pagination without Carl's explicit say-so.
-  **This is still the standing behaviour and was re-confirmed 2026-08-28.**
-  `fetch-applied-tracker-paginated.js` exists but is a **one-time backfill tool**, authorised
+  **This is still the standing behavior and was re-confirmed 2026-08-28.**
+  `fetch-applied-tracker-paginated.js` exists but is a **one-time backfill tool**, authorized
   2026-08-12 for a historical sweep — it is not the per-run path and must not be substituted for
   one without Carl saying so again.
 
@@ -367,7 +367,7 @@ silently re-dating it here.
 found 6 badges and the Job Tracker had already caught all 6 — **0 badge-only**. On the same
 data the two sources disagreed on the date for 2 of the 6 (Company-535 4458425988, AllClear
 4459364332), by one day each, which is exactly the whole-day approximation the confirm rule
-exists for. The gap this source was added to close has not yet materialised; it is here for the
+exists for. The gap this source was added to close has not yet materialized; it is here for the
 run where the tracker's page-1 window misses something.
 
 ### Phase E — stale-Pursue closure sweep

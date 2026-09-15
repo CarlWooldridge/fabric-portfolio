@@ -387,7 +387,7 @@ becomes indistinguishable from a front-end pre-fill — it stops being an overri
 it masks whether the database holds what he thinks it holds.
 
 **Flag it. Never backfill it.** Reporting the divergence in a run summary is correct and useful.
-Acting on it is not, and it is never a judgement call to make unilaterally.
+Acting on it is not, and it is never a judgment call to make unilaterally.
 
 **Writing those four fields at the front end is fine and wanted.** The whole point is to pre-fill
 as much as possible before the data crosses into the database: the job-alert evaluation, the

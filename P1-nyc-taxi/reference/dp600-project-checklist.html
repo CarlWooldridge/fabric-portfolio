@@ -380,7 +380,7 @@
     color: var(--accent);
   }
 
-  /* Capacity markers are distinguished by GLYPH AND TEXT, never colour alone. */
+  /* Capacity markers are distinguished by GLYPH AND TEXT, never color alone. */
   .tag.cap-f { border-style: solid; }
   .tag.cap-p { border-style: dashed; }
 
@@ -522,7 +522,7 @@ const DATA = [
       { t: "At least one slowly changing dimension (Type 2)", d: 2, f: true },
       { t: "Notebook-based Python transformation where Dataflow Gen2 can't cleanly do it", d: 2, f: true },
       { t: "✚ Query folding — add a step that deliberately breaks folding, then find it in the Dataflow web experience", d: 2, f: true, n: "Exam-reported: knowing which steps fold, diagnosed in the web UI." },
-      { t: "✚ Dataflow Gen2 staging on and off — compare behaviour and where intermediate results land", d: 2, f: true },
+      { t: "✚ Dataflow Gen2 staging on and off — compare behavior and where intermediate results land", d: 2, f: true },
       { t: "✚ Create views, T-SQL functions and stored procedures in the Warehouse", d: 2, f: true, n: "Outline bullet with zero coverage so far — Job Search has views, but no functions or procedures." },
       { t: "✚ Select, filter and aggregate through the Visual Query Editor deliberately, not just T-SQL", d: 2, f: true },
       { t: "Resolve duplicates, missing data and nulls; denormalize, merge/join, convert types on genuinely messy data", d: 2, f: true },
@@ -561,8 +561,8 @@ const DATA = [
       { t: "Eventhouse + KQL database; write 5–8 KQL queries (take, where, summarize, project, join, render)", d: 2, f: true, n: "A named exam skill with zero coverage. Keep it small — the questions are conceptual. Do NOT build a full Eventstream ingestion pipeline." },
       { t: "OneLake integration for the Eventhouse; query the same data through a Lakehouse shortcut", d: 2, f: true },
       { t: "Discover data through the OneLake catalog and the Real-Time hub", d: 2, f: true },
-      { t: "Configure Direct Lake fallback behaviour deliberately, then force a fallback and observe it", d: 3, f: true },
-      { t: "Build the same model both ways: Direct Lake on OneLake vs Direct Lake on SQL analytics endpoint — record where they diverge", d: 3, f: true, n: "Newest bullet in the Jul 2026 outline revision. Differences include composite models, calculated columns, SQL views and RLS behaviour." },
+      { t: "Configure Direct Lake fallback behavior deliberately, then force a fallback and observe it", d: 3, f: true },
+      { t: "Build the same model both ways: Direct Lake on OneLake vs Direct Lake on SQL analytics endpoint — record where they diverge", d: 3, f: true, n: "Newest bullet in the Jul 2026 outline revision. Differences include composite models, calculated columns, SQL views and RLS behavior." },
       { t: "Full README: architecture diagram, decisions, tradeoffs, what you'd change", d: 0, f: false }
     ]
   },
@@ -571,13 +571,13 @@ const DATA = [
     label: "Exam-only",
     title: "Study items with nothing to build",
     goal: "Tested, but no project produces them. Do not let the build crowd these out.",
-    note: "Take the free official practice assessment COLD, before studying anything — the per-domain breakdown re-prioritises everything else on this page.",
+    note: "Take the free official practice assessment COLD, before studying anything — the per-domain breakdown re-prioritizes everything else on this page.",
     items: [
       { t: "Official Microsoft practice assessment taken cold, for a baseline per-domain score", d: 0, f: false },
       { t: "OPTIMIZE vs VACUUM: which one improves query performance, and which one does not", d: 2, f: false },
       { t: "Managed vs unmanaged (external) Delta tables — what DROP does to each", d: 2, f: false },
       { t: "F-SKU vs P-SKU, trial vs licensed, and what happens when capacity is exceeded (throttling, not deletion)", d: 1, f: false, n: "P1 diagnosed real throttling via the Capacity Metrics app — that is the worked example." },
-      { t: "Spark pools and starter pools at concept level only — do not memorise executor sizing", d: 2, f: false },
+      { t: "Spark pools and starter pools at concept level only — do not memorize executor sizing", d: 2, f: false },
       { t: "Microsoft Purview integration for governance, lineage and sensitivity labels — shallow, one or two questions' worth", d: 1, f: false },
       { t: "External tools: Tabular Editor, ALM Toolkit, DAX Studio, Best Practice Analyzer, VertiPaq Analyzer — what each is for", d: 3, f: false, n: "Exam-reported and entirely uncovered. Point them at the models you already have." },
       { t: "DMVs (Dynamic Management Views) and what each one is used for", d: 3, f: false },

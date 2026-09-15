@@ -248,7 +248,7 @@ Window: 30 days (2026-07-29 to 2026-08-28). 22 row(s) selected, 22 answered, 0 l
 Split by bucket — **these do not pool**:
 
 - **Theme shortlist: 5 of 7.** Rows chosen because they match a rule Carl had already stated, so a high rate is expected. This measures what that rule is worth, not recall.
-- **Random control: 0 of 15.** Drawn at random from everything else. **This is the recall estimate** — the only figure here that generalises to the rows nobody read.
+- **Random control: 0 of 15.** Drawn at random from everything else. **This is the recall estimate** — the only figure here that generalizes to the rows nobody read.
 
 Zero flags in the control: no unnamed theme is visible in this window at n=15. That is weak evidence, not proof — 15 rows cannot rule out a pattern that affects a handful.
 
@@ -265,7 +265,7 @@ Zero flags in the control sample — the gates are calibrated for this window.
 | Company-483 — Data Architect | 69 | data platform lane, unlisted comp | wanted |  |
 | Company-567 — Data & Analytics Architect | 67 | data governance/architecture, not BI-core | wanted | applied ~2026-07-14 to an earlier posting of this same role; this is a repost |
 | Company-484 — Data Architect | 64 | data platform/Fabric migration, not BI | wanted | duplicate posting of 4457166880 |
-| Company-558 — Senior Marketing Analytics Manager - BI & Data Architecture | 62 | marketing/GTM analytics, not enterprise BI | wanted | resolves the handoff-vs-function-modifier conflict in favour of the handoff test |
+| Company-558 — Senior Marketing Analytics Manager - BI & Data Architecture | 62 | marketing/GTM analytics, not enterprise BI | wanted | resolves the handoff-vs-function-modifier conflict in favor of the handoff test |
 
 ### Rows Carl declined, with his reasoning
 
@@ -840,7 +840,7 @@ marker on the row saying which version applies?** Six candidates found, four rea
 **The project had already hit this once and fixed it without naming it.**
 `training_set()` drops `Verdict == "Pursue"` rows evaluated before `window_start`, recorded in
 `weights.json` as *"pre-window Pursue (deleted 50-69 band)"* — 124 rows. That is exactly this
-defect, correctly handled, in 2026-08-10's instance. The fix was never generalised, so 2026-08-26
+defect, correctly handled, in 2026-08-10's instance. The fix was never generalized, so 2026-08-26
 walked straight into it again with `Comp_Flag`, and today's cap change made a third instance
 before the sweep caught it.
 
@@ -1130,12 +1130,12 @@ split across two bullets and two files, `Role_Type` documented but not enforced,
 in the spec than in the process. **A controlled vocabulary needs one home, inbound links, and the
 word "controlled" actually written on it.**
 
-## 2026-08-31 — `Role_Type` normalised: 13 of 16 written, 3 held
+## 2026-08-31 — `Role_Type` normalized: 13 of 16 written, 3 held
 
-Carl's direction: normalise the two regular variants, leave the one-offs. Done for 13; **the
+Carl's direction: normalize the two regular variants, leave the one-offs. Done for 13; **the
 naive strip would have been wrong on 9 of the 16, and on 3 it still needs his call.**
 
-**`Out of lane (retrospective)` — 6 rows, all normalised to `Out of lane`.** Every one has a
+**`Out of lane (retrospective)` — 6 rows, all normalized to `Out of lane`.** Every one has a
 **blank `Pts_Lane`**: these are the 14-rejection diagnostic backfill rows, retrospectively judged
 rather than component-scored, so there was no Lane value to check the label against. The base
 value is unchanged and the qualifier is real information — it flags that the row never went
@@ -1145,7 +1145,7 @@ through the rubric — so it moved to `Notes` rather than being dropped. Five al
 **`Bridge (paycheck + currency, not a lane move)` — 10 rows, and the qualifier was load-bearing on
 three of them.** Checked against `Pts_Lane` rather than trusted:
 
-| Pts_Lane | rows | normalised to |
+| Pts_Lane | rows | normalized to |
 |---|---|---|
 | 12 | 7 | `Bridge` — written |
 | **25** | **3** | **`Lane-advancing` per the mapping — held, not written** |
@@ -1165,8 +1165,8 @@ significance — and only the first is what the field means.** That is the same 
 other vocabulary finding this session.
 
 **Method note.** The check that caught this was comparing the label against `Pts_Lane` instead of
-against itself. A string-level normalisation would have looked completely clean and quietly
-mislabelled three rows. **Normalise against the thing the label is supposed to describe, not
+against itself. A string-level normalization would have looked completely clean and quietly
+mislabelled three rows. **Normalize against the thing the label is supposed to describe, not
 against the label's own spelling.**
 
 **Written with the full discipline:** reconcile, one backup per file per run
@@ -1178,7 +1178,7 @@ revalidated from disk. 26 fields set on each copy, 0 skipped. Off-spec `Role_Typ
 > **Completed 2026-08-31: the 3 held rows were set to `Lane-advancing` at Carl's direction.**
 > Company-655 `4445863502`, Ancora `4447164680`, Company-148 `4447535851` — the mapping
 > wins, and the "paycheck + currency, not a lane move" judgment is preserved in `Notes` on each.
-> Both copies byte-identical afterwards (sha `d43b5ff7c935577b`). All 16 rows normalised; both
+> Both copies byte-identical afterwards (sha `d43b5ff7c935577b`). All 16 rows normalized; both
 > qualifier strings are now **0 in `Role_Type` and 16 in `Notes`**. Off-spec `Role_Type` rows:
 > **32 -> 16**, and the 16 remaining are the one-offs Carl chose to leave.
 >

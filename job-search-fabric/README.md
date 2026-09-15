@@ -1,4 +1,4 @@
-# Job Search — an AI evaluation pipeline, productionised on Microsoft Fabric
+# Job Search — an AI evaluation pipeline, productionized on Microsoft Fabric
 
 **Goal:** take a workflow I actually run every day — an AI-assisted evaluation of inbound job postings — and put it on Fabric properly: governed storage, a Direct Lake semantic model, and a report I can *write back* from, rather than a dashboard I only look at.
 
@@ -82,7 +82,7 @@ Snapshots rather than deltas is a deliberate call: the write function does parti
 
 | Boundary | What actually happens |
 |---|---|
-| **Data Activator cannot monitor a Lakehouse table at all** | Not a configuration gap. It accepts only event-based sources — Eventstreams, Real-Time Hub, Power BI visuals, KQL Querysets. OneLake events explicitly exclude shortcut-sourced data. The documented workaround is standing up an Eventhouse to diff each batch load, which is disproportionate infrastructure for a log that changes a few times a day. Abandoned in favour of a scheduled refresh, later supplemented by a Power Automate trigger. |
+| **Data Activator cannot monitor a Lakehouse table at all** | Not a configuration gap. It accepts only event-based sources — Eventstreams, Real-Time Hub, Power BI visuals, KQL Querysets. OneLake events explicitly exclude shortcut-sourced data. The documented workaround is standing up an Eventhouse to diff each batch load, which is disproportionate infrastructure for a log that changes a few times a day. Abandoned in favor of a scheduled refresh, later supplemented by a Power Automate trigger. |
 | **A table shortcut maps one *folder* to exactly one Delta table** | Dropping a second, differently-shaped CSV into a folder an existing shortcut already targets does not create a second table — it merges the rows into the existing table against the wrong schema, landing them as junk with unmatched columns null. The picker only allows selecting folders, never files, so there is no UI path to disambiguate. One CSV per folder, one shortcut per folder. |
 | **Fabric's CSV reader is not multiline-aware** | Free-text fields with embedded newlines — RFC 4180-correct, correctly quoted, parsed fine by Python — still shatter, because Fabric ends a record at an embedded newline regardless. 15 logical rows became 376 physical lines. Fixed upstream by flattening line breaks to a ` ¶ ` marker and restoring them in DAX. |
 | **Direct Lake cannot frame a SQL view** | And adding one to an otherwise-Direct-Lake model falls the **entire model** back to DirectQuery, not just that table. `vw_WriteBack_Latest` is therefore deliberately *not* in the model; the model reads the raw log table and does the latest-row reduction in DAX. |
@@ -129,7 +129,7 @@ Validated against the real data before being trusted: **93.9%** of rows carry a 
 
 **Capped scores get a deliberate two-tier treatment.** 26% of rows carry "capped from" language whose arithmetic does not reconcile against the visible components — a pre-existing quirk of how those notes were generated, not a parsing bug. Deductions are computed only for the 74% where the maths actually closes; capped rows show their named components with no forced (and misleading) deduction. `Pts_Deductions` is therefore null on those rows by design, and the unpivot filters them out rather than writing meaningless blank component rows.
 
-Everything derived — comp splits, location splits, applicant-volume parsing, day buckets — is computed in Dataflow Gen2, because **Direct Lake supports neither Power Query transformations nor calculated columns.** That constraint is what makes this an ETL project rather than a modelling one.
+Everything derived — comp splits, location splits, applicant-volume parsing, day buckets — is computed in Dataflow Gen2, because **Direct Lake supports neither Power Query transformations nor calculated columns.** That constraint is what makes this an ETL project rather than a modeling one.
 
 ---
 
@@ -193,4 +193,4 @@ Design spec for the self-correcting loop and the cost model behind it: **[The Ve
 - **[Write-back data loss — post-mortem](https://carlwooldridge.github.io/fabric-portfolio/job-search-fabric/reference/writeback-incident-postmortem.html)** ([source](reference/writeback-incident-postmortem.html)) — timeline, root cause, and why recovery was luck
 - **[The Verdict Loop](https://carlwooldridge.github.io/fabric-portfolio/job-search-fabric/reference/the-verdict-loop.html)** ([source](reference/the-verdict-loop.html)) — the self-correcting rubric design and the run's cost model
 - **[Report wireframe](https://carlwooldridge.github.io/fabric-portfolio/job-search-fabric/reference/report-wireframe.html)** ([source](reference/report-wireframe.html)) — built before the report, and it caught real layout problems first
-- **[Original build guide](reference/original-build-guide.md)** — the full build spec, superseded in places and labelled where it is
+- **[Original build guide](reference/original-build-guide.md)** — the full build spec, superseded in places and labeled where it is

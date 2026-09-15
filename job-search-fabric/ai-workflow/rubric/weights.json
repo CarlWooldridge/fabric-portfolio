@@ -44,7 +44,7 @@
     },
     "applicants": {
       "max": 5,
-      "under_review": "measured inverted vs behaviour: applied mean 0.99 vs passed mean 2.00"
+      "under_review": "measured inverted vs behavior: applied mean 0.99 vs passed mean 2.00"
     }
   },
   "deductions": {

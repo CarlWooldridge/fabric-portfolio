@@ -169,7 +169,7 @@ def load_writeback(path):
 
     Carl triages in the Power BI report and writes back to JobSearch_DB. That database, not
     this CSV, holds the current Carls_Action / Carls_Action_Date / Outcome / Reason for any
-    row he has touched. When it already carries a value, Phase D must HONOUR it and leave
+    row he has touched. When it already carries a value, Phase D must HONOR it and leave
     the CSV alone: writing the same fact into the CSV makes his override indistinguishable
     from a front-end pre-fill, which is what it is meant to override.
 
@@ -302,7 +302,7 @@ def wb_view(jid):
         return {"carls_writeback": False}
     held = {f: v for f, v in w["fields"].items() if v}
     return {"carls_writeback": True, "fields_held": held,
-            "note": "Carl triaged this in the report. HONOUR these; do not write them to the CSV."}
+            "note": "Carl triaged this in the report. HONOR these; do not write them to the CSV."}
 
 
 def row_view(line, row, why, sim, where):
@@ -332,7 +332,7 @@ def attach_row_state(rec, jid, by_id):
     Both sources ask the log the same four questions — is there a row, what do Carl's
     columns already hold, is the blank gate open, and does Fabric hold a write-back for
     it — so they share one answer. Two copies of this would drift, and the drift would be
-    invisible until a badge wrote over a write-back the tracker path would have honoured.
+    invisible until a badge wrote over a write-back the tracker path would have honored.
     """
     hit = by_id.get(jid)
     if hit:
@@ -1073,10 +1073,10 @@ def render(args):
             halts.append(f"{where}: asked to archive a {sender_class} email. "
                          f"Recruiter/individual mail stays in the Inbox.")
 
-    # Honour Carl's write-back. A field the database already holds is his decision, and the
+    # Honor Carl's write-back. A field the database already holds is his decision, and the
     # CSV is deliberately left blank so that his override stays distinguishable from a
     # front-end pre-fill. Suppress the write; never copy the database value into the edit.
-    honoured = []
+    honored = []
     for ed in edits:
         w = (WB["map"] or {}).get(ed["Job_ID"])
         if not w or not w["applied"]:
@@ -1085,7 +1085,7 @@ def render(args):
             held = w["fields"].get(f, "")
             if not held:
                 continue
-            honoured.append({"Job_ID": ed["Job_ID"], "field": f,
+            honored.append({"Job_ID": ed["Job_ID"], "field": f,
                              "would_have_written": ed["set"][f], "fabric_holds": held,
                              "agrees": held == ed["set"][f]})
             del ed["set"][f]
@@ -1116,10 +1116,10 @@ def render(args):
         sys.exit(f"\n  {len(halts)} decision(s) rejected. Fix them and re-run.\n")
 
     e_ = sys.stderr
-    if honoured:
-        print(f"\n  HONOURING FABRIC WRITE-BACK — {len(honoured)} field(s) NOT written to "
+    if honored:
+        print(f"\n  HONORING FABRIC WRITE-BACK — {len(honored)} field(s) NOT written to "
               f"the CSV:", file=e_)
-        for h in honoured:
+        for h in honored:
             flag = "" if h["agrees"] else "   <- DIFFERS, Fabric wins"
             print(f"      {h['Job_ID']:>12} {h['field']:<18} fabric={h['fabric_holds']!r} "
                   f"(would have written {h['would_have_written']!r}){flag}", file=e_)
@@ -1151,7 +1151,7 @@ def render(args):
     print("", file=e_)
 
     dump(edits, args.out_edits)
-    dump({"honoured_writeback": honoured,
+    dump({"honoured_writeback": honored,
           "archive_message_ids": archive, "ledger_additions": ledger_add,
           "blocked": blocked, "route_to_phase_b": to_phase_b,
           "phase_a_c_handles": phase_ac}, args.out_disposition)

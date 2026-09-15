@@ -45,7 +45,7 @@ PARTIAL GATES — what this script deliberately does not decide
              comp returns `review`, never `clear`.
     G4       decides the Ladders clause. The second clause — anonymous end client PLUS
              (contract or sub-target comp) — needs the body to establish anonymity, so a
-             recognised staffing intermediary returns `review` with the reason attached.
+             recognized staffing intermediary returns `review` with the reason attached.
     G6       never fires on its own. Industry is a fact about the employer, not a string
              in the posting: "Company-84" is not a firearms employer and
              a keyword rule that fires on it is worse than no rule. A keyword hit returns

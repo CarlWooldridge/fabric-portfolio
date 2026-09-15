@@ -36,7 +36,7 @@ Outside the P1→P3 progression: a system built because I needed it, not because
 
 ### [Job Search — an AI evaluation pipeline on Fabric](job-search-fabric/) *(complete)*
 
-An AI-assisted job-posting evaluation workflow I run daily, productionised on Fabric with write-back — so the report is something I act *in*, not just look at. 1,066 evaluated postings, 676 employers, a Direct Lake semantic model over a Fabric SQL Database, and a Python User Data Function wired to the report through Translytical Task Flows.
+An AI-assisted job-posting evaluation workflow I run daily, productionized on Fabric with write-back — so the report is something I act *in*, not just look at. 1,066 evaluated postings, 676 employers, a Direct Lake semantic model over a Fabric SQL Database, and a Python User Data Function wired to the report through Translytical Task Flows.
 
 **Selected findings:**
 - A `DROP` and recreate destroyed every report write-back, because the dataflow read its own output table to preserve them — the table was its own only backup. The refresh didn't just fail to restore the data, it overwrote the evidence any had existed. Recovered via point-in-time restore, then redesigned around an append-only log so the fact table is genuinely disposable

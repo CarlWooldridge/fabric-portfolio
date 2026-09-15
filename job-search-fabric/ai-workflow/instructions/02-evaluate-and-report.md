@@ -100,7 +100,7 @@ real information about the environment even when it is not disqualifying.
 years-in-industry figure. Domain-artifacts-as-the-deliverable, with no years figure, is a **−15
 deduction and no gate** — see the Domain gate section in `instructions/03-scoring-rubric.md`,
 which is authoritative. (Corrected 2026-08-26: this table previously joined them with "or", which
-would auto-Skip a BI-core role at a domain employer that the rubric only means to penalise.)
+would auto-Skip a BI-core role at a domain employer that the rubric only means to penalize.)
 
 **A gate firing is not a reason to skip the rest of the evaluation.** Score every component and
 show the math in `Notes` exactly as always. The gates decide the verdict; the score still records

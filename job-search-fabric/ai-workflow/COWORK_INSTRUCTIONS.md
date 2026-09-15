@@ -87,7 +87,7 @@ instructions/*.md`); a routing table that lies about size is how a run picks the
 | [`05-triage-and-audits.md`](instructions/05-triage-and-audits.md) | 528 | Phase D triage, Phase E closure sweep, Phase F recall audit. |
 | [`06-linkedin-messages.md`](instructions/06-linkedin-messages.md) | 602 | Phase G only — LinkedIn inbox. Never needed for JD evaluation. |
 | [`99-appendix-legacy.md`](instructions/99-appendix-legacy.md) | 63 | Never, for a run. Retired methods, kept for the reasoning. |
-| [`REVAMP_PLAN.md`](instructions/REVAMP_PLAN.md) | 894 | **Modernising a phase, or starting a fresh session.** All seven phases are done as of 2026-08-31 — read its "State of play" section first. Scope, traps, incident log. |
+| [`REVAMP_PLAN.md`](instructions/REVAMP_PLAN.md) | 894 | **Modernizing a phase, or starting a fresh session.** All seven phases are done as of 2026-08-31 — read its "State of play" section first. Scope, traps, incident log. |
 
 > ⚠️ **The split's saving has largely eroded, and it is worth knowing before a run.** Phase B's
 > load was 1,771 lines at the 2026-08-26 split; it is **2,215 now (+25%)**, against the 2,542-line

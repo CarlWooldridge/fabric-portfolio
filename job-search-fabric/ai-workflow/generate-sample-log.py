@@ -73,7 +73,7 @@ GAPS = [
     "Job is delivery/consulting shaped rather than product-side ownership",
     "Title reads senior but the body describes an IC reporting role",
     "Stack is Snowflake-core with Power BI as a secondary surface",
-    "Heavy people-management with little hands-on modelling",
+    "Heavy people-management with little hands-on modeling",
 ]
 STRENGTHS = [
     "Explicit semantic-model ownership named in the responsibilities",

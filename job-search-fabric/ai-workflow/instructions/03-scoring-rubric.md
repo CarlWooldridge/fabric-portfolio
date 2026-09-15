@@ -259,7 +259,7 @@ actually saying the job manages people. Leading a *function*, an *area*, a *capa
 When it is genuinely ambiguous, **do not take the hit** — score it, and say in `Notes` which
 phrase you considered and why you did not count it. This asymmetry is deliberate: 47% of the
 roles Carl has applied to carry a manager/director/VP title, and `Pts_Scope` measures *inverted*
-against his behaviour (roles he passed on score higher on Scope than roles he applied to). A
+against his behavior (roles he passed on score higher on Scope than roles he applied to). A
 false hit is therefore the more costly error, and it is invisible unless the reasoning is written
 down. Three postings were skipped on this reading on 2026-08-26 before the rule was tightened.
 
@@ -525,7 +525,7 @@ assessment of whether he could do the job — never write it up as a qualificati
 **No separate seniority deduction.** (2026-08-10.) A −8 seniority-breadth deduction was proposed
 here and removed. The Scope cap at 5 already costs 10 points against the IC tier, and stacking a
 further −8 on top double-counted the same concern — with it, a Director+ role not explicitly
-labelled IC topped out at **79** when fully remote, one point under this screen's own ≥80
+labeled IC topped out at **79** when fully remote, one point under this screen's own ≥80
 requirement. That made the screen an unconditional gate for remote roles while describing itself
 as a high bar, and it would have blocked eight roles Carl applied to, four of them scoring 82–85.
 Without the deduction the remote ceiling is **87** and the three conditions above do the work they
@@ -838,7 +838,7 @@ Consulting character is already priced, twice over, and that is the intended mec
   −5 for a light one, under Deductions; and
 - **G3b**, which fires on client-delivery *role shape* at any employer and yields `Review`.
 
-Together those cost a consulting-flavoured posting real points and put it in front of Carl as a
+Together those cost a consulting-flavored posting real points and put it in front of Carl as a
 judgment call. That is the outcome he wants — a role that loses points for being consulting, not
 one vetoed for it. Adding a firm to G3a is a decision Carl makes explicitly, never one an
 evaluation run makes on resemblance.
@@ -871,7 +871,7 @@ Pass wins.
 **The music industry itself is not excluded.** Carl has no music-industry experience and said so,
 but he is not opposed to the sector. Do not add music or entertainment to the industry exclusions
 below. The experience half of his objection is already covered by the domain-as-deliverable rule:
-the UMG postings centre on *"artist growth"* and *"recording artists and songwriters,"* which is
+the UMG postings center on *"artist growth"* and *"recording artists and songwriters,"* which is
 domain-as-deliverable at **−15**, not an industry ban. A music-industry employer hiring for
 Company-423-stack enterprise BI is in lane and should be scored as such.
 

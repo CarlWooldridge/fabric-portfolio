@@ -9,7 +9,7 @@ Recommended_Action are never touched, even if the re-fetched text reads differen
 
 Two modes, deliberately split the way triage-match.py splits its two:
 
-  select   (default)  — query the log, honour Fabric's write-backs, emit an ID list to fetch
+  select   (default)  — query the log, honor Fabric's write-backs, emit an ID list to fetch
   classify --fetched  — read what fetch-jds.js returned, emit a jd-update.py edit list
 
 USAGE

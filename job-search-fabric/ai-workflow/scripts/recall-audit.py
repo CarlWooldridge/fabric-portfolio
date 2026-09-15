@@ -532,7 +532,7 @@ def render_ask(theme, control, pool_n, control_n):
     if control:
         L += [f"## Random control ({len(control)} drawn from {pool_n}) — the actual recall estimate",
               "", "Drawn at random, seeded on the window so the draw is reproducible. This is "
-              "the only bucket that generalises, and the only one that can surface a theme "
+              "the only bucket that generalizes, and the only one that can surface a theme "
               "nobody has named.", "",
               "| Job_ID | Company | Title | Score | what killed it |", "|---|---|---|---|---|"]
         L += [one_line(r) for r in sorted(control, key=lambda r: -(r["Score"] or 0))]
@@ -625,7 +625,7 @@ def record(args):
     wrong = [(r["Job_ID"], r.get("answer")) for r in rows
              if r.get("answer") is not None and r.get("answer") not in ANSWERS]
     if wrong:
-        sys.exit(f"\n  HALT: unrecognised answer(s): "
+        sys.exit(f"\n  HALT: unrecognized answer(s): "
                  f"{', '.join(f'{j}={a}' for j, a in wrong[:5])}\n"
                  f"  Allowed: {', '.join(sorted(ANSWERS))}\n")
 
@@ -660,7 +660,7 @@ def record(args):
         if c_n:
             e.append(f"- **Random control: {c_w} of {c_n}.** Drawn at random from everything "
                      f"else. **This is the recall estimate** — the only figure here that "
-                     f"generalises to the rows nobody read.")
+                     f"generalizes to the rows nobody read.")
         if c_n and c_w == 0:
             e.append(f"\nZero flags in the control: no unnamed theme is visible in this window "
                      f"at n={c_n}. That is weak evidence, not proof — {c_n} rows cannot rule out "

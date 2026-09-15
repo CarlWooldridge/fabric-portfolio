@@ -376,7 +376,7 @@ pre, pre code {
     <span class="c-key">"skills"</span>:     { <span class="c-key">"max"</span>: <span class="c-num">15</span> },
     <span class="c-key">"perks"</span>:      { <span class="c-key">"max"</span>: <span class="c-num">5</span>  },
     <span class="c-key">"applicants"</span>: { <span class="c-key">"max"</span>: <span class="c-num">5</span>,
-      <span class="c-key">"under_review"</span>: <span class="c-str">"inverted vs. behaviour; see learning_log 2026-08-26"</span> }
+      <span class="c-key">"under_review"</span>: <span class="c-str">"inverted vs. behavior; see learning_log 2026-08-26"</span> }
   },
 
   <span class="c-key">"comp"</span>: {
@@ -634,7 +634,7 @@ pre, pre code {
         <tr>
           <td><b>Fan-out shape</b></td>
           <td><span class="pill demote">never one agent per JD</span></td>
-          <td>Each subagent starts cold and needs the rubric — ~8,000 tokens of gates and scoring. 25 agents means loading it 25 times, which is worse than today's single cached context. Batching 5–8 amortises it and still parallelises the wall-clock.</td>
+          <td>Each subagent starts cold and needs the rubric — ~8,000 tokens of gates and scoring. 25 agents means loading it 25 times, which is worse than today's single cached context. Batching 5–8 amortizes it and still parallelizes the wall-clock.</td>
         </tr>
       </tbody>
     </table>
@@ -647,7 +647,7 @@ pre, pre code {
   </div>
 
   <h3>On wall-clock time</h3>
-  <p>Most of the elapsed time is not token generation. <code>fetch-jds.js</code> retries up to 5 times per posting with jittered, attempt-multiplied backoff, capped at 25 postings per run — that pacing is deliberate anti-detection behaviour and should not be tuned for speed. The fetch is already a script and already cheap in tokens. <strong>Leave it alone;</strong> the time it takes is the price of the retrieval tier working at all.</p>
+  <p>Most of the elapsed time is not token generation. <code>fetch-jds.js</code> retries up to 5 times per posting with jittered, attempt-multiplied backoff, capped at 25 postings per run — that pacing is deliberate anti-detection behavior and should not be tuned for speed. The fetch is already a script and already cheap in tokens. <strong>Leave it alone;</strong> the time it takes is the price of the retrieval tier working at all.</p>
   <p>The tractable wall-clock win is parallelism in evaluation, which the batched-subagent shape above provides, not faster fetching.</p>
 </section>
 
