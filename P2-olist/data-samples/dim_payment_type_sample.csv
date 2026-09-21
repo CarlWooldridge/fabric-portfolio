@@ -1,0 +1,7 @@
+"payment_type_sk","payment_type"
+-1,"Unknown"
+1,"boleto"
+2,"credit_card"
+3,"debit_card"
+4,"not_defined"
+5,"voucher"
