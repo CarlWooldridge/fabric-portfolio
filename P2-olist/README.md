@@ -47,7 +47,7 @@
 - **The promised "bad filter" gap didn't exist:** the optimizer rewrote `FILTER(fact, RELATED(col) = x)` into the column filter. The corrected rule: a *measure* inside `FILTER` is **~8× slower and moves ~450× more data**; a measure inside `SUMX` is **~9× slower**.
 - **A static seller role leaks:** only Revenue changed; orders, customers and payments showed everyone's. A customer-state rule secures all four. RLS belongs on the table at the top of what you protect.
 - **Model RLS protects the report; OneLake security protects the data.** `test.north` saw only SP orders in the report and every customer in the lakehouse.
-- **Storage mode is a partition property:** two Import models were built entirely through Git and TMDL, with no Desktop ([`80325de`](https://github.com/CarlWooldridge/fabric-p2-olist/commit/80325de), [`058da34`](https://github.com/CarlWooldridge/fabric-p2-olist/commit/058da34)).
+- **Storage mode is a partition property:** two Import models were built entirely through Git and TMDL, with no Desktop ([`f41b596`](https://github.com/CarlWooldridge/fabric-p2-olist/commit/f41b596), [`c5e21d7`](https://github.com/CarlWooldridge/fabric-p2-olist/commit/c5e21d7)).
 - **Good vs bad model: 73.15 vs 85.56 MiB (+17%) at the same query speed.** Text keys cost 11.3 MB each against ~3.5 MB for integers; review comments cost 7.5 MB; timestamps kept seconds.
 
 **Direct Lake and capacity (Part 4)**
