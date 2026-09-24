@@ -510,10 +510,10 @@ const DATA = [
   },
   {
     id: "p2",
-    label: "Project 2",
-    title: "Kaggle finance or supply-chain dataset",
+    label: "Project 2 · complete",
+    title: "Olist — the DP-600 build",
     goal: "Messy real data, then semantic model depth. Domains 2 and 3.",
-    note: "Assumes Project 1 is solid. Items marked ✚ were added from exam-report evidence, not from the original P2 scope.",
+    note: "Built on the Olist e-commerce dataset, Sep 16–24, 2026. Items marked ✚ were added from exam-report evidence, not from the original P2 scope.",
     items: [
       { t: "Data profiling before transforming — document what's actually wrong with the data", d: 2, f: true },
       { t: "✚ Profile in the Dataflow web UI specifically, naming Column Quality, Column Distribution and Column Profile as three distinct things", d: 2, f: true, n: "Exam-reported: tested on the web experience UI, not Power Query Desktop." },
@@ -529,7 +529,7 @@ const DATA = [
       { t: "✚ Run VACUUM; observe retention and time travel; confirm it does NOT improve query performance", d: 2, f: true, n: "The most-cited trap in exam write-ups: OPTIMIZE improves query speed, VACUUM does not." },
       { t: "Calculation groups (replacing duplicated measure variants)", d: 3, f: false },
       { t: "Field parameters and dynamic format strings", d: 3, f: false },
-      { t: "Row-level security on the semantic model, verified with Test as role", d: 1, f: false, n: "Below F64 every viewer needs Pro or PPU, so a second live viewer account costs a licence. Test as role proves the same thing." },
+      { t: "Row-level security on the semantic model, verified with Test as role", d: 1, f: false, n: "Below F64 every viewer needs Pro or PPU, so a second live viewer account costs a license. Test as role proves the same thing." },
       { t: "Object-level security on at least one sensitive measure and one column", d: 1, f: false },
       { t: "Sensitivity labels + item endorsement", d: 1, f: false, n: "Named by a passing candidate as one of the two hardest sections, alongside version control." },
       { t: "✚ DAX depth: windowing (WINDOW, OFFSET, INDEX, RANK), information functions, table filtering, iterator performance", d: 3, f: false, n: "Do not skip this on the advice of older study guides — the current outline names these explicitly." },
@@ -543,7 +543,7 @@ const DATA = [
     label: "Project 3",
     title: "Original build",
     goal: "Architecture ownership and lifecycle. Domain 1 in full, plus real-time.",
-    note: "Domain 1 is ~25–30% of the exam and the least-covered area — the readiness plan runs this project's lifecycle half FIRST, ahead of P2, because it is the cheapest work here per mark.",
+    note: "Domain 1 is ~25–30% of the exam. Every lifecycle, security and real-time item below was earned in the DP-600 build (P2, Part 1 on the existing workspaces). Still open for P3: original source data, the architecture decision record, and its README.",
     items: [
       { t: "Original source data assembled yourself (API pull, scraped, or spec'd)", d: 2, f: true },
       { t: "Written architecture decision record — Lakehouse vs. Warehouse vs. Eventhouse vs. SQL Database, and why", d: 2, f: false },
@@ -588,12 +588,20 @@ const DATA = [
   }
 ];
 
-const STORAGE_KEY = "dp600-checklist-state";
+const STORAGE_KEY = "dp600-checklist-state-v2"; // v2: P2, P3 lifecycle and exam items checked by default
 
 let state = {
   checked: {
-    "p1-0": true, "p1-1": true, "p1-2": true, "p1-3": true, "p1-4": true,
-    "p1-5": true, "p1-6": true, "p1-7": true, "p1-8": true, "p1-9": true
+    "p1-0": true, "p1-1": true, "p1-2": true, "p1-3": true, "p1-4": true, "p1-5": true,
+    "p1-6": true, "p1-7": true, "p1-8": true, "p1-9": true, "p2-0": true, "p2-1": true,
+    "p2-2": true, "p2-3": true, "p2-4": true, "p2-5": true, "p2-6": true, "p2-7": true,
+    "p2-8": true, "p2-9": true, "p2-10": true, "p2-11": true, "p2-12": true, "p2-13": true,
+    "p2-14": true, "p2-15": true, "p2-16": true, "p2-17": true, "p2-18": true, "p2-19": true,
+    "p2-20": true, "p3-2": true, "p3-3": true, "p3-4": true, "p3-5": true, "p3-6": true,
+    "p3-7": true, "p3-8": true, "p3-9": true, "p3-10": true, "p3-11": true, "p3-12": true,
+    "p3-13": true, "p3-14": true, "p3-15": true, "p3-16": true, "p3-17": true, "exam-0": true,
+    "exam-1": true, "exam-2": true, "exam-3": true, "exam-4": true, "exam-5": true, "exam-6": true,
+    "exam-7": true, "exam-8": true, "exam-9": true, "exam-10": true
   },
   collapsed: {}
 };

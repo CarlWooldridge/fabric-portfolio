@@ -4,3 +4,4 @@
 P1-nyc-taxi/reference/*.html linguist-documentation=true
 job-search-fabric/reference/*.html linguist-documentation=true
 *.dacpac binary
+P2-olist/reference/*.html linguist-documentation=true

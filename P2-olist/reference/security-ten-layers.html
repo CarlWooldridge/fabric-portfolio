@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security in Fabric: Ten Layers</title>
+<meta name="description" content="Ten Microsoft Fabric security layers, each built and tested as a real user: what each decides, where it is enforced, and the path around it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --ground:#F4F6F6; --surface:#FFFFFF; --surface-alt:#EAEEEE;
+  --ink:#131A1F; --ink-2:#3C4A50; --ink-3:#66777D;
+  --rule:#D3DBDB; --rule-soft:#E3E9E9;
+  --accent:#0F6169; --accent-2:#14818A; --accent-wash:#DCEAEA;
+  --good:#2E6F53; --warn:#8A5A12; --crit:#9E3B30;
+  --good-wash:#DFEBE4; --warn-wash:#F2E7D2; --crit-wash:#F1DEDB;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1418; --surface:#161F24; --surface-alt:#1C272D;
+    --ink:#E3EAEB; --ink-2:#B0BEC2; --ink-3:#7D8E93;
+    --rule:#2A373D; --rule-soft:#202B31;
+    --accent:#58B8BE; --accent-2:#7FD0D4; --accent-wash:#163336;
+    --good:#6FBF95; --warn:#D6A253; --crit:#E08376;
+    --good-wash:#163025; --warn-wash:#322715; --crit-wash:#331F1C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1418; --surface:#161F24; --surface-alt:#1C272D;
+  --ink:#E3EAEB; --ink-2:#B0BEC2; --ink-3:#7D8E93;
+  --rule:#2A373D; --rule-soft:#202B31;
+  --accent:#58B8BE; --accent-2:#7FD0D4; --accent-wash:#163336;
+  --good:#6FBF95; --warn:#D6A253; --crit:#E08376;
+  --good-wash:#163025; --warn-wash:#322715; --crit-wash:#331F1C;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  font-size:16.5px; line-height:1.62; margin:0;
+  padding:0 clamp(1rem,4vw,3rem) 6rem; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:60rem;margin:0 auto}
+.masthead{padding:clamp(3rem,8vw,5.5rem) 0 2.25rem;border-bottom:2px solid var(--ink);
+  display:flex;flex-direction:column;gap:1.25rem}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:700;
+  font-size:clamp(2.4rem,6.5vw,3.9rem);line-height:1;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.standfirst{font-size:1.14rem;color:var(--ink-2);max-width:42rem;margin:0;text-wrap:pretty}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.75rem;font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.74rem;color:var(--ink-3);letter-spacing:.04em;padding-top:.5rem}
+.meta b{color:var(--ink-2);font-weight:500}
+.part{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.part-tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.6rem}
+h2{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:700;
+  font-size:clamp(1.7rem,3.6vw,2.3rem);line-height:1.07;letter-spacing:-.022em;margin:0 0 1.6rem;text-wrap:balance}
+h3{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:600;font-size:1.28rem;
+  line-height:1.22;letter-spacing:-.012em;margin:2.6rem 0 .85rem;text-wrap:balance}
+p{margin:0 0 1.05rem;max-width:40rem;text-wrap:pretty}
+ul,ol{margin:0 0 1.15rem;padding-left:1.2rem;max-width:40rem}
+li{margin-bottom:.5rem}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+em{font-style:italic;color:var(--ink-2)}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.855em;background:var(--surface-alt);
+  padding:.1em .36em;border-radius:3px;border:1px solid var(--rule-soft)}
+.lede{font-size:1.06rem;color:var(--ink-2);border-left:3px solid var(--accent);
+  padding:.1rem 0 .1rem 1.15rem;max-width:40rem}
+pre{background:var(--surface);border:1px solid var(--rule);border-radius:5px;
+  padding:1rem 1.15rem;overflow-x:auto;margin:1.4rem 0 1.8rem}
+pre code{background:none;border:none;padding:0;font-size:.83rem;line-height:1.55}
+.tw{overflow-x:auto;margin:1.5rem 0 2rem;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.89rem;min-width:32rem}
+caption{caption-side:bottom;text-align:left;padding:.7rem .95rem;font-size:.78rem;
+  color:var(--ink-3);border-top:1px solid var(--rule-soft)}
+th,td{padding:.58rem .95rem;text-align:left;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+thead th{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.68rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-alt);
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+.note{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:5px;padding:1.1rem 1.3rem;margin:1.6rem 0 1.9rem}
+.note.crit{border-left-color:var(--crit);background:var(--crit-wash)}
+.note.good{border-left-color:var(--good);background:var(--good-wash)}
+.note h4{font-family:"Archivo",ui-sans-serif,sans-serif;font-weight:600;font-size:1rem;margin:0 0 .5rem}
+.note p:last-child{margin-bottom:0}
+.tl{list-style:none;padding:0;margin:1.6rem 0 2rem;max-width:44rem}
+.tl li{display:grid;grid-template-columns:9.5rem 1fr;gap:1rem;padding:.7rem 0;
+  border-bottom:1px solid var(--rule-soft);margin:0}
+.tl li:last-child{border-bottom:none}
+.tl .t{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.76rem;color:var(--accent);
+  letter-spacing:.02em;padding-top:.15rem}
+.pill{display:inline-block;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;
+  letter-spacing:.08em;text-transform:uppercase;padding:.16em .5em;border-radius:3px;
+  background:var(--accent-wash);color:var(--accent);white-space:nowrap}
+.pill.bad{background:var(--crit-wash);color:var(--crit)}
+.pill.ok{background:var(--good-wash);color:var(--good)}
+@media (max-width:34rem){ .tl li{grid-template-columns:1fr;gap:.15rem} }
+a{color:var(--accent)}
+a:hover{color:var(--accent-2)}
+.pill{white-space:normal}
+td b code{font-weight:500}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="eyebrow">Fabric · DP-600 build · Reference</span>
+  <h1>Security in Fabric: ten layers, and where each is enforced</h1>
+  <p class="standfirst">Every layer here was built and then tested by signing in as a real user, not the workspace admin. The pattern that came out of it: each layer is enforced by specific engines, and each one has a path around it.</p>
+  <div class="meta">
+    <span><b>Built</b> 2026-09-16 to 09-24</span>
+    <span><b>Test users</b> 3, plus one B2B guest</span>
+    <span><b>Workspaces</b> NYC Taxi, P2 Olist, a sandbox</span>
+    <span><b>Write-up</b> <a href="../">P2: Olist — the DP-600 build</a></span>
+  </div>
+</header>
+
+<section class="part" style="border-top:none;padding-top:2.5rem">
+  <span class="part-tag">Part 1</span>
+  <h2>The ten layers</h2>
+  <p class="lede">Read a requirement for the layer it names, then answer from that layer. The most common mistake, on the practice exam and in design reviews, is answering a data question with a workspace role.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Layer</th><th>Decides</th><th>Lives on</th><th>Reach for it when the requirement says…</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Entra directory roles</b></td><td>Who administers the <strong>tenant</strong></td><td>Entra ID, not Fabric</td><td>"tenant admin", not anything about data</td></tr>
+        <tr><td>2</td><td><b>Workspace roles</b></td><td>Who gets <strong>into the workspace</strong></td><td>The workspace</td><td>Too coarse for "protect data". Admin, Member and Contributor read everything</td></tr>
+        <tr><td>3</td><td><b>Item permissions</b><br><code>Read</code> <code>Build</code> <code>ReadData</code> <code>ReadAll</code></td><td>Who opens <strong>one item</strong>, and what they can do with it</td><td>The item</td><td>"build a report, don't touch the model" → <code>Build</code></td></tr>
+        <tr><td>4</td><td><b>T-SQL <code>GRANT</code> / <code>DENY</code></b></td><td>Which <strong>objects</strong></td><td>Warehouse / SQL endpoint (delegated mode)</td><td>"specific objects in the warehouse"</td></tr>
+        <tr><td>5</td><td><b>T-SQL RLS</b></td><td>Which <strong>rows</strong>, via SQL</td><td>Warehouse / SQL endpoint (delegated mode)</td><td>"users see only their region", in T-SQL</td></tr>
+        <tr><td>6</td><td><b>T-SQL CLS</b></td><td>Which <strong>columns</strong>, via SQL</td><td>Warehouse / SQL endpoint (delegated mode)</td><td><code>SELECT *</code> errors while an explicit column list works</td></tr>
+        <tr><td>7</td><td><b>Dynamic data masking</b></td><td>What <strong>values look like</strong>. Not access control</td><td>Warehouse / SQL endpoint</td><td>"without changing the application layer"</td></tr>
+        <tr><td>8</td><td><b>OneLake security roles</b></td><td>Folders, tables, rows, columns in <strong>every engine</strong></td><td>Lakehouse: Spark, SQL endpoint in user's-identity mode, Direct Lake on OneLake</td><td>"consistently across engines"</td></tr>
+        <tr><td>9</td><td><b>Model RLS / OLS</b></td><td>Rows, tables, columns and measures <strong>in reports</strong></td><td>Semantic model</td><td>"only these users see this measure" → OLS</td></tr>
+        <tr><td>10</td><td><b>Sensitivity labels</b></td><td><strong>Classification</strong> that travels. Not access control</td><td>Every item, inherited downstream</td><td>"classify for compliance"</td></tr>
+      </tbody>
+      <caption>Three rules that sit across the table: model RLS is <strong>default-deny</strong> (once a model has any role, a Viewer in none is refused); roles <strong>add up</strong> (a user in two roles sees the union); and <strong>hidden is not secured</strong> (a hidden table is still queryable; OLS makes it not exist).</caption>
+    </table>
+  </div>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part 2</span>
+  <h2>Security is enforced where the query runs, as whom</h2>
+  <p>One warehouse table with T-SQL RLS (this user sees West only) and dynamic data masking on email and salary. The same user, a workspace Viewer, opened a report on it through each path.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Path</th><th>Rows</th><th>Values</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><b>Import</b></td><td><span class="pill bad">✗ All rows</span></td><td><span class="pill bad">✗ Real values</span></td><td>Refresh ran as the model owner; viewers query that copy</td></tr>
+        <tr><td><b>DirectQuery</b></td><td><span class="pill ok">✓ West only</span></td><td><span class="pill ok">✓ Masked</span></td><td>Each query runs in SQL as the viewer (needs SSO on the connection)</td></tr>
+        <tr><td><b>Direct Lake on the SQL endpoint</b></td><td><span class="pill ok">✓ West only</span></td><td><span class="pill ok">✓ Masked</span></td><td>RLS or masking forces fallback to DirectQuery, so SQL applies it</td></tr>
+        <tr><td><b>Direct Lake on OneLake, over the warehouse</b></td><td><span class="pill bad">✗ All rows</span></td><td><span class="pill bad">✗ Real values</span></td><td>Reads Parquet with the viewer's ReadAll; SQL security never runs</td></tr>
+        <tr><td><b>Direct Lake on OneLake, over a lakehouse</b></td><td><span class="pill ok">✓ West only</span></td><td><span class="pill ok">✓ Columns removed</span></td><td>A OneLake security role (row filter + column list) applies</td></tr>
+        <tr><td><b>Same user, promoted to Contributor</b></td><td><span class="pill bad">✗ Reports unmasked</span></td><td><span class="pill">! Direct SQL still masked</span></td><td>Contributor gains OneLake read but not SQL <code>CONTROL</code>, so T-SQL still masks</td></tr>
+      </tbody>
+      <caption>✓ secured · ✗ bypassed · ! mixed. Verified for one Viewer, 2026-09-17.</caption>
+    </table>
+  </div>
+
+  <div class="note crit">
+    <h4>Two ways to hand out everything</h4>
+    <p><strong>ReadAll on a warehouse undoes its T-SQL security</strong> for that user: Spark and Direct Lake on OneLake read the files directly.</p>
+    <p><strong>A delegated-identity shortcut hands every reader the creator's access.</strong> A test user holding only Read and ReadData on the warehouse read all 5 rows through one, unfiltered and unmasked, from Spark and from SQL. The passthrough shortcut refused until ReadAll was granted, then returned all 5 too. Warehouse RLS, CLS and masking never travel through any shortcut.</p>
+  </div>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part 3</span>
+  <h2>The three row-and-column layers, side by side</h2>
+  <p>SQL, OneLake and the semantic model can all filter rows and hide columns. They differ in who enforces them, what a blocked user sees, and how to get around them.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th></th><th>SQL layer</th><th>OneLake layer</th><th>Model layer</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lives in</b></td><td>Warehouse; lakehouse SQL endpoint in <strong>delegated</strong> mode</td><td>Lakehouse → Manage OneLake security</td><td>Semantic model → Manage roles</td></tr>
+        <tr><td><b>Rows</b></td><td><code>CREATE SECURITY POLICY</code> + a predicate function</td><td>Row filter in the role</td><td>DAX filter on a table; dynamic with <code>USERPRINCIPALNAME()</code> and a mapping table</td></tr>
+        <tr><td><b>Columns / objects</b></td><td><code>GRANT</code>/<code>DENY</code> with a column list; masking changes values</td><td>Column selection in the role</td><td>OLS: <code>metadataPermission: none</code> on a table or column (Tabular Editor or TMDL view)</td></tr>
+        <tr><td><b>Enforced by</b></td><td>That one SQL endpoint</td><td>Spark, lakehouse explorer, SQL endpoint in user's-identity mode, Direct Lake on OneLake (SSO)</td><td>That model, and every report on it</td></tr>
+        <tr><td><b>Blocked user sees</b></td><td>RLS: fewer rows. CLS: the <strong>query errors</strong>. Masking: fake values</td><td>Fewer rows; unlisted tables; <code>Files</code> "Unable to load"</td><td>RLS: fewer rows. OLS: the <strong>visual errors</strong>, like a deleted field</td></tr>
+        <tr><td><b>Doesn't apply to</b></td><td>Masking exempts <code>CONTROL</code> holders; RLS exempts nobody</td><td>Admin, Member, Contributor (except RLS in user's-identity mode)</td><td>Admin, Member, Contributor: Viewers only</td></tr>
+        <tr><td><b>How to test</b></td><td>Sign in as the user</td><td>Sign in as the user</td><td><em>Test as role</em>, except Direct Lake on OneLake with SSO, where it's blocked: sign in as the user</td></tr>
+        <tr><td><b>In Git</b></td><td>RLS policy and masks, yes; <code>GRANT</code>/<code>DENY</code>, no</td><td>Only if the lakehouse's <code>DataAccessRoles</code> is enabled (off by default)</td><td>Roles, filters and OLS, yes; <strong>members, never</strong></td></tr>
+        <tr><td><b>Gets around it</b></td><td>Spark, OneLake reads, Import, Direct Lake on OneLake, shortcuts to warehouse tables</td><td>Admin, Member, Contributor; a model on a <strong>fixed-identity</strong> connection reads as one account</td><td>Querying the source directly</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <h4>Stacked, on the same user</h4>
+    <p><code>test.north</code> saw only SP orders in the report (model RLS) and every customer in the lakehouse (a OneLake role with no row filter). <strong>Model RLS protects the report; OneLake security protects the data.</strong> A real deployment wants both: a row filter on <code>customer_state</code> in the OneLake role would close the lakehouse path too.</p>
+  </div>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part 4</span>
+  <h2>What travels, and who doesn't</h2>
+  <p>Git, deployment pipelines and shortcuts all carry <em>definitions</em>. None of them carries <em>identity</em>: members, users, grants, connections and access modes are redone per environment.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th></th><th>Git integration</th><th>Deployment pipeline</th><th>OneLake shortcut</th></tr></thead>
+      <tbody>
+        <tr><td><b>Item definitions</b></td><td><span class="pill ok">✓ Yes</span></td><td><span class="pill ok">✓ Yes</span></td><td>n/a</td></tr>
+        <tr><td><b>Data, <code>Files/</code>, table schemas</b></td><td><span class="pill bad">✗ No</span></td><td><span class="pill bad">✗ No: Test starts empty</span></td><td>Read in place, never copied</td></tr>
+        <tr><td><b>Warehouse RLS policy, masks, roles</b></td><td><span class="pill ok">✓ Yes (SQL project)</span></td><td><span class="pill ok">✓ Yes</span></td><td><span class="pill bad">✗ Never enforced through it</span></td></tr>
+        <tr><td><b>Warehouse <code>GRANT</code> / <code>DENY</code></b></td><td><span class="pill bad">✗ No</span></td><td><span class="pill bad">✗ No</span></td><td><span class="pill bad">✗ No</span></td></tr>
+        <tr><td><b>Warehouse users, role members</b></td><td><span class="pill bad">✗ No</span></td><td><span class="pill bad">✗ No: compare stays "Different"</span></td><td>n/a</td></tr>
+        <tr><td><b>Model roles, filters, OLS</b></td><td><span class="pill ok">✓ Yes</span></td><td><span class="pill ok">✓ Yes</span></td><td>n/a</td></tr>
+        <tr><td><b>Model role members</b></td><td><span class="pill bad">✗ Never</span></td><td><span class="pill bad">✗ Never</span></td><td>n/a</td></tr>
+        <tr><td><b>OneLake security roles</b></td><td><span class="pill">! Off by default</span></td><td><span class="pill bad">✗ No</span></td><td><span class="pill">! Defined at the target only</span></td></tr>
+        <tr><td><b>Connection bindings, credentials</b></td><td><span class="pill bad">✗ No</span></td><td><span class="pill bad">✗ No: re-map per stage</span></td><td>Passthrough or delegated identity</td></tr>
+        <tr><td><b>SQL endpoint identity mode</b></td><td><span class="pill bad">✗ No</span></td><td><span class="pill bad">✗ No: Test came back delegated</span></td><td>n/a</td></tr>
+        <tr><td><b>Direct Lake source path</b></td><td><span class="pill ok">✓ As text</span></td><td><span class="pill">! Only via a parameter rule</span></td><td>n/a</td></tr>
+      </tbody>
+      <caption>✓ travels · ✗ doesn't · ! with conditions. Read from the Git repos and the Test workspace, Days 1, 3, 4, 15 and 19.</caption>
+    </table>
+  </div>
+</section>
+
+<section class="part">
+  <span class="part-tag">Part 5</span>
+  <h2>Gotchas that cost time</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>What happened</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><b>Permission changes took up to two hours to reach SQL</b></td><td>Hours went to chasing lag. Wait, re-test, then theorize. OneLake role changes reach the SQL endpoint through a security sync of about five minutes, as <code>OLS_</code> roles.</td></tr>
+        <tr><td><b>Contributor flipped reports to unmasked while direct SQL stayed masked</b></td><td>Elevated roles confound every test. Test as a real Viewer.</td></tr>
+        <tr><td><b>A UPN differing only in case silently failed RLS</b></td><td>Fabric Warehouse collation is case-sensitive. Compare with <code>LOWER()</code>.</td></tr>
+        <tr><td><b><code>WHERE salary BETWEEN 90000 AND 92000</code> found a row displayed as 0</b></td><td>Masking hides values, not rows. It isn't access control.</td></tr>
+        <tr><td><b>Mapping-table RLS returned 0 rows for an unmapped user</b></td><td>It fails closed. <code>DENY</code> on the mapping table doesn't break the predicate (ownership chaining).</td></tr>
+        <tr><td><b>The lakehouse endpoint refused <code>GRANT</code> with Msg 19830</b></td><td>It's in user's-identity mode, so T-SQL permissions don't apply there. A free mode check. Masking still works.</td></tr>
+        <tr><td><b>An external guest's visuals failed until fixed identity</b></td><td>Fixed identity then applies to every viewer and blinds the source to who's asking. Row rules have to move into the model.</td></tr>
+        <tr><td><b>A seller role left orders, customers and payments unfiltered</b></td><td>RLS filters flow down relationships, not up. Put the rule on the table at the top of what you protect.</td></tr>
+        <tr><td><b>A role's own filter read a table that role hides with OLS</b></td><td>OLS secures what the user can query, not what the role's DAX can reference.</td></tr>
+        <tr><td><b>An OLS-secured field silently dropped out of a field-parameter visual</b></td><td>Directly, OLS errors the visual. Through a field parameter it fails quietly.</td></tr>
+        <tr><td><b>Removing a sensitivity label upstream left it on everything downstream</b></td><td>Labels inherit forward and don't un-inherit.</td></tr>
+        <tr><td><b>Every lakehouse carried a <code>DefaultReader</code> OneLake role</b></td><td>Roles add up (a union), so a restrictive role only restricts users who aren't also covered by DefaultReader.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.85rem;color:var(--ink-3)">From the <a href="../">P2 write-up</a>, Week 1 (Days 1–7) and Day 19. Graphics: <a href="../graphics/security-ten-layers.svg">ten layers</a>, <a href="../graphics/security-by-query-path.svg">by query path</a>, <a href="../graphics/what-travels.svg">what travels</a>.</p>
+</section>
+
+</div>
+</body>
+</html>

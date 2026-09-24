@@ -1,0 +1,80 @@
+start_utc,end_utc,item_type,item,status,invoke_type
+2026-09-19T22:09:38,2026-09-19T22:24:39,Notebook,Create schemas,Completed,Manual
+2026-09-19T22:31:07,2026-09-19T22:38:16,Notebook,Raw File Ground Truth,Completed,Manual
+2026-09-19T22:40:20,2026-09-19T22:46:15,Notebook,Bronze Build,Completed,Manual
+2026-09-19T22:46:25,2026-09-19T23:13:35,Notebook,Raw File Ground Truth,Completed,Manual
+2026-09-20T20:19:16,2026-09-20T20:20:10,Notebook,Create schemas,Completed,Manual
+2026-09-20T20:25:12,2026-09-20T20:47:35,Notebook,meta.bronze_profile,Completed,Manual
+2026-09-20T21:09:58,2026-09-20T21:09:58,Dataflow,Profile Bronze,Completed,Manual
+2026-09-20T21:10:14,2026-09-20T21:11:21,Dataflow,Profile Bronze,Completed,Manual
+2026-09-20T21:12:40,2026-09-20T21:12:40,Dataflow,Profile Bronze,Completed,Manual
+2026-09-20T21:12:59,2026-09-20T21:13:14,Dataflow,Profile Bronze,Completed,Manual
+2026-09-21T14:49:06,2026-09-21T14:52:39,Notebook,Bronze Build,Completed,Manual
+2026-09-21T14:54:03,2026-09-21T16:06:46,Notebook,Silver Build,Completed,Manual
+2026-09-21T16:14:04,2026-09-21T16:17:35,Notebook,Orders Watermark Setup,Completed,Manual
+2026-09-21T16:20:05,2026-09-21T16:36:15,Notebook,Load Orders Increment,Completed,Manual
+2026-09-21T16:37:02,2026-09-21T16:38:18,Notebook,Orders Watermark Setup,Completed,Manual
+2026-09-21T16:38:56,2026-09-21T17:00:31,Notebook,Load Orders Increment,Completed,Manual
+2026-09-21T17:22:23,2026-09-21T17:25:00,Notebook,Count New Orders,Completed,Manual
+2026-09-21T17:25:54,2026-09-21T17:26:40,Notebook,Log Error,Completed,Manual
+2026-09-21T17:27:12,2026-09-21T17:47:47,Notebook,Log Error,Completed,Manual
+2026-09-21T18:48:44,2026-09-21T18:50:31,Notebook,Create schemas,Completed,Manual
+2026-09-21T18:58:41,2026-09-21T19:01:23,DataPipeline,P2 Incremental,Failed,Manual
+2026-09-21T18:59:23,2026-09-21T18:59:53,Notebook,Count New Orders,Completed,Manual
+2026-09-21T18:59:58,2026-09-21T19:00:01,Notebook,Load Orders Increment,Failed,Manual
+2026-09-21T19:00:46,2026-09-21T19:01:10,Notebook,Log Error,Completed,Manual
+2026-09-21T19:20:41,2026-09-21T19:31:33,Notebook,Silver Build,Completed,Manual
+2026-09-21T19:31:51,2026-09-21T19:33:43,DataPipeline,P2 Incremental,Completed,Manual
+2026-09-21T19:32:47,2026-09-21T19:34:38,Notebook,Count New Orders,Completed,Manual
+2026-09-21T19:40:30,2026-09-21T19:43:20,Notebook,Orders Watermark Setup,Completed,Manual
+2026-09-21T19:43:44,2026-09-21T19:46:08,DataPipeline,P2 Incremental,Completed,Manual
+2026-09-21T19:44:12,2026-09-21T19:44:44,Notebook,Count New Orders,Completed,Manual
+2026-09-21T19:45:14,2026-09-21T19:45:57,Notebook,Load Orders Increment,Completed,Manual
+2026-09-21T19:58:26,2026-09-21T20:00:32,Notebook,Fault tolerance - Copy activity,Completed,Manual
+2026-09-21T20:06:11,2026-09-21T20:09:01,DataPipeline,P2 Fault Tolerance,Failed,Manual
+2026-09-21T20:12:54,2026-09-21T20:13:28,Notebook,Fault tolerance - Copy activity,Completed,Manual
+2026-09-21T20:15:42,2026-09-21T20:16:32,Notebook,Fault tolerance - Copy activity,Completed,Manual
+2026-09-21T20:16:32,2026-09-21T20:18:25,DataPipeline,P2 Fault Tolerance,Completed,Manual
+2026-09-21T20:22:12,2026-09-21T20:26:49,Notebook,Fault tolerance - Copy activity,Completed,Manual
+2026-09-21T20:35:13,2026-09-21T21:03:56,Notebook,Dim Customer SCD2,Completed,Manual
+2026-09-21T21:13:29,2026-09-21T22:19:13,Notebook,Gold Build,Completed,Manual
+2026-09-21T22:47:55,2026-09-21T22:50:50,Notebook,Bronze Build,Completed,Manual
+2026-09-21T22:51:17,2026-09-21T22:51:49,Notebook,Key Sum Query,Completed,Manual
+2026-09-21T22:52:19,2026-09-21T22:54:11,Notebook,Key Sum Query,Completed,Manual
+2026-09-21T22:56:22,2026-09-21T22:56:45,DataPipeline,P2 Rebuild,Cancelled,Manual
+2026-09-21T22:56:44,2026-09-21T22:57:21,Notebook,Bronze Build,Cancelled,Manual
+2026-09-21T22:57:37,2026-09-21T22:58:12,DataPipeline,P2 Rebuild,Failed,Manual
+2026-09-21T22:57:51,2026-09-21T22:57:53,Notebook,Bronze Build,Failed,Manual
+2026-09-21T22:58:55,2026-09-21T22:59:27,DataPipeline,P2 Rebuild,Failed,Manual
+2026-09-21T22:59:05,2026-09-21T22:59:06,Notebook,Bronze Build,Failed,Manual
+2026-09-21T23:00:09,2026-09-21T23:08:19,DataPipeline,P2 Rebuild,Completed,Manual
+2026-09-21T23:01:03,2026-09-21T23:03:03,Notebook,Bronze Build,Completed,Manual
+2026-09-21T23:03:16,2026-09-21T23:05:17,Notebook,Silver Build,Completed,Manual
+2026-09-21T23:05:29,2026-09-21T23:06:19,Notebook,Dim Customer SCD2,Completed,Manual
+2026-09-21T23:06:40,2026-09-21T23:08:09,Notebook,Gold Build,Completed,Manual
+2026-09-21T23:11:24,2026-09-21T23:13:35,Notebook,Key Sum Query,Completed,Manual
+2026-09-22T12:40:10,2026-09-22T13:11:59,Notebook,Delta Maintenance,Completed,Manual
+2026-09-22T13:42:14,2026-09-22T13:58:43,Notebook,Delta Maintenance,Completed,Manual
+2026-09-22T13:59:19,2026-09-22T14:00:07,Notebook,Delta Maintenance,Completed,Manual
+2026-09-22T14:17:33,2026-09-22T14:18:15,Notebook,Check Files,Completed,Manual
+2026-09-22T14:26:11,2026-09-22T14:28:23,Notebook,Delta Maintenance,Completed,Manual
+2026-09-22T14:28:50,2026-09-22T14:31:25,DataPipeline,P2 Maintenance,Completed,Manual
+2026-09-22T14:29:16,2026-09-22T14:32:36,Notebook,Check Files,Completed,Manual
+2026-09-22T14:30:25,2026-09-22T14:30:59,Notebook,Optimize Table,Completed,Manual
+2026-09-22T14:32:21,2026-09-22T14:32:53,DataPipeline,P2 Maintenance,Failed,Manual
+2026-09-22T14:32:30,2026-09-22T14:32:32,Notebook,Check Files,Failed,Manual
+2026-09-22T14:33:47,2026-09-22T14:34:52,DataPipeline,P2 Maintenance,Completed,Manual
+2026-09-22T14:34:00,2026-09-22T14:34:46,Notebook,Check Files,Completed,Manual
+2026-09-22T16:40:40,2026-09-22T16:42:57,Notebook,Gold Build,Completed,Manual
+2026-09-22T16:43:36,2026-09-22T16:52:37,DataPipeline,P2 Rebuild,Completed,Manual
+2026-09-22T16:43:56,2026-09-22T16:46:11,Notebook,Bronze Build,Completed,Manual
+2026-09-22T16:46:22,2026-09-22T16:48:29,Notebook,Silver Build,Completed,Manual
+2026-09-22T16:48:49,2026-09-22T16:49:45,Notebook,Dim Customer SCD2,Completed,Manual
+2026-09-22T16:49:58,2026-09-22T16:52:31,Notebook,Gold Build,Completed,Manual
+2026-09-23T19:07:36,2026-09-23T19:08:19,Notebook,Model RLS,Completed,Manual
+2026-09-24T12:12:02,2026-09-24T12:49:49,Notebook,managed vs external tables,Completed,Manual
+2026-09-24T12:56:16,2026-09-24T13:23:34,Notebook,Check Files,Completed,Manual
+2026-09-24T12:58:02,2026-09-24T13:25:27,Notebook,Key Sum Query,Completed,Manual
+2026-09-24T13:58:59,2026-09-24T14:50:51,Notebook,PySpark syntax drill,Completed,Manual
+2026-09-24T15:11:58,2026-09-24T15:11:58,Dataflow,M Drill,Completed,Manual
+2026-09-24T18:05:47,2026-09-24T18:27:49,Notebook,Bad Model Build,Completed,Manual
