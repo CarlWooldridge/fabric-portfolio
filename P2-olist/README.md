@@ -2,7 +2,7 @@
 
 *25 day-sessions mapped to the exam's skills outline; every step closed on a measured number, not "it succeeded."*
 
-**Why it exists.** This is my DP-600 (Fabric Analytics Engineer) preparation, built rather than read. Each session covered a slice of the [skills outline](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-600) (revised 21 Jul 2026) and ended in a done-check: a row count, a timing, a file count or a screenshot recorded against an expected value. The exam was the reason. The findings below are what it produced, and several of them corrected the build guide I was working from.
+**Why it exists.** This is my DP-600 (Fabric Analytics Engineer) preparation, built rather than read. Each session covered a slice of the [skills outline](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-600) (revised 21 Jul 2026) and ended in a done-check: a row count, a timing, a file count or a screenshot recorded against an expected value. The exam was the reason, and I passed it on 28 Sep 2026 ([credential](https://learn.microsoft.com/api/credentials/share/en-us/CarlWooldridge-3442/295B55E20B0A7B4?sharingId=BEADD08189466592)). The findings below are what it produced, and several of them corrected the build guide I was working from.
 
 **Scope.** Two parts of one build, run Sep 16–24, 2026:
 

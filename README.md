@@ -1,6 +1,6 @@
 # Microsoft Fabric — Hands-On Project Portfolio
 
-Structured, hands-on work with Microsoft Fabric, built alongside DP-600 (Fabric Analytics Engineer) certification study.
+Structured, hands-on work with Microsoft Fabric, built as my DP-600 preparation. Passed 28 Sep 2026: **Microsoft Certified: Fabric Analytics Engineer Associate** ([verify](https://learn.microsoft.com/api/credentials/share/en-us/CarlWooldridge-3442/295B55E20B0A7B4?sharingId=BEADD08189466592)).
 
 The emphasis throughout is on **measuring rather than assuming** — benchmarking claims against real data, verifying that settings did what they said they did, and documenting where platform boundaries actually sit rather than where documentation implies they should be. Several findings below correct assumptions made earlier in the same project, on the record, because the correction was the more useful outcome.
 
